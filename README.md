@@ -2,6 +2,15 @@
 
 App to create a Vivino clone that works for coffee.
 
+**Live site:** https://westsoever.github.io/pico/
+
+## Development
+
+```bash
+npm install
+npm run dev
+```
+
 ## Submodule setup
 
 Use this repo as a submodule in a parent repository (for example at `02-Projects/pico`):
