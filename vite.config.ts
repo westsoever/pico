@@ -1,11 +1,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+
+const configuredBase = process.env.VITE_BASE || '/'
+const base = configuredBase.endsWith('/') ? configuredBase : `${configuredBase}/`
 
 export default defineConfig({
-  base: '/pico/',
-  plugins: [react()],
+  base,
+  plugins: [react(), tailwindcss()],
   server: {
-    port: 5173,
     host: true,
   },
 })
