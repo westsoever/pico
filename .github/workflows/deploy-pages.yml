@@ -31,6 +31,17 @@ jobs:
           VITE_BASE: /pico/
         run: npm run build
 
+      - name: Publish to docs folder on main
+        run: |
+          rm -rf docs
+          cp -r dist docs
+          touch docs/.nojekyll
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Deploy site to docs folder
+          file_pattern: docs/**
+
       - uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
