@@ -3,6 +3,15 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - 'assets/**'
+      - 'index.html'
+      - 'app-icon.svg'
+      - 'favicon.svg'
+      - 'apple-touch-icon.png'
+      - 'manifest.webmanifest'
+      - '.nojekyll'
   workflow_dispatch:
 
 permissions:
@@ -31,16 +40,27 @@ jobs:
           VITE_BASE: /pico/
         run: npm run build
 
-      - name: Publish to docs folder on main
+      - name: Publish built site to repo root and docs
         run: |
-          rm -rf docs
+          rm -rf docs assets
           cp -r dist docs
-          touch docs/.nojekyll
+          cp -r dist/assets assets
+          cp dist/index.html index.html
+          cp dist/app-icon.svg dist/favicon.svg dist/apple-touch-icon.png dist/manifest.webmanifest .
+          touch .nojekyll docs/.nojekyll
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: Deploy site to docs folder
-          file_pattern: docs/**
+          commit_message: Deploy site to GitHub Pages
+          file_pattern: |
+            index.html
+            assets/**
+            docs/**
+            app-icon.svg
+            favicon.svg
+            apple-touch-icon.png
+            manifest.webmanifest
+            .nojekyll
 
       - uses: peaceiris/actions-gh-pages@v4
         with:

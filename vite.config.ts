@@ -11,4 +11,9 @@ export default defineConfig({
   server: {
     host: true,
   },
+  build: {
+    rollupOptions: {
+      input: './index.dev.html',
+    },
+  },
 })
