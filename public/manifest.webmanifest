@@ -1,0 +1,19 @@
+{
+  "name": "Pico — Coffee Journal",
+  "short_name": "Pico",
+  "description": "Discover coffee, remember every cup, and learn your taste.",
+  "start_url": "./#/discover",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8f3ed",
+  "theme_color": "#38251d",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

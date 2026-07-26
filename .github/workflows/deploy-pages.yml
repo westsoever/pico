@@ -24,7 +24,12 @@ jobs:
           cache: npm
 
       - run: npm ci
-      - run: npm run build
+      - run: npm test
+      - run: npm run lint
+      - name: Build for GitHub Pages
+        env:
+          VITE_BASE: /pico/
+        run: npm run build
 
       - uses: peaceiris/actions-gh-pages@v4
         with:
