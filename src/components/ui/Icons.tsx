@@ -55,3 +55,12 @@ export function SearchIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function CameraIcon(props: IconProps) {
+  return (
+    <svg {...iconDefaults} aria-hidden="true" {...props}>
+      <path d="M4.25 8.25a1.5 1.5 0 0 1 1.5-1.5h2.1l1.4-2h5.5l1.4 2h2.1a1.5 1.5 0 0 1 1.5 1.5v9.5a1.5 1.5 0 0 1-1.5 1.5H5.75a1.5 1.5 0 0 1-1.5-1.5v-9.5Z" />
+      <circle cx="12" cy="13" r="3.5" />
+    </svg>
+  );
+}

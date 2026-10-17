@@ -9,14 +9,14 @@ afterEach(cleanup);
 
 const ratings: Rating[] = [
   {
-    coffeeId: 'eth-yirg-001',
+    coffeeId: 'fixture-ethiopia',
     stars: 3,
     flavorTags: [],
     note: 'Tea-like',
     ratedAt: '2026-07-17T12:00:00.000Z',
   },
   {
-    coffeeId: 'ken-aa-003',
+    coffeeId: 'fixture-kenya',
     stars: 5,
     flavorTags: ['berry'],
     note: 'Juicy',
@@ -33,8 +33,8 @@ describe('RepertoireView controls', () => {
 
     await user.type(screen.getByRole('searchbox', { name: 'Search journal' }), 'floral');
 
-    expect(screen.getByRole('heading', { name: 'Yirgacheffe Kochere' })).toBeInTheDocument();
-    expect(screen.queryByRole('heading', { name: 'Kenya AA Nyeri' })).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Halo Hartume' })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Gatomboya' })).not.toBeInTheDocument();
   });
 
   it('combines filters and sorting without mutating persisted data', async () => {
@@ -43,13 +43,13 @@ describe('RepertoireView controls', () => {
     render(<RepertoireView onSelectCoffee={vi.fn()} refreshKey={0} />);
 
     await user.selectOptions(screen.getByRole('combobox', { name: 'Filter journal' }), 'favorites');
-    expect(screen.getByRole('heading', { name: 'Kenya AA Nyeri' })).toBeInTheDocument();
-    expect(screen.queryByRole('heading', { name: 'Yirgacheffe Kochere' })).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Gatomboya' })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Halo Hartume' })).not.toBeInTheDocument();
 
     await user.selectOptions(screen.getByRole('combobox', { name: 'Filter journal' }), 'all');
     await user.selectOptions(screen.getByRole('combobox', { name: 'Sort journal' }), 'name');
     const names = screen.getAllByRole('heading', { level: 3 }).map((heading) => heading.textContent);
-    expect(names).toEqual(['Kenya AA Nyeri', 'Yirgacheffe Kochere']);
+    expect(names).toEqual(['Gatomboya', 'Halo Hartume']);
     expect(JSON.parse(localStorage.getItem('pico-user-data') ?? '{}').ratings).toHaveLength(2);
   });
 });

@@ -6,7 +6,7 @@ const STORAGE_KEY = 'pico-user-data';
 
 function rating(overrides: Partial<Rating> = {}): Rating {
   return {
-    coffeeId: 'eth-yirg-001',
+    coffeeId: 'fixture-ethiopia',
     stars: 4,
     flavorTags: ['floral'],
     note: 'Tea-like',
@@ -192,7 +192,7 @@ describe('Pico user-data storage compatibility', () => {
 
   it('round-trips ratings both with and without optional brew details', () => {
     const withBrew = rating({
-      coffeeId: 'ken-aa-003',
+      coffeeId: 'fixture-kenya',
       brew: {
         method: 'pour-over',
         doseGrams: 18,
@@ -203,7 +203,7 @@ describe('Pico user-data storage compatibility', () => {
         brewTimeSeconds: 195,
       },
     });
-    const withoutBrew = rating({ coffeeId: 'col-huila-004', brew: undefined });
+    const withoutBrew = rating({ coffeeId: 'fixture-colombia', brew: undefined });
 
     saveUserData({ ratings: [withBrew, withoutBrew], tasteProfile: null });
 

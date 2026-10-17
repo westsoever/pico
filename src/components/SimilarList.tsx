@@ -1,5 +1,6 @@
 import type { SimilarCoffee } from '../types/coffee';
 import { formatMatchPercent } from '../lib/similarity';
+import { CoffeeImage } from './CoffeeImage';
 import { FlavorTagList } from './FlavorTagPicker';
 import { StarDisplay } from './StarRating';
 import { PicoMark } from './ui/Icons';
@@ -61,12 +62,16 @@ export function CoffeeCard({
   roaster,
   origin,
   stars,
+  imageUrl,
+  detail,
   onClick,
 }: {
   name: string;
   roaster: string;
   origin: string;
   stars?: number;
+  imageUrl?: string;
+  detail?: string;
   onClick: () => void;
 }) {
   return (
@@ -75,14 +80,23 @@ export function CoffeeCard({
       onClick={onClick}
       className="group flex w-full items-center gap-3 rounded-2xl border border-[#e3d7cc] bg-white p-3.5 text-left transition hover:-translate-y-0.5 hover:border-[#b99178] hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/30"
     >
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#f1e3d7] text-xl text-[#6b3a2a]" aria-hidden="true">
-        <PicoMark className="h-6 w-6" />
-      </div>
+      <CoffeeImage
+        src={imageUrl}
+        alt=""
+        loading="lazy"
+        className="h-12 w-12 shrink-0 rounded-full bg-[#f1e3d7] object-cover"
+        fallback={
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#f1e3d7] text-xl text-[#6b3a2a]" aria-hidden="true">
+            <PicoMark className="h-6 w-6" />
+          </div>
+        }
+      />
       <div className="min-w-0 flex-1">
         <p className="font-medium text-[#1c1410]">{name}</p>
         <p className="text-sm text-[#766257]">
           {roaster} · {origin}
         </p>
+        {detail && <p className="mt-0.5 text-xs font-medium text-[#8b5339]">{detail}</p>}
         {stars !== undefined && (
           <div className="mt-1">
             <StarDisplay value={stars} />
