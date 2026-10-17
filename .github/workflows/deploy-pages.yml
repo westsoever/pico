@@ -54,15 +54,8 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Deploy site to GitHub Pages
-          file_pattern: |
-            index.html
-            assets/**
-            docs/**
-            app-icon.svg
-            favicon.svg
-            apple-touch-icon.png
-            manifest.webmanifest
-            .nojekyll
+          # One line: the action only reads the first line of a multi-line pattern.
+          file_pattern: index.html assets/** docs/** app-icon.svg favicon.svg apple-touch-icon.png manifest.webmanifest .nojekyll
 
       - uses: peaceiris/actions-gh-pages@v4
         with:
