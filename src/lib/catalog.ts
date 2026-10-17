@@ -1,11 +1,16 @@
-import seedCoffees from '../data/seed-coffees.json';
-import { FLAVOR_TAGS, type Coffee, type ManualCoffeeInput } from '../types/coffee';
+import catalogData from '../data/coffees-dk.json';
+import {
+  FLAVOR_TAGS,
+  ROAST_STYLES,
+  type Coffee,
+  type ManualCoffeeInput,
+  type RoastStyle,
+} from '../types/coffee';
 
 const CUSTOM_COFFEES_KEY = 'pico-custom-coffees';
 const flavorTags = new Set<string>(FLAVOR_TAGS);
 const roastLevels = new Set(['light', 'medium', 'dark']);
-
-const seedCatalog: Coffee[] = seedCoffees as Coffee[];
+const roastStyles = new Set<string>(ROAST_STYLES);
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -15,7 +20,7 @@ function isNonEmptyString(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
-function isCoffee(value: unknown): value is Coffee {
+function hasCoffeeFields(value: unknown): value is Coffee {
   if (!isRecord(value)) return false;
 
   return (
@@ -34,10 +39,83 @@ function isCoffee(value: unknown): value is Coffee {
     (value.variety === undefined || typeof value.variety === 'string') &&
     (value.scaScore === undefined ||
       (typeof value.scaScore === 'number' && Number.isFinite(value.scaScore))) &&
-    (value.barcode === undefined || typeof value.barcode === 'string') &&
-    value.isCustom === true
+    (value.barcode === undefined || typeof value.barcode === 'string')
   );
 }
+
+function isCoffee(value: unknown): value is Coffee {
+  return hasCoffeeFields(value) && value.isCustom === true;
+}
+
+function optionalText(value: unknown): string | undefined {
+  return isNonEmptyString(value) ? value.trim() : undefined;
+}
+
+function optionalHttpUrl(value: unknown): string | undefined {
+  if (!isNonEmptyString(value)) return undefined;
+  try {
+    const { protocol } = new URL(value.trim());
+    return protocol === 'https:' || protocol === 'http:' ? value.trim() : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function optionalTextList(value: unknown): string[] | undefined {
+  if (!Array.isArray(value)) return undefined;
+  const items = value.filter(isNonEmptyString).map((item) => item.trim());
+  return items.length > 0 ? items : undefined;
+}
+
+/**
+ * Validates one bundled catalog entry. Invalid required fields drop the entry;
+ * invalid optional detail fields are omitted so the coffee still shows.
+ */
+export function parseCatalogCoffee(value: unknown): Coffee | undefined {
+  if (!hasCoffeeFields(value) || value.isCustom === true) return undefined;
+
+  const coffee: Coffee = {
+    id: value.id,
+    name: value.name,
+    roaster: value.roaster,
+    origin: value.origin,
+    process: value.process,
+    roastLevel: value.roastLevel,
+    variety: value.variety,
+    scaScore: value.scaScore,
+    flavorTags: value.flavorTags,
+    description: value.description,
+    barcode: value.barcode,
+    roasterCity: optionalText(value.roasterCity),
+    region: optionalText(value.region),
+    producer: optionalText(value.producer),
+    altitude: optionalText(value.altitude),
+    roastStyle:
+      typeof value.roastStyle === 'string' && roastStyles.has(value.roastStyle)
+        ? (value.roastStyle as RoastStyle)
+        : undefined,
+    tastingNotes: optionalTextList(value.tastingNotes),
+    imageUrl: optionalHttpUrl(value.imageUrl),
+    sourceUrl: optionalHttpUrl(value.sourceUrl),
+    available: typeof value.available === 'boolean' ? value.available : undefined,
+  };
+
+  return Object.fromEntries(
+    Object.entries(coffee).filter(([, field]) => field !== undefined),
+  ) as unknown as Coffee;
+}
+
+export function parseCatalog(entries: unknown): Coffee[] {
+  if (!Array.isArray(entries)) return [];
+  const byId = new Map<string, Coffee>();
+  for (const entry of entries) {
+    const coffee = parseCatalogCoffee(entry);
+    if (coffee && !byId.has(coffee.id)) byId.set(coffee.id, coffee);
+  }
+  return [...byId.values()];
+}
+
+const catalog: Coffee[] = parseCatalog(catalogData);
 
 function loadCustomCoffees(): Coffee[] {
   try {
@@ -60,7 +138,7 @@ function saveCustomCoffees(coffees: Coffee[]): void {
 }
 
 export function getAllCoffees(): Coffee[] {
-  return [...seedCatalog, ...loadCustomCoffees()];
+  return [...catalog, ...loadCustomCoffees()];
 }
 
 export function getCoffeeById(id: string): Coffee | undefined {
@@ -71,28 +149,39 @@ export function getCoffeeByBarcode(barcode: string): Coffee | undefined {
   return getAllCoffees().find((c) => c.barcode === barcode);
 }
 
+function foldForSearch(text: string): string {
+  return text.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '');
+}
+
+/** Coffees matching any query word, those matching the most words first. */
 export function searchCoffees(query: string, limit = 8): Coffee[] {
-  const q = query.trim().toLowerCase();
-  if (!q) return [];
+  const terms = [...new Set(foldForSearch(query).split(/\s+/).filter(Boolean))];
+  if (terms.length === 0) return [];
 
   return getAllCoffees()
-    .filter((coffee) => {
-      const haystack = [
+    .map((coffee) => {
+      const haystack = foldForSearch([
         coffee.name,
         coffee.roaster,
+        coffee.roasterCity,
         coffee.origin,
+        coffee.region,
+        coffee.producer,
         coffee.process,
         coffee.variety,
         coffee.description,
         coffee.scaScore?.toString(),
         ...coffee.flavorTags,
+        ...(coffee.tastingNotes ?? []),
       ]
         .filter(Boolean)
-        .join(' ')
-        .toLowerCase();
-      return haystack.includes(q);
+        .join(' '));
+      return { coffee, hits: terms.filter((term) => haystack.includes(term)).length };
     })
-    .slice(0, limit);
+    .filter(({ hits }) => hits > 0)
+    .sort((a, b) => b.hits - a.hits)
+    .slice(0, limit)
+    .map(({ coffee }) => coffee);
 }
 
 export function getCatalogCoffees(excludeIds: string[] = []): Coffee[] {
@@ -119,7 +208,7 @@ function createCustomCoffeeId(existingCoffees: Coffee[]): string {
 export function addCustomCoffee(input: ManualCoffeeInput): Coffee {
   const customCoffees = loadCustomCoffees();
   const coffee: Coffee = {
-    id: createCustomCoffeeId([...seedCatalog, ...customCoffees]),
+    id: createCustomCoffeeId([...catalog, ...customCoffees]),
     name: input.name.trim(),
     roaster: input.roaster.trim(),
     origin: input.origin?.trim() || 'Unknown',

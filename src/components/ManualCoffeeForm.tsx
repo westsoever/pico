@@ -64,7 +64,7 @@ export function ManualCoffeeForm({ onSubmit, onCancel }: ManualCoffeeFormProps) 
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="e.g. Yirgacheffe Kochere"
+          placeholder="e.g. Kieni"
           className={inputClassName}
           required
           autoFocus
@@ -80,7 +80,7 @@ export function ManualCoffeeForm({ onSubmit, onCancel }: ManualCoffeeFormProps) 
           type="text"
           value={roaster}
           onChange={(e) => setRoaster(e.target.value)}
-          placeholder="e.g. Onyx Coffee Lab"
+          placeholder="e.g. Coffee Collective"
           className={inputClassName}
           required
         />

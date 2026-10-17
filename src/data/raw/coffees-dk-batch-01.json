@@ -1,0 +1,666 @@
+[
+  {
+    "id": "coffee-collective-kieni",
+    "sourceUrl": "https://coffeecollective.dk/products/kieni-250-g",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "coffeecollective.dk products.json + product page",
+    "title": "Kieni, 250g",
+    "tags": [
+      "coffee",
+      "filter",
+      "int-badge:250g & 1kg",
+      "kenya"
+    ],
+    "productType": "new",
+    "publishedAt": "2026-07-24T13:33:44+02:00",
+    "bodyText": "Full-bodied, clean, and sweet. Notes of blackcurrant, blackberry, and rhubarb.",
+    "variants": [
+      {
+        "title": "Default Title",
+        "price": "161.00",
+        "available": true
+      }
+    ],
+    "pageSpecBlock": [
+      "About this product",
+      "Origin",
+      "Nyeri, Kenya",
+      "Process",
+      "Washed",
+      "Varieties",
+      "SL28, SL34, Batian, Ruiru11",
+      "Altitude",
+      "1600-1800 masl",
+      "Roast",
+      "Whole bean coffee roasted for filter",
+      "Kieni Cooperative",
+      "Produced together with",
+      "15,43 USD/KG",
+      "The amount we've chosen to pay based on the quality of the coffee",
+      "Kieni",
+      "The best lots show a floral note alongside fruit and berry character, with a soft, smooth mouthfeel. This year marks almost two decades of partnership with Kieni.",
+      "Read more",
+      "Charles Gathaiya Murimi, Kieni Cooperative, Kenya",
+      "Patrick Wahome, Mill Manager",
+      "Close",
+      "Charles Gathaiya Murimi, Kieni Cooperative, Kenya",
+      "Patrick Wahome, Mill Manager",
+      "Close"
+    ]
+  },
+  {
+    "id": "coffee-collective-vista-hermosa-espresso",
+    "sourceUrl": "https://coffeecollective.dk/products/vista-hermosa-espresso-250g",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "coffeecollective.dk products.json + product page",
+    "title": "Vista Hermosa Espresso, 250g",
+    "tags": [
+      "coffee",
+      "custom-badge:250g & 1kg",
+      "espresso",
+      "guatemala",
+      "washed"
+    ],
+    "productType": "new",
+    "publishedAt": "2026-10-08T07:34:23+02:00",
+    "bodyText": "Clean and balanced. Notes of light chocolate, vanilla, and pecan nuts.",
+    "variants": [
+      {
+        "title": "Default Title",
+        "price": "153.00",
+        "available": true
+      }
+    ],
+    "pageSpecBlock": [
+      "About this product",
+      "Origin",
+      "Huehuetenango, Guatemala",
+      "Process",
+      "Washed",
+      "Varieties",
+      "Bourbon, Caturra, Catuai",
+      "Altitude",
+      "1450-1880 masl",
+      "Roast",
+      "Whole bean coffee roasted for espresso",
+      "Edwin Martinez",
+      "Produced together with",
+      "11,6 USD/KG",
+      "The amount we've chosen to pay based on the quality of the coffee",
+      "Vista Hermosa",
+      "Vista Hermosa is a family-run farm in Huehuetenango, Guatemala, founded in the 1950s. Now led by Edwin Martinez and his father, Don Edwin, it spans six lots between 1,700–2,000 masl. The farm produces high-quality washed coffees with meticulous processing and careful drying. Our partnership with Vista Hermosa began in 2008, making it our first Direct Trade farm and a long-standing collaboration built on shared values and continuous learning.",
+      "Read more"
+    ]
+  },
+  {
+    "id": "coffee-collective-mulugeta-anaerobic",
+    "sourceUrl": "https://coffeecollective.dk/products/mulugeta-anaerobic-200g",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "coffeecollective.dk products.json + product page",
+    "title": "Mulugeta Anaerobic, 200g",
+    "tags": [
+      "coffee",
+      "ethiopia",
+      "filter",
+      "natural",
+      "pink bag"
+    ],
+    "productType": "new",
+    "publishedAt": "2026-09-17T10:49:59+02:00",
+    "bodyText": "Intense and aromatic cup with notes of strawberry candy, green apples, and honeydew melon.",
+    "variants": [
+      {
+        "title": "Default Title",
+        "price": "170.00",
+        "available": true
+      }
+    ],
+    "pageSpecBlock": [
+      "About this product",
+      "Origin",
+      "Sidama, Ethiopia",
+      "Process",
+      "Anaerobic natural",
+      "Varieties",
+      "74-158 Kurume",
+      "Altitude",
+      "2100-2300 masl",
+      "Mulugeta Muntasha",
+      "Produced together with",
+      "22 USD/KG",
+      "The price we've chosen to pay for the coffee based on quality",
+      "Mulugeta",
+      "Mulugeta Muntasha is an exceptional producer in Arbegona, Sidama, known for winning 3rd place in COE 2024 and multiple top rankings in 2022. At 2300 meters above sea level, their farm produces washed, anaerobic natural, and natural coffees with a focus on the highest quality. Working with 320 out growers, they aim to improve lot separation for better payments.",
+      "Read more",
+      "Close"
+    ]
+  },
+  {
+    "id": "coffee-collective-rodrigo-hoyos",
+    "sourceUrl": "https://coffeecollective.dk/products/rodrigo-hoyos-250g",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "coffeecollective.dk products.json + product page",
+    "title": "Rodrigo Hoyos, 250g",
+    "tags": [
+      "colombia",
+      "filter",
+      "washed"
+    ],
+    "productType": "new",
+    "publishedAt": "2026-08-10T09:36:55+02:00",
+    "bodyText": "Bright and balanced. Notes of redcurrant, brown sugar, and dark chocolate.",
+    "variants": [
+      {
+        "title": "Default Title",
+        "price": "160.00",
+        "available": true
+      }
+    ],
+    "pageSpecBlock": [
+      "About this product",
+      "Origin",
+      "Huila, Colombia",
+      "Process",
+      "Washed",
+      "Varieties",
+      "Pink Bourbon",
+      "Altitude",
+      "1900 masl",
+      "Roast",
+      "Whole bean coffee roasted for filter",
+      "Rodrigo Hoyos",
+      "Produced together with",
+      "11,6 USD/KG",
+      "The amount we've chosen to pay based on the quality of the coffee",
+      "img]:tw-ml-auto md:[&>img]:tw-w-4/5\">",
+      "EN",
+      "/",
+      "DA",
+      "EN",
+      "/",
+      "DA",
+      "Company",
+      "Our Story",
+      "Jobs",
+      "Contact us",
+      "Transparency",
+      "Inspection Reports",
+      "Communication Policy",
+      "Privacy Policy",
+      "Instagram",
+      "LinkedIn",
+      "Company",
+      "Our Story",
+      "Jobs",
+      "Contact us",
+      "Transparency",
+      "Inspection Reports",
+      "Communication Policy",
+      "Privacy Policy",
+      "Instagram",
+      "LinkedIn",
+      "Customer Support",
+      "Contact us",
+      "Account",
+      "Terms & conditions",
+      "Order Withdrawal",
+      "Customer Support",
+      "Contact us",
+      "Account",
+      "Terms & conditions",
+      "Order Withdrawal",
+      "Wholesale",
+      "Contact us",
+      "Wholesale",
+      "Contact us",
+      "Coffee shops",
+      "Trianglen",
+      "Bernikow",
+      "Carlsberg Byen"
+    ]
+  },
+  {
+    "id": "april-kamavindi-aa",
+    "sourceUrl": "https://www.aprilcoffeeroasters.com/product/kamavindi-kenya-washed-mixed-varietals-aa",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "aprilcoffeeroasters.com product page (embedded Shopify Storefront data)",
+    "title": "Kamavindi - Kenya - Washed SL28 & SL34 (AA)",
+    "tags": [
+      "Filter Beans"
+    ],
+    "shopifyId": "10219663327578",
+    "descriptionText": "Varietal: SL34 & SL28 (AA)Processing: WashedTaste Description: Blackberries, Red Apple & Florals Roasted Coffee Beans (Ristede hele kaffebønner)",
+    "descriptionHtmlText": "<span style=\\",
+    "supplierInformation": "Producer: Peter Mbature\nFarm: Kamavindi \nOrigin: Kenya \nPartner since: 2024 ",
+    "minPriceDKK": "140.0"
+  },
+  {
+    "id": "april-tadesse-natural",
+    "sourceUrl": "https://www.aprilcoffeeroasters.com/product/tadesse-ethiopia-natural-krume-74158",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "aprilcoffeeroasters.com product page (embedded Shopify Storefront data)",
+    "title": "Tadesse - Ethiopia - Natural Krume 74158",
+    "tags": [
+      "Espresso Beans",
+      "Espresso Coffee Beans"
+    ],
+    "shopifyId": "10896170811738",
+    "descriptionText": "Varietal: Krume 74158Processing: NaturalTaste Description: Peach, Yellow Plum & Mandarin Orange Roasted Coffee Beans (Ristede hele kaffebønner)",
+    "descriptionHtmlText": "<span style=\\",
+    "supplierInformation": "Producer: Tadesse Hanka\nFarm: Tadesse \nOrigin: Ethiopia \nPartner since: 2026 ",
+    "minPriceDKK": "248.0"
+  },
+  {
+    "id": "april-volcan-azul",
+    "sourceUrl": "https://www.aprilcoffeeroasters.com/product/volcan-azul-costa-rica-washed-sl28",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "aprilcoffeeroasters.com product page (embedded Shopify Storefront data)",
+    "title": "Volcan Azul - Costa Rica - Washed SL28",
+    "tags": [
+      "Filter Beans"
+    ],
+    "shopifyId": "8452464181594",
+    "descriptionText": "Varietal: SL28Processing: WashedTaste Description: Florals, Plum & Stone Fruit Roasted Coffee Beans (Ristede hele kaffebønner)",
+    "descriptionHtmlText": "<span style=\\",
+    "supplierInformation": "Volcan Azul is a truly remarkable coffee estate located in the Alajuela region of Costa Rica and overseen by Don Alejo Castro. The fifth generation of his family to tend to the land, Alejo is an incredibly knowledgeable farmer, and the estate has a rich history which can be clearly traced back to the late 19th century.The farm produces a vast variety of cultivars and varietals, such as Catuai, Caturra, Obata, SL28 and Geisha. Alejo continues to propagate new varietals every season, with the objective to continuously experiment and add diversity to his harvest. This lot has been grown on the slopes surrounding F.C.J Volcan Azul on a plot named Cardamomo. The cherries are pulped against a centrifuge, before a mechanical washed removes any remaining mucilage from the bean. The drying is undertaken on patios for between 6-10 days depending on the environmental conditions on the farm. The milling is undertaken on site at Alejo's own dry mill before being vacuum packed for shipping.",
+    "minPriceDKK": "168.0"
+  },
+  {
+    "id": "prolog-nuwa-senchi",
+    "sourceUrl": "https://prologcoffee.com/products/nuwa-senchi",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "prologcoffee.com products.json",
+    "title": "Nuwa Senchi",
+    "tags": [
+      "Round and sweet"
+    ],
+    "productType": "Coffee beans",
+    "publishedAt": "2026-10-07T11:22:57+02:00",
+    "bodyText": "History\nFrom Nuwa Senchi in Amazonas, Peru, this coffee is the first harvest from Sonia Diaz’s Geisha, Marshell, and Bourbon plants. It is also our first purchase from Sonia, following our visit to her farm and continued collaboration in Jaén. Grown at 1,800–1,950 meters above sea level, this coffee reflects Sonia’s focus on quality, traceability, and careful processing. Through Nuwa Senchi, she is also creating new opportunities for Amazonian women and the next generation of coffee producers.\nSpecifications\ncountry\nperu\nregion\nlonya grande, amazonas\nfarmer\nsonia diaz\nvariety\ngeisha, marshell, bourbon\nprocess\nwashed\naltitude\n1800-1950 masl\ntasting notes\nstone fruit, milk chocolate, nutty",
+    "variants": [
+      {
+        "title": "250g",
+        "price": "185.00",
+        "available": true
+      },
+      {
+        "title": "1000g",
+        "price": "718.00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "id": "prolog-kigari-aa",
+    "sourceUrl": "https://prologcoffee.com/products/kigari-aa",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "prologcoffee.com products.json",
+    "title": "Kigari AA",
+    "tags": [
+      "fruity"
+    ],
+    "productType": "Coffee beans",
+    "publishedAt": "2026-09-02T10:20:16+02:00",
+    "bodyText": "History\nOur relationship with Kigari spans three years, with coffee purchased in 2022, 2023 and 2026. Based in the highlands of Meru County, Kenya, Kigari brings together farmers across four wet mills, producing exceptional coffee at 1,600–1,900 masl. The cooperative is deeply committed to its farmers, providing access to pre-financing, farm inputs on credit, school-fee support and emergency funds, practical support that helps farming families invest in their futures and sustain coffee production year after year.\nKigari’s impact extends beyond the cup. The cooperative encourages farmers to integrate Grevillea and macadamia trees into their coffee farms, providing shade while supporting environmental conservation, and promotes diversified farming with bananas and maize.\nKigari has a classic Kenyan character with a smooth everlasting acidity and notes of red fruit and pomegranate.\nSpecifications\ncountry\nkenya\nregion\nmeru county\nproducer\nkigari farmers cooperative society\nvariety\nruiru 11, sl 28, batian\nprocess\nwashed\naltitude\n1600-1900 masl\ntasting notes\nred fruit, pomegranate, black tea",
+    "variants": [
+      {
+        "title": "250g",
+        "price": "163.00",
+        "available": true
+      },
+      {
+        "title": "1000g",
+        "price": "643.00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "id": "prolog-diima-danche",
+    "sourceUrl": "https://prologcoffee.com/products/diima-danche",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "prologcoffee.com products.json",
+    "title": "Diima Danche",
+    "tags": [
+      "Funky"
+    ],
+    "productType": "Coffee beans",
+    "publishedAt": "2026-08-12T09:35:06+02:00",
+    "bodyText": "History\nThis is our second time purchasing coffee from Danche Washing Station, after our first lot in 2022 (Sami Danche Øko). Located in Chelbesa, Gedeb, the station is owned by SNAP Coffee and works with around 400 smallholder farmers growing coffee on small farms at 2,000–2,300 masl. SNAP builds long-term relationships with producers through agronomic support, quality-focused purchasing, and ongoing training, helping farmers improve both cultivation and processing while strengthening their access to the specialty coffee market.\nThe coffee is produced under certified organic practices, supporting healthy soils and biodiversity while reducing reliance on synthetic inputs. SNAP also promotes waste recycling at its stations, while the traditional raised-bed drying of the natural process uses sunlight and airflow rather than energy-intensive methods. Beyond coffee, SNAP invests in local communities through school equipment, road improvements, and planned healthcare facilities, creating a broader and more sustainable impact for farming families across the Gedeo region.\nThe result is a vibrant cup with layered fruit sweetness, floral aromatics, and remarkable depth, expect notes of berry jam, violet and milk chocolate.\nSpecifications\ncountry\nethiopia\nregion\ngedeo, gedeb\nproducer\ndanche washing station\nvariety\nheirloom\nprocess\nnatural\naltitude\n2000-2300 masl\ntasting notes\nberry jam, violet, milk chocolate",
+    "variants": [
+      {
+        "title": "250g",
+        "price": "154.00",
+        "available": true
+      },
+      {
+        "title": "1000g",
+        "price": "603.00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "id": "andersen-maillard-muthua-ini",
+    "sourceUrl": "https://www.andersenmaillard.dk/products/several-co-operatives-smallholder-farms-ruiru-sl-28-batian-washed",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "andersenmaillard.dk products.json",
+    "title": "Several co-operatives - Smallholder farms - Ruiru, SL 28, Batian - Washed",
+    "tags": [
+      "Special"
+    ],
+    "productType": "Coffee",
+    "publishedAt": "2026-09-08T14:51:06+02:00",
+    "bodyText": "Kenya\nRuiru, SL 28, Batian\nWashed\nRaspberry, red currant, floral\nMuthua-Ini Factory is part of Mutheka Coffee Farmers Society (FCS), which has over 500 active farming members across six cooperative groups. Located in Nyeri County, east of the Aberdare Mountains, the factory serves local smallholder farmers who deliver coffee cherries for processing and regional bulking. The area’s red volcanic soils, annual rainfall of around 1,200 mm, elevation of 1,675 metres, and cool temperatures of 13-26°C provide ideal conditions for coffee production. Farmers receive training and access to demonstration plots promoting best agricultural practices.\nRipe cherries are hand sorted before wet processing, where the fruit is pulped, and the beans are then fermented overnight to remove remaining sugars. Afterwards, the coffee is washed and dried on raised beds for 7-15 days, depending on weather and processing volumes. Wastewater is treated in soaking pits and partially recirculated to conserve water.\nThe factory receives support from Coffee Management Services (CMS), which provides farmer training, access to inputs, and sustainable farming guidance. An agronomist supports farmers in improving quality and productivity, while the factory manager oversees daily operations and quality control. Sustainability is supported through responsible wastewater management and tree planting, with farmers also growing bananas and maize alongside coffee. Grevillea and macadamia trees provide shade for the coffee plants and contribute to biodiversity.",
+    "variants": [
+      {
+        "title": "250 g",
+        "price": "149.00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "id": "andersen-maillard-santa-monica",
+    "sourceUrl": "https://www.andersenmaillard.dk/products/jairo-arcila-santa-monica-caturra-natural",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "andersenmaillard.dk products.json",
+    "title": "Jairo Arcila - Santa Monica - Caturra - Natural",
+    "tags": [
+      "Special"
+    ],
+    "productType": "Coffee",
+    "publishedAt": "2026-05-04T12:59:05+02:00",
+    "bodyText": "Colombia\nCaturra\nNatural\nLime, red apple, honey, brown spices\nJairo Arcila is a third-generation coffee grower from Quindío, Colombia, who has dedicated his life to coffee. After more than 40 years working as a mill manager for one of Colombia’s largest exporters, he retired in 2019 to focus fully on his own farms.\nHis journey began in 1987 with Finca La Esmeralda, where he planted his first Caturra lot, and over time, he expanded to several farms, including Villarazo, Mazatlán, Santa Mónica, Maracay, and Buenos Aires. With the support of his sons, Carlos and Felipe (co-founders of Cofinet), Jairo has refined his approach to specialty coffee, improving quality through better picking, sorting, and processing. Today, he also cultivates varieties such as Pink Bourbon, Java, Papayo, and Gesha. Beyond coffee, his farms grow fruits like mandarin, orange, plantain, and banana, and provide important seasonal jobs for the local community.\nFor this lot, Caturra cherries are selectively hand-picked at peak ripeness and undergo rigorous sorting, including flotation to remove defects. The cherries are then processed at La Pradera, where they ferment aerobically for 45 hours to develop depth and complexity. Drying takes place on raised beds or in controlled drying stations for 8-12 days, with careful monitoring to reach an ideal moisture content. The result is a vibrant, fruit-forward coffee with balanced sweetness, structure, and clarity.",
+    "variants": [
+      {
+        "title": "250 g",
+        "price": "149.00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "id": "andersen-maillard-los-angeles-pacamara",
+    "sourceUrl": "https://www.andersenmaillard.dk/products/sigfredo-corado-los-angeles-pacamara-washed",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "andersenmaillard.dk products.json",
+    "title": "Sigfredo Corado - Los Angeles - Pacamara - Washed",
+    "tags": [
+      "Special"
+    ],
+    "productType": "Coffee",
+    "publishedAt": "2025-12-01T15:05:05+01:00",
+    "bodyText": "El Salvador\nPacamara - Washed\nWild strawberry, cherry, toffee\nFinca Los Angeles is a 23-manzana farm in the Ahuachapán mountains of western El Salvador, planted exclusively with the Pacamara variety. It belongs to the Los Naranjos group, headed by agronomist and former agricultural professor Sigfredo Corado. Over the past decade, Sigfredo has focused on restoring the farm’s soil health by eliminating herbicides, improving organic matter, and preserving a mix of shade trees and natural wind barriers. These practices create a healthier ecosystem for the coffee trees and contribute to better cup quality.\nThe coffee is selectively harvested and taken to the wet mill and drying station at Beneficio San Rafael. Here, this Pacamara lot undergoes a washed process: the cherries are floated to remove defects, pulped, and fermented in tiled tanks for 24–36 hours. After fermentation, the beans are thoroughly washed and moved to raised beds, where they dry slowly for 15–20 days. Throughout drying, the coffee is turned frequently to ensure even drying until the desired moisture content.\nFinca Los Angeles also plays an active role in the Renacer Program (“reborn”), a technical coffee field school designed to support local producers in improving their farm management practices. The program is based at the neighbouring Finca Noruega and includes practical training using dedicated test plots, where students can apply new methods related to soil health, nutrition, and sustainable cultivation before implementing them on their own farms.",
+    "variants": [
+      {
+        "title": "250 g",
+        "price": "149.00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "id": "kontra-kenya-gicherori",
+    "sourceUrl": "https://www.kontracoffee.com/butik/kaffe/ristegrad/lysristet-kaffe/kenya-gicherori-lysristet-250g",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "kontracoffee.com product page (Danish)",
+    "title": "Kenya Gicherori",
+    "priceDKK": "114.00",
+    "sku": "38200014",
+    "pageSpecBlock": [
+      "Specifikationer",
+      "Oprindelsesland",
+      "Kenya",
+      "Kaffesort",
+      "SL28 og SL32",
+      "Smagsnoter",
+      "Frugtig, syrlig og kompleks kaffe. Noter af hindbær, solbær, akaciehonning og citron.",
+      "Væksthøjde",
+      "1600-2000 moh.",
+      "Forarbejdning",
+      "Vasket",
+      "Tørreproces",
+      "Soltørret på raised beds.",
+      "Ristegrad",
+      "Lysristet",
+      "Forarbejdning",
+      "Når de mange farmere har leveret deres kaffebær til Gicherori, pulpes bærrene med en disc-pulper, og flyder derefter ind til fermenteringstankene, hvor de undergår en kontrolleret fermenteringsproces. Herefter vaskes bønnerne, og lægges i vand inden de endelig soltørres i op til 15 dage altimens de nøjsomt afdækkes midt på dagen og om natten.",
+      "Geografi",
+      "Gicherori-fabrikken ligger på skråningerne af Mount Kenya i Manyatta-området i Embu County. Jorden er rig på vulkanske næringsstoffer, og der falder næsten 2.000 mm regn årligt. Siden etableringen i 1994 har Gicherori arbejdet sammen med omkring 1.100 lokale landmænd, der dyrker deres kaffe i højder op til 1.800 meter over havets overflade.",
+      "Dyrkningsmetoder",
+      "De mange små landbrug, der leverer kaffebær til Gicherori, dyrkes som små selvstændige enheder. For at opretholde den høje kvalitet sikrer Kibugu Farmers Cooperative Society, at farmerne modtager træning i nye landbrugsteknikker. De investerer også i, at farmerne skal plante flere macadamia- og avocadotræer. Disse afgrøder er gode til at skabe tiltrængt skygge til kaffebuskene, og samtidig sikrer de farmerne en ekstra indkomst.",
+      "Producent",
+      "1.062 farmere leverer deres håndplukkede kaffebær til Gicherori, der sammen med 4 andre vaskestationer hører under Kibugu Farmers Cooperative Society. En gennemsnitlig kaffefarmer er omkring 40 år, og har mellem 100 og 250 kaffetræer fordelt på 0,5-1ha land. Et stort antal unge vil gerne involveres i produktionen, og ser mere på det som en forretning end som et landrbug. Derfor er der også et stort fokus på råvarepriserne, som lige nu er gode, og forhåbentlig sikrer en fremtid for Kenyansk kaffedyrkning."
+    ],
+    "language": "da"
+  },
+  {
+    "id": "kontra-ethiopia-guji",
+    "sourceUrl": "https://www.kontracoffee.com/butik/kaffe/ristegrad/lysristet-kaffe/etiopien-guji-lysristet",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "kontracoffee.com product page (Danish)",
+    "title": "Ethiopia Guji",
+    "priceDKK": "133.00",
+    "sku": "38200029",
+    "pageSpecBlock": [
+      "Specifikationer",
+      "Oprindelsesland",
+      "Etiopien",
+      "Kaffesort",
+      "JARC 74112",
+      "Smagsnoter",
+      "Fersken, kiwi og mælkechokolade",
+      "Væksthøjde",
+      "2.000-2.200 moh.",
+      "Forarbejdning",
+      "Natural",
+      "Tørreproces",
+      "Soltørret på raised beds.",
+      "Ristegrad",
+      "Lysristet",
+      "Forarbejdning",
+      "Kaffen er natural-forarbejdet, hvilket betyder, at kaffebærrene tørres med frugtkødet på. Efter høst sorteres bærrene omhyggeligt, inden de lægges til tørre på tørreborde i solen. Her vendes de regelmæssigt for at sikre en ensartet tørring, og den bedst mulige kvalitet.",
+      "Den naturlige forarbejdning fremhæver kaffens sødme og frugtige karakter. Det giver en kompleks kop med noter af stenfrugt og sød chokolade, samtidig med at kaffens livlige syrlighed bevares.",
+      "Geografi",
+      "Guji ligger i Oromia-regionen i det sydlige Etiopien og er i dag anerkendt som et af verdens mest spændende kaffeområder. Området er præget af højtliggende bjerge, frugtbare jorde og et klima med kølige nætter og varme dage.",
+      "Kaffen dyrkes i 2.000-2.200 meters højde, hvor den langsomme modning giver kaffebærrene tid til at udvikle en større aromatisk kompleksitet og naturlig sødme. Kombinationen af højde, klima og lokale kaffesorter er med til at skabe de karakteristiske florale og frugtige smagsprofiler, som Guji er kendt for.",
+      "Dyrkningsmetoder",
+      "Kaffen dyrkes af små producenter på mindre jordlodder omkring Oddo Shakiso. Kaffebuskene vokser ofte under naturlig skygge fra områdets træer, hvilket bidrager til en langsommere modning af bærrene og et sundere økosystem.",
+      "De høje beliggenheder og de traditionelle dyrkningsmetoder gør det muligt at producere kaffe med stor kompleksitet og tydeligt terroir. Producenterne fokuserer på selektiv håndplukning af modne kaffebær for at sikre den bedst mulige kvalitet i hver høst.",
+      "Producent",
+      "Daanisa Farmers Group består af 44 små kaffeproducenter fra området omkring Oddo Shakiso i Guji. Gruppen leverer deres kaffe til Dambi Uddo-stationen, hvor hvert parti registreres og holdes adskilt for at sikre sporbarhed og belønne den enkelte producents arbejde.",
+      "Navnet Daanisa stammer fra et lokalt skyggetræ, som spiller en vigtig rolle i områdets kaffeproduktion. Træet beskytter kaffebuskene mod den stærkeste sol og er samtidig et symbol på det tætte samspil mellem natur og kaffedyrkning i Guji."
+    ],
+    "language": "da"
+  },
+  {
+    "id": "kontra-ethiopia-shakiso",
+    "sourceUrl": "https://www.kontracoffee.com/butik/kaffe/ristegrad/lysristet-kaffe/etiopien-shakiso-lysristet",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "kontracoffee.com product page (Danish)",
+    "title": "Ethiopia Shakiso",
+    "priceDKK": "125.00",
+    "sku": "38200115",
+    "pageSpecBlock": [
+      "Specifikationer",
+      "Oprindelsesland",
+      "Etiopien",
+      "Kaffesort",
+      "JARC varieties og local landraces",
+      "Smagsnoter",
+      "Sort te, tørret abrikos og florale noter",
+      "Væksthøjde",
+      "1850-2100 moh.",
+      "Forarbejdning",
+      "Vasket",
+      "Tørreproces",
+      "Soltørret på raised beds.",
+      "Ristegrad",
+      "Lysristet",
+      "Forarbejdning",
+      "Efter høsten håndplukkes de modne kaffebær og leveres til Shakiso vaskestation. Her sorteres bærrene først i vand, så de mest tætte og modne bær udvælges til den videre forarbejdning. Efter afpulpning fermenteres kaffen i rent, koldt vand i op til 100 timer, mens vandet løbende udskiftes for at sikre en stabil og kontrolleret proces.",
+      "Den lange, langsomme fermentering bidrager til en usædvanligt klar og elegant kopprofil. Efter fermenteringen tørres kaffen på hævede tørreborde under skyggenet i cirka 15 dage, hvor den vendes regelmæssigt for at sikre ensartet tørring. Resultatet er en kaffe med stor klarhed, florale aromaer og en te-lignende elegance.",
+      "Geografi",
+      "Guji ligger i Oromia-regionen i det sydlige Etiopien og blev tidligere betragtet som en del af Yirgacheffe. Områdets særlige mikroklima og unikke smagsprofiler har dog gjort, at Guji i dag anerkendes som sin egen kaffeproducerende region.",
+      "Området er præget af høje bjerge, frodig vegetation og rigelig nedbør. Kaffebuskene vokser mellem 1.850 og 2.100 meters højde, hvor de kølige temperaturer giver bærrene længere modningstid og dermed større kompleksitet i koppen. Guji er især kendt for kaffer med florale aromaer, levende syrlighed og en elegant struktur.",
+      "Dyrkningsmetoder",
+      "Kaffen dyrkes på små familiebrug med under én hektar kaffejord i gennemsnit. Mange producenter dyrker kaffe side om side med andre afgrøder, hvilket både udnytter jorden effektivt og bidrager til biodiversiteten i området.",
+      "Dyrkningsmetoderne er overvejende traditionelle, og mange farme er i praksis økologiske. Der anvendes meget få eller ingen kunstgødninger og pesticider, og langt størstedelen af arbejdet udføres manuelt. Denne nænsomme tilgang til dyrkningen er med til at bevare områdets naturlige økosystem og fremhæve kaffens terroir.",
+      "Producent",
+      "Kaffen leveres af omkring 500 små producenter fra områderne Tero og Mancity omkring Shakiso. Producenterne afleverer deres kaffebær til Shakiso vaskestation, som drives i samarbejde med den etiopiske kaffeeksportør Testi Coffee.",
+      "Testi Coffee har gennem de seneste år arbejdet målrettet med at udvikle og forbedre forarbejdningsmetoderne på stationen for at fremhæve kaffernes fulde potentiale. Fokus på kvalitetskontrol, sporbarhed og innovation har gjort Shakiso til en af de mest interessante vaskestationer i Guji-regionen."
+    ],
+    "language": "da"
+  },
+  {
+    "id": "kontra-colombia-santander",
+    "sourceUrl": "https://www.kontracoffee.com/butik/kaffe/ristegrad/lysristet-kaffe/colombia-santander-lysristet",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "kontracoffee.com product page (Danish)",
+    "title": "Colombia Santander",
+    "priceDKK": "104.00",
+    "sku": "38200119",
+    "pageSpecBlock": [
+      "Specifikationer",
+      "Oprindelsesland",
+      "Colombia",
+      "Kaffesort",
+      "Castillo",
+      "Smagsnoter",
+      "Frisk, syrlig og sød kaffe. Noter af citron, grønt æble, mandler og mælkechokolade.",
+      "Væksthøjde",
+      "1900-2000 moh.",
+      "Forarbejdning",
+      "Dobb. fermenteret & vasket",
+      "Tørreproces",
+      "Soltørret på raised beds og patio.",
+      "Ristegrad",
+      "Lysristet",
+      "Forarbejdning",
+      "Kun de fuldmodne kaffebær håndplukkes. De fermenteres i 14 timer, hvorefter de afpulpes, det vil sige at bønnerne adskilles fra skallen og størstedelen af frugtkødet. Det, der bliver siddende på bønnen bagefter, føles blødt og klistret og kaldes mucilagen. Herefter fermenteres bønnerne yderligere 48 timer i mucilagen. Derefter vaskes bønnerne og soltørres på drying beds og patioer.",
+      "Geografi",
+      "Området Curití i Santander-regionen ligger i Andesbjergene, hvor højderne på 1.900–2.200 m.o.h. giver køligere temperaturer og et stabilt mikroklima. De store højdeforskelle kombineret med rig vulkansk jord og skygge fra lokale træer skaber optimale betingelser for specialkaffe.",
+      "Dyrkningsmetoder",
+      "På El Rodeo dyrkes primært Castillo (85 %) samt eksotiske sorter som Pink Bourbon, Gesha og Pacamara. Kaffen vokser i skygge under lokale træer og bananplanter, hvilket fremmer biodiversitet. Af farmens 170 hektar er 25 hektar afsat til naturbeskyttelse.",
+      "Producent",
+      "Familien Reyes har rødder i landbrug gennem generationer. I 2011 startede Alfonso og sønnen Cristian arbejdet med at forvandle den forladte Hacienda El Rodeo til en kaffefarm. Alfonso leder det agronomiske arbejde, mens Cristian, uddannet barista og ekspert i kaffeøkonomi, står for kvalitet, forarbejdning og salg. Sammen driver de gården med passion og respekt for natur og medarbejdere."
+    ],
+    "language": "da"
+  },
+  {
+    "id": "la-cabra-kainamui",
+    "sourceUrl": "https://lacabra.com/products/kainamui",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "lacabra.com products.json + product page",
+    "title": "Kainamui",
+    "tags": [
+      "Highlights"
+    ],
+    "productType": "Coffee",
+    "publishedAt": "2026-10-16T11:07:47+02:00",
+    "bodyText": "Crisp red berries are balanced by a deep sweetness in this fresh and tea-like lot from northeastern Kirinyaga.",
+    "variants": [
+      {
+        "title": "200g",
+        "price": "139.00",
+        "available": true
+      },
+      {
+        "title": "1kg",
+        "price": "669.00",
+        "available": true
+      }
+    ],
+    "pageTechnicalData": [
+      "Technical Data",
+      "Producer",
+      "New Ngariama FCS",
+      "Region",
+      "Kirinyaga",
+      "Altitude",
+      "1700 masl",
+      "Varietal",
+      "SL28, Ruiru 11, Batian",
+      "Process",
+      "Washed"
+    ]
+  },
+  {
+    "id": "la-cabra-megadu",
+    "sourceUrl": "https://lacabra.com/products/megadu",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "lacabra.com products.json + product page",
+    "title": "Megadu",
+    "tags": [
+      "Seasonal"
+    ],
+    "productType": "Coffee",
+    "publishedAt": "2026-10-02T09:38:30+02:00",
+    "bodyText": "Megadu is a lot by Bette Buna in Guji; a floral and ripe profile with brown sugar, blackberry jam and apricot notes.",
+    "variants": [
+      {
+        "title": "250g",
+        "price": "159.00",
+        "available": true
+      },
+      {
+        "title": "1kg",
+        "price": "599.00",
+        "available": true
+      }
+    ],
+    "pageTechnicalData": [
+      "Technical Data",
+      "Producer",
+      "Bette Buna",
+      "Region",
+      "Guji",
+      "Altitude",
+      "2100 masl",
+      "Varietal",
+      "Heirloom",
+      "Process",
+      "Natural"
+    ]
+  },
+  {
+    "id": "la-cabra-las-flores-de-cafe",
+    "sourceUrl": "https://lacabra.com/products/las-flores-de-cafe",
+    "fetchedAt": "2026-10-17T16:14:51Z",
+    "source": "lacabra.com products.json + product page",
+    "title": "Las Flores de Cafe",
+    "tags": [
+      "bestsellers",
+      "Seasonal"
+    ],
+    "productType": "Coffee",
+    "publishedAt": "2026-09-02T10:03:41+02:00",
+    "bodyText": "Soft red berries and sweet dark chocolate, produced by smallholders in the Huehuetenango region.",
+    "variants": [
+      {
+        "title": "250g",
+        "price": "155.00",
+        "available": true
+      },
+      {
+        "title": "1kg",
+        "price": "589.00",
+        "available": true
+      }
+    ],
+    "pageTechnicalData": [
+      "Technical Data",
+      "Producer",
+      "Huehue smallholders",
+      "Region",
+      "Huehuetenango",
+      "Altitude",
+      "1650 masl",
+      "Varietal",
+      "Caturra, Catuai, Bourbon",
+      "Process",
+      "Washed"
+    ]
+  }
+]

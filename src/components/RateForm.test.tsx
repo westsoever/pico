@@ -7,7 +7,7 @@ import { StarRating } from './StarRating';
 
 afterEach(cleanup);
 
-const coffee = getCoffeeById('eth-yirg-001')!;
+const coffee = getCoffeeById('fixture-ethiopia')!;
 
 describe('RateForm', () => {
   it('keeps invalid brew details visible and round-trips the 0°C boundary', async () => {

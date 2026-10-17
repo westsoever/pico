@@ -16,14 +16,14 @@ describe('Pico app interactions', () => {
 
     await user.click(
       screen.getByRole('button', {
-        name: /Yirgacheffe Kochere.*Onyx Coffee Lab.*Ethiopia/i,
+        name: /Halo Hartume.*Fixture Roasters.*Ethiopia/i,
       }),
     );
 
     expect(
-      await screen.findByRole('heading', { level: 2, name: 'Yirgacheffe Kochere' }),
+      await screen.findByRole('heading', { level: 2, name: 'Halo Hartume' }),
     ).toBeInTheDocument();
-    expect(window.location.hash).toBe('#/coffee/eth-yirg-001?from=discover');
+    expect(window.location.hash).toBe('#/coffee/fixture-ethiopia?from=discover');
 
     const ratingForm = screen.getByRole('heading', { name: 'Rate this coffee' }).closest('section');
     expect(ratingForm).not.toBeNull();
@@ -43,13 +43,13 @@ describe('Pico app interactions', () => {
     ).toBeInTheDocument();
     expect(window.location.hash).toBe('#/journal');
     expect(screen.getByRole('status')).toHaveTextContent('Saved to your coffee journal.');
-    expect(screen.getByRole('heading', { level: 3, name: 'Yirgacheffe Kochere' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 3, name: 'Halo Hartume' })).toBeInTheDocument();
     expect(screen.getByLabelText('4 out of 5 stars')).toBeInTheDocument();
 
     const stored = JSON.parse(window.localStorage.getItem('pico-user-data') ?? '{}');
     expect(stored.ratings).toEqual([
       expect.objectContaining({
-        coffeeId: 'eth-yirg-001',
+        coffeeId: 'fixture-ethiopia',
         stars: 4,
         note: 'Jasmine and lemon, with a clean finish.',
       }),
@@ -62,7 +62,7 @@ describe('Pico app interactions', () => {
 
     await user.click(screen.getByRole('button', { name: 'Clear filters' }));
     expect(search).toHaveValue('');
-    expect(screen.getByRole('heading', { level: 3, name: 'Yirgacheffe Kochere' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 3, name: 'Halo Hartume' })).toBeInTheDocument();
   });
 
   it('honors direct hashes and reacts to browser hash navigation', async () => {
@@ -81,10 +81,10 @@ describe('Pico app interactions', () => {
     fireEvent(window, new HashChangeEvent('hashchange'));
     expect(await screen.findByRole('heading', { level: 1, name: 'Taste' })).toBeInTheDocument();
 
-    window.location.hash = '#/coffee/eth-yirg-001?from=journal';
+    window.location.hash = '#/coffee/fixture-ethiopia?from=journal';
     fireEvent(window, new HashChangeEvent('hashchange'));
     expect(
-      await screen.findByRole('heading', { level: 2, name: 'Yirgacheffe Kochere' }),
+      await screen.findByRole('heading', { level: 2, name: 'Halo Hartume' }),
     ).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: '← Back' }));
@@ -98,7 +98,6 @@ describe('Pico app interactions', () => {
     render(<App />);
 
     await user.click(screen.getByRole('button', { name: '+ Add coffee' }));
-    await user.click(screen.getByRole('button', { name: 'Enter label details' }));
     await user.type(screen.getByRole('textbox', { name: 'Coffee name' }), 'Test Lot');
     await user.type(screen.getByRole('textbox', { name: 'Roaster' }), 'Test Roaster');
     await user.click(screen.getByRole('button', { name: 'Continue to rating' }));
@@ -129,7 +128,7 @@ describe('Pico app interactions', () => {
     render(<App />);
     await user.click(
       screen.getByRole('button', {
-        name: /Yirgacheffe Kochere.*Onyx Coffee Lab.*Ethiopia/i,
+        name: /Halo Hartume.*Fixture Roasters.*Ethiopia/i,
       }),
     );
 
@@ -140,14 +139,14 @@ describe('Pico app interactions', () => {
     await user.click(form.getByRole('button', { name: 'Save to journal' }));
 
     expect(await screen.findByRole('alert')).toHaveTextContent('Storage is full');
-    expect(window.location.hash).toBe('#/coffee/eth-yirg-001?from=discover');
+    expect(window.location.hash).toBe('#/coffee/fixture-ethiopia?from=discover');
     expect(form.getByRole('textbox', { name: /Tasting note/i })).toHaveValue('Keep this draft.');
   });
 
   it('does not carry a draft into a different coffee', async () => {
     const user = userEvent.setup();
     vi.spyOn(window, 'confirm').mockReturnValue(true);
-    window.location.hash = '#/coffee/eth-yirg-001?from=discover';
+    window.location.hash = '#/coffee/fixture-ethiopia?from=discover';
     render(<App />);
 
     await user.click(screen.getByRole('radio', { name: '5 out of 5 stars' }));
@@ -172,19 +171,19 @@ describe('Pico app interactions', () => {
     render(<App />);
     await user.click(
       screen.getByRole('button', {
-        name: /Yirgacheffe Kochere.*Onyx Coffee Lab.*Ethiopia/i,
+        name: /Halo Hartume.*Fixture Roasters.*Ethiopia/i,
       }),
     );
     await user.type(screen.getByRole('textbox', { name: /Tasting note/i }), 'Unsaved');
 
     await user.click(screen.getByRole('button', { name: 'Journal' }));
     expect(confirm).toHaveBeenCalledTimes(1);
-    expect(window.location.hash).toBe('#/coffee/eth-yirg-001?from=discover');
+    expect(window.location.hash).toBe('#/coffee/fixture-ethiopia?from=discover');
 
     window.location.hash = '#/taste';
     fireEvent(window, new HashChangeEvent('hashchange'));
     expect(confirm).toHaveBeenCalledTimes(2);
-    expect(window.location.hash).toBe('#/coffee/eth-yirg-001?from=discover');
+    expect(window.location.hash).toBe('#/coffee/fixture-ethiopia?from=discover');
     expect(screen.getByRole('textbox', { name: /Tasting note/i })).toHaveValue('Unsaved');
   });
 });

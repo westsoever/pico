@@ -1,9 +1,15 @@
 /* eslint-disable react/only-export-components -- Keep browser processing helpers directly testable in jsdom. */
 import { useEffect, useId, useRef, useState } from 'react';
+import { CameraIcon } from './ui/Icons';
 
 interface CameraCaptureProps {
   photoDataUrl?: string;
   onCapture: (dataUrl: string | undefined) => void;
+  /** Main call to action on the button, e.g. "Scan a coffee bag". */
+  title?: string;
+  hint?: string;
+  caption?: string;
+  prominent?: boolean;
 }
 
 export const MAX_PHOTO_BYTES = 15 * 1024 * 1024;
@@ -164,7 +170,14 @@ export async function resizePhoto(
   }
 }
 
-export function CameraCapture({ photoDataUrl, onCapture }: CameraCaptureProps) {
+export function CameraCapture({
+  photoDataUrl,
+  onCapture,
+  title = 'Add label photo',
+  hint = 'Take a photo or choose one',
+  caption = 'Photo ready to save with your rating',
+  prominent = false,
+}: CameraCaptureProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const requestIdRef = useRef(0);
   const mountedRef = useRef(true);
@@ -204,7 +217,7 @@ export function CameraCapture({ photoDataUrl, onCapture }: CameraCaptureProps) {
       {photoDataUrl ? (
         <figure className="relative overflow-hidden rounded-2xl border border-[#dfd2c7] bg-white">
           <img src={photoDataUrl} alt="Selected coffee bag label" className="h-44 w-full object-cover" />
-          <figcaption className="px-3 py-2 text-xs text-[#78675d]">Photo ready to save with your rating</figcaption>
+          <figcaption className="px-3 py-2 text-xs text-[#78675d]">{caption}</figcaption>
           <button
             type="button"
             onClick={() => {
@@ -223,12 +236,22 @@ export function CameraCapture({ photoDataUrl, onCapture }: CameraCaptureProps) {
           onClick={() => inputRef.current?.click()}
           disabled={status.kind === 'loading'}
           aria-describedby={statusId}
-          className="flex w-full items-center justify-center gap-3 rounded-2xl border border-dashed border-[#bd9d87] bg-white px-4 py-6 text-[#6b3a2a] transition hover:border-[#6b3a2a] hover:bg-[#fffaf5] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/30 disabled:opacity-60"
+          className={
+            prominent
+              ? 'flex w-full items-center justify-center gap-4 rounded-3xl bg-[#6b3a2a] px-5 py-7 text-white shadow-md transition hover:bg-[#582f22] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a] focus:ring-offset-2 disabled:opacity-60'
+              : 'flex w-full items-center justify-center gap-3 rounded-2xl border border-dashed border-[#bd9d87] bg-white px-4 py-6 text-[#6b3a2a] transition hover:border-[#6b3a2a] hover:bg-[#fffaf5] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/30 disabled:opacity-60'
+          }
         >
-          <span aria-hidden="true" className="text-xl">▣</span>
+          {prominent ? (
+            <CameraIcon className="h-9 w-9 shrink-0" />
+          ) : (
+            <span aria-hidden="true" className="text-xl">▣</span>
+          )}
           <span className="text-left">
-            <span className="block font-semibold">{status.kind === 'loading' ? 'Preparing photo…' : 'Add label photo'}</span>
-            <span className="block text-xs font-normal text-[#766257]">Take a photo or choose one</span>
+            <span className={`block font-semibold ${prominent ? 'text-lg' : ''}`}>
+              {status.kind === 'loading' ? 'Preparing photo…' : title}
+            </span>
+            <span className={`block text-xs font-normal ${prominent ? 'text-white/80' : 'text-[#766257]'}`}>{hint}</span>
           </span>
         </button>
       )}

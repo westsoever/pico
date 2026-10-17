@@ -4,7 +4,7 @@ import { computeTasteProfile } from './taste-profile';
 
 function rating(overrides: Partial<Rating> = {}): Rating {
   return {
-    coffeeId: 'eth-yirg-001',
+    coffeeId: 'fixture-ethiopia',
     stars: 4,
     flavorTags: ['floral'],
     note: '',
@@ -21,17 +21,17 @@ describe('taste profile calculation', () => {
   it('derives preferences only from ratings of at least four stars', () => {
     const profile = computeTasteProfile([
       rating({
-        coffeeId: 'ken-aa-003',
+        coffeeId: 'fixture-kenya',
         stars: 1,
         flavorTags: ['fruity', 'berry'],
       }),
       rating({
-        coffeeId: 'eth-yirg-001',
+        coffeeId: 'fixture-ethiopia',
         stars: 4,
         flavorTags: ['floral'],
       }),
       rating({
-        coffeeId: 'col-huila-004',
+        coffeeId: 'fixture-colombia',
         stars: 5,
         flavorTags: ['chocolate'],
       }),
@@ -51,7 +51,7 @@ describe('taste profile calculation', () => {
     expect(
       computeTasteProfile([
         rating({ stars: 1, flavorTags: ['fruity'] }),
-        rating({ coffeeId: 'ken-aa-003', stars: 3, flavorTags: ['berry'] }),
+        rating({ coffeeId: 'fixture-kenya', stars: 3, flavorTags: ['berry'] }),
       ]),
     ).toEqual({
       tagWeights: {},

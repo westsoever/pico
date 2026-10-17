@@ -38,7 +38,9 @@ jobs:
       - name: Build for GitHub Pages
         env:
           VITE_BASE: /pico/
-        run: npm run build
+        run: |
+          npm run build
+          mv dist/index.dev.html dist/index.html
 
       - name: Publish built site to repo root and docs
         run: |

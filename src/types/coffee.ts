@@ -1,5 +1,7 @@
 export type RoastLevel = 'light' | 'medium' | 'dark';
 
+export type RoastStyle = 'filter' | 'espresso' | 'omni';
+
 export type FlavorTag =
   | 'fruity'
   | 'chocolate'
@@ -25,6 +27,15 @@ export interface Coffee {
   description: string;
   barcode?: string;
   isCustom?: boolean;
+  roasterCity?: string;
+  region?: string;
+  producer?: string;
+  altitude?: string;
+  roastStyle?: RoastStyle;
+  tastingNotes?: string[];
+  imageUrl?: string;
+  sourceUrl?: string;
+  available?: boolean;
 }
 
 export interface ManualCoffeeInput {
@@ -41,6 +52,14 @@ export const ROAST_LEVEL_LABELS: Record<RoastLevel, string> = {
   light: 'Light',
   medium: 'Medium',
   dark: 'Dark',
+};
+
+export const ROAST_STYLES: RoastStyle[] = ['filter', 'espresso', 'omni'];
+
+export const ROAST_STYLE_LABELS: Record<RoastStyle, string> = {
+  filter: 'Filter',
+  espresso: 'Espresso',
+  omni: 'Filter & espresso',
 };
 
 export const COFFEE_PROCESSES = [

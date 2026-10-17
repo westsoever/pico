@@ -1,7 +1,14 @@
 import { getCoffeeById } from '../lib/catalog';
 import { getRatingForCoffee, getRatedCoffeeIds } from '../lib/storage';
 import { getSimilarToCoffee } from '../lib/similarity';
-import { BREW_METHOD_OPTIONS, GRIND_SIZE_OPTIONS, type Rating } from '../types/coffee';
+import {
+  BREW_METHOD_OPTIONS,
+  GRIND_SIZE_OPTIONS,
+  ROAST_LEVEL_LABELS,
+  ROAST_STYLE_LABELS,
+  type Rating,
+} from '../types/coffee';
+import { CoffeeImage } from './CoffeeImage';
 import { FlavorTagList } from './FlavorTagPicker';
 import { RateForm } from './RateForm';
 import { SimilarList } from './SimilarList';
@@ -54,6 +61,28 @@ export function CoffeeDetail({
         brew.brewTimeSeconds !== undefined ? `${brew.brewTimeSeconds} sec` : undefined,
       ].filter(Boolean)
     : [];
+  const roast = [
+    `${ROAST_LEVEL_LABELS[coffee.roastLevel]} roast`,
+    coffee.roastStyle && ROAST_STYLE_LABELS[coffee.roastStyle],
+  ]
+    .filter(Boolean)
+    .join(' · ');
+  const details = [
+    { label: 'Origin', value: [coffee.origin, coffee.region].filter(Boolean).join(', ') },
+    { label: 'Producer', value: coffee.producer },
+    { label: 'Variety', value: coffee.variety },
+    { label: 'Altitude', value: coffee.altitude },
+    { label: 'Process', value: coffee.process, capitalize: true },
+    { label: 'Roast', value: roast },
+    { label: "Roaster's notes", value: coffee.tastingNotes?.join(', '), capitalize: true },
+    { label: 'Roaster', value: [coffee.roaster, coffee.roasterCity].filter(Boolean).join(', ') },
+    { label: 'SCA score', value: coffee.scaScore?.toString() },
+  ].filter((detail) => detail.value);
+  const placeholder = (
+    <div className="flex h-28 items-center justify-center rounded-2xl bg-gradient-to-br from-[#f3e8de] to-[#e7d4c4]" aria-hidden="true">
+      <PicoMark className="h-12 w-12 text-[#8d5941]" />
+    </div>
+  );
 
   return (
     <div className="mx-auto max-w-lg space-y-8">
@@ -68,29 +97,46 @@ export function CoffeeDetail({
           className="h-56 w-full rounded-2xl object-cover shadow-sm"
         />
       ) : (
-        <div className="flex h-28 items-center justify-center rounded-2xl bg-gradient-to-br from-[#f3e8de] to-[#e7d4c4]" aria-hidden="true">
-          <PicoMark className="h-12 w-12 text-[#8d5941]" />
-        </div>
+        <CoffeeImage
+          src={coffee.imageUrl}
+          alt={`${coffee.name} bag from ${coffee.roaster}`}
+          className="h-56 w-full rounded-2xl bg-[#f3e8de] object-contain shadow-sm"
+          fallback={placeholder}
+        />
       )}
 
       <header>
         <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#8b5339]">{coffee.roaster}</p>
         <h2 className="mt-1 text-3xl font-semibold tracking-tight text-[#1c1410]">{coffee.name}</h2>
-        <div className="mt-3 flex flex-wrap gap-2 text-sm text-[#6f5c51]">
-          <span className="rounded-full bg-[#f1e8df] px-3 py-1">{coffee.origin}</span>
-          <span className="rounded-full bg-[#f1e8df] px-3 py-1 capitalize">{coffee.process}</span>
-          <span className="rounded-full bg-[#f1e8df] px-3 py-1 capitalize">{coffee.roastLevel} roast</span>
-          {coffee.variety && (
-            <span className="rounded-full bg-[#f1e8df] px-3 py-1">{coffee.variety}</span>
-          )}
-          {coffee.scaScore !== undefined && (
-            <span className="rounded-full bg-[#f1e8df] px-3 py-1">SCA {coffee.scaScore}</span>
-          )}
-        </div>
+        {coffee.available === false && (
+          <p className="mt-2 inline-block rounded-full bg-[#efe6dd] px-3 py-1 text-xs font-semibold text-[#6f5c51]">
+            Past coffee · no longer sold by the roaster
+          </p>
+        )}
         <p className="mt-4 text-sm leading-6 text-[#6f5c51]">{coffee.description}</p>
         <div className="mt-4">
           <FlavorTagList tags={coffee.flavorTags} />
         </div>
+        <dl className="mt-5 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 rounded-2xl border border-[#e3d6ca] bg-[#fbf7f2] p-4 text-sm">
+          {details.map(({ label, value, capitalize }) => (
+            <div key={label} className="contents">
+              <dt className="font-medium text-[#8b5339]">{label}</dt>
+              <dd className={`text-[#1c1410] ${capitalize ? 'first-letter:uppercase' : ''}`}>{value}</dd>
+            </div>
+          ))}
+        </dl>
+        {coffee.sourceUrl && (
+          <a
+            href={coffee.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center gap-1 rounded-lg text-sm font-semibold text-[#6b3a2a] underline decoration-[#c4956a] underline-offset-4 focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/30"
+          >
+            View at roaster{' '}
+            <span aria-hidden="true">↗</span>
+            <span className="sr-only">(opens in a new tab)</span>
+          </a>
+        )}
       </header>
 
       {existingRating && (

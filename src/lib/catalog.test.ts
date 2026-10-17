@@ -1,9 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Coffee, ManualCoffeeInput } from '../types/coffee';
+import { catalogFixture } from '../test/fixtures/catalog';
 import {
   addCustomCoffee,
   getAllCoffees,
   getCoffeeById,
+  parseCatalog,
+  parseCatalogCoffee,
   searchCoffees,
 } from './catalog';
 
@@ -96,5 +99,105 @@ describe('custom coffee catalog storage', () => {
     expect(added.id).toBe(`custom-${repeatedUuid}-1`);
     expect(getCoffeeById(`custom-${repeatedUuid}`)).toBeDefined();
     expect(getCoffeeById(added.id)).toEqual(added);
+  });
+});
+
+const catalogEntry = {
+  id: 'dk-entry',
+  name: 'Kieni',
+  roaster: 'Coffee Collective',
+  roasterCity: 'Copenhagen',
+  origin: 'Kenya',
+  region: 'Nyeri',
+  producer: 'Kieni Factory',
+  process: 'washed',
+  variety: 'SL28, SL34',
+  altitude: '1700–1900 masl',
+  roastLevel: 'light',
+  roastStyle: 'filter',
+  tastingNotes: ['blackcurrant', 'rhubarb'],
+  flavorTags: ['berry', 'fruity', 'bright'],
+  description: 'Washed Kenyan lot.',
+  imageUrl: 'https://example.com/kieni.jpg',
+  sourceUrl: 'https://example.com/shop/kieni',
+  available: false,
+};
+
+describe('bundled catalog validation', () => {
+  it('keeps every valid detail field', () => {
+    expect(parseCatalogCoffee(catalogEntry)).toEqual(catalogEntry);
+  });
+
+  it('omits invalid optional details but keeps the coffee', () => {
+    expect(
+      parseCatalogCoffee({
+        ...catalogEntry,
+        roasterCity: '   ',
+        region: 42,
+        roastStyle: 'cold-brew',
+        tastingNotes: ['', 3, ' plum '],
+        imageUrl: 'javascript:alert(1)',
+        sourceUrl: 'not a url',
+        available: 'yes',
+      }),
+    ).toEqual({
+      id: 'dk-entry',
+      name: 'Kieni',
+      roaster: 'Coffee Collective',
+      origin: 'Kenya',
+      producer: 'Kieni Factory',
+      process: 'washed',
+      variety: 'SL28, SL34',
+      altitude: '1700–1900 masl',
+      roastLevel: 'light',
+      tastingNotes: ['plum'],
+      flavorTags: ['berry', 'fruity', 'bright'],
+      description: 'Washed Kenyan lot.',
+    });
+    expect(parseCatalogCoffee({ ...catalogEntry, tastingNotes: 'berry' })).not.toHaveProperty(
+      'tastingNotes',
+    );
+  });
+
+  it.each([
+    ['a missing name', { ...catalogEntry, name: '' }],
+    ['an unknown roast level', { ...catalogEntry, roastLevel: 'burnt' }],
+    ['an unknown flavor tag', { ...catalogEntry, flavorTags: ['smoky'] }],
+    ['a custom coffee', { ...catalogEntry, isCustom: true }],
+    ['a non-object', 'Kieni'],
+  ])('drops an entry with %s', (_label, entry) => {
+    expect(parseCatalogCoffee(entry)).toBeUndefined();
+  });
+
+  it('keeps the first of duplicate ids and ignores a non-array catalog', () => {
+    const catalog = parseCatalog([
+      catalogEntry,
+      { ...catalogEntry, name: 'Duplicate' },
+      null,
+    ]);
+
+    expect(catalog.map(({ name }) => name)).toEqual(['Kieni']);
+    expect(parseCatalog({ coffees: [catalogEntry] })).toEqual([]);
+  });
+
+  it('serves the bundled catalog and searches its detail fields', () => {
+    expect(getAllCoffees()).toEqual(catalogFixture);
+    expect(searchCoffees('Yirgacheffe').map(({ id }) => id)).toEqual(['fixture-ethiopia']);
+    expect(searchCoffees('washing station').map(({ id }) => id)).toEqual(['fixture-ethiopia']);
+    expect(searchCoffees('jasmine').map(({ id }) => id)).toEqual(['fixture-ethiopia']);
+    expect(searchCoffees('copenhagen').map(({ id }) => id)).toEqual([
+      'fixture-ethiopia',
+      'fixture-kenya',
+    ]);
+  });
+
+  it('ships a Copenhagen data file whose entries all validate unchanged', async () => {
+    const { default: entries } = await vi.importActual<{ default: unknown[] }>(
+      '../data/coffees-dk.json',
+    );
+
+    expect(entries.length).toBeGreaterThan(0);
+    const parsed = parseCatalog(entries);
+    expect(parsed).toEqual(entries);
   });
 });

@@ -1,5 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import { addCustomCoffee, getCatalogCoffees, getCoffeeById, searchCoffees } from '../lib/catalog';
+import { addCustomCoffee, getAllCoffees, getCatalogCoffees, getCoffeeById, searchCoffees } from '../lib/catalog';
+import {
+  isRoasterOnlyMatch,
+  matchCoffeesFromText,
+  normalizeLabelText,
+  searchTermsFromText,
+  type LabelMatch,
+} from '../lib/label-match';
+import { readLabelText } from '../lib/label-ocr';
 import { loadUserData } from '../lib/storage';
 import type { ManualCoffeeInput, RoastLevel } from '../types/coffee';
 import { CameraCapture } from './CameraCapture';
@@ -12,27 +20,53 @@ interface ScanViewProps {
   addRequestKey?: string | number;
 }
 
+type ScanState =
+  | { kind: 'idle' }
+  | { kind: 'reading' }
+  | { kind: 'matches'; matches: LabelMatch[]; terms: string[] }
+  | { kind: 'no-match'; terms: string[] }
+  | { kind: 'no-text' }
+  | { kind: 'error' };
+
+function matchSummary(match: LabelMatch): string {
+  if (isRoasterOnlyMatch(match)) return 'Roaster match only · check the coffee name';
+  return `Matched ${match.matched.slice(0, 3).join(', ')}`;
+}
+
+const secondaryButton =
+  'rounded-xl border border-[#cdbbae] bg-white px-4 py-2.5 text-sm font-semibold text-[#6b3a2a] transition hover:border-[#8b5339] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/30';
+
 export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
   const [query, setQuery] = useState('');
   const [photoDataUrl, setPhotoDataUrl] = useState<string | undefined>();
+  const [scan, setScan] = useState<ScanState>({ kind: 'idle' });
   const [showManualForm, setShowManualForm] = useState(false);
-  const [showAddCoffee, setShowAddCoffee] = useState(false);
-  const [shouldFocusAddPanel, setShouldFocusAddPanel] = useState(false);
+  const [shouldFocusManualForm, setShouldFocusManualForm] = useState(false);
   const [addError, setAddError] = useState('');
   const [roastFilter, setRoastFilter] = useState<RoastLevel | 'all'>('all');
-  const addPanelRef = useRef<HTMLElement>(null);
+  const manualPanelRef = useRef<HTMLElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const scanRequestRef = useRef(0);
+
+  useEffect(() => {
+    const requests = scanRequestRef;
+    return () => {
+      requests.current += 1;
+    };
+  }, []);
 
   useEffect(() => {
     if (addRequestKey === undefined) return;
-    setShowAddCoffee(true);
-    setShouldFocusAddPanel(true);
+    setShowManualForm(true);
+    setShouldFocusManualForm(true);
   }, [addRequestKey]);
 
   useEffect(() => {
-    if (!showAddCoffee || !shouldFocusAddPanel) return;
-    addPanelRef.current?.focus();
-    setShouldFocusAddPanel(false);
-  }, [shouldFocusAddPanel, showAddCoffee]);
+    if (!showManualForm || !shouldFocusManualForm) return;
+    manualPanelRef.current?.focus();
+    setShouldFocusManualForm(false);
+  }, [shouldFocusManualForm, showManualForm]);
+
   const recentRatings = loadUserData().ratings
     .slice()
     .sort((a, b) => Date.parse(b.ratedAt) - Date.parse(a.ratedAt))
@@ -46,6 +80,47 @@ export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
     .filter((coffee) => roastFilter === 'all' || coffee.roastLevel === roastFilter)
     .slice(0, query.trim() ? 20 : 8);
 
+  const readLabel = async (dataUrl: string) => {
+    const requestId = ++scanRequestRef.current;
+    setScan({ kind: 'reading' });
+    try {
+      const text = await readLabelText(dataUrl);
+      if (requestId !== scanRequestRef.current) return;
+      if (!normalizeLabelText(text)) {
+        setScan({ kind: 'no-text' });
+        return;
+      }
+      const coffees = getAllCoffees();
+      const matches = matchCoffeesFromText(text, coffees);
+      const terms = searchTermsFromText(text, coffees);
+      setScan(matches.length > 0 ? { kind: 'matches', matches, terms } : { kind: 'no-match', terms });
+    } catch {
+      if (requestId === scanRequestRef.current) setScan({ kind: 'error' });
+    }
+  };
+
+  const handleCapture = (dataUrl: string | undefined) => {
+    setPhotoDataUrl(dataUrl);
+    if (dataUrl) {
+      void readLabel(dataUrl);
+    } else {
+      scanRequestRef.current += 1;
+      setScan({ kind: 'idle' });
+    }
+  };
+
+  const openSearch = (terms: string[] = []) => {
+    setQuery(terms.join(' '));
+    setRoastFilter('all');
+    searchRef.current?.focus();
+    searchRef.current?.scrollIntoView?.({ block: 'center' });
+  };
+
+  const openManualForm = () => {
+    setShowManualForm(true);
+    setShouldFocusManualForm(true);
+  };
+
   const handleManualSubmit = (input: ManualCoffeeInput) => {
     try {
       const coffee = addCustomCoffee(input);
@@ -56,63 +131,127 @@ export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
     }
   };
 
+  const fallbackActions = (searchLabel: string, terms: string[] = []) => (
+    <div className="flex flex-wrap gap-2">
+      <button type="button" onClick={() => openSearch(terms)} className={secondaryButton}>
+        {searchLabel}
+      </button>
+      <button type="button" onClick={openManualForm} className={secondaryButton}>
+        Add it
+      </button>
+    </div>
+  );
+
   return (
     <div className="mx-auto max-w-lg space-y-8">
       <header className="space-y-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#8b5339]">Discover</p>
-          <h2 className="mt-1 text-3xl font-semibold tracking-tight text-[#1c1410]">Find a coffee worth remembering.</h2>
+          <h2 className="mt-1 text-3xl font-semibold tracking-tight text-[#1c1410]">What are you drinking?</h2>
           <p className="mt-2 text-sm leading-6 text-[#78675d]">
-            Search our curated catalog, or add a bag from its label.
+            Snap the bag and Pico finds the coffee, so you can see or add your rating.
           </p>
         </div>
-        <button
-          type="button"
-          aria-expanded={showAddCoffee}
-          aria-controls="add-coffee-panel"
-          onClick={() => setShowAddCoffee((open) => !open)}
-          className="w-full rounded-2xl bg-[#6b3a2a] px-5 py-3.5 text-base font-semibold text-white shadow-sm transition hover:bg-[#582f22] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a] focus:ring-offset-2"
-        >
-          {showAddCoffee ? 'Close add coffee' : '+ Add coffee'}
-        </button>
+        <CameraCapture
+          prominent
+          title="Scan a coffee bag"
+          hint="Take a photo of the label or choose one"
+          caption="Label photo · saved with your rating"
+          photoDataUrl={photoDataUrl}
+          onCapture={handleCapture}
+        />
+        <p className="text-xs leading-5 text-[#78675d]">
+          Pico reads the label on this device. The photo is never uploaded.
+        </p>
       </header>
 
-      {showAddCoffee && (
+      <section aria-live="polite" aria-label="Label scan results" className="space-y-3 empty:hidden">
+        {scan.kind === 'reading' && (
+          <p role="status" className="flex items-center gap-2 rounded-2xl bg-[#f8f3ee] px-4 py-3 text-sm font-medium text-[#6b3a2a]">
+            <span aria-hidden="true" className="h-3 w-3 animate-pulse rounded-full bg-[#8b5339]" />
+            Reading label…
+          </p>
+        )}
+
+        {scan.kind === 'matches' && (
+          <>
+            <h3 className="text-xl font-semibold text-[#1c1410]">Is it one of these?</h3>
+            <ul className="space-y-2">
+              {scan.matches.map((match) => (
+                <li key={match.coffee.id}>
+                  <CoffeeCard
+                    name={match.coffee.name}
+                    roaster={match.coffee.roaster}
+                    origin={match.coffee.origin}
+                    imageUrl={match.coffee.imageUrl}
+                    detail={matchSummary(match)}
+                    onClick={() => onSelectCoffee(match.coffee.id, photoDataUrl)}
+                  />
+                </li>
+              ))}
+            </ul>
+            {fallbackActions('None of these', scan.terms)}
+          </>
+        )}
+
+        {scan.kind === 'no-match' && (
+          <>
+            <p className="text-sm leading-6 text-[#6f5c51]">
+              Pico read the label but did not find this coffee in the catalog.
+            </p>
+            {fallbackActions('Search the catalog', scan.terms)}
+          </>
+        )}
+
+        {scan.kind === 'no-text' && (
+          <>
+            <p className="text-sm leading-6 text-[#6f5c51]">
+              No text could be read from this photo. Try again closer to the label and in good light, or search instead.
+            </p>
+            {fallbackActions('Search instead')}
+          </>
+        )}
+
+        {scan.kind === 'error' && (
+          <>
+            <p className="text-sm leading-6 text-[#6f5c51]">
+              The label reader could not start. It needs a connection the first time it runs. You can search instead.
+            </p>
+            {fallbackActions('Search instead')}
+          </>
+        )}
+      </section>
+
+      <div>
+        <button
+          type="button"
+          aria-expanded={showManualForm}
+          aria-controls="add-coffee-panel"
+          onClick={() => setShowManualForm((open) => !open)}
+          className="w-full rounded-2xl border border-[#cdbbae] bg-white px-5 py-3 text-sm font-semibold text-[#6b3a2a] transition hover:border-[#8b5339] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/30"
+        >
+          {showManualForm ? 'Close add coffee' : '+ Add coffee'}
+        </button>
+      </div>
+
+      {showManualForm && (
         <section
           id="add-coffee-panel"
-          ref={addPanelRef}
+          ref={manualPanelRef}
           tabIndex={-1}
-          className="space-y-4 rounded-2xl border border-[#e5d9ce] bg-[#fbf7f2] p-4 focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/30"
+          aria-labelledby="add-coffee-heading"
+          className="space-y-3 focus:outline-none"
         >
           <div>
-            <h3 className="font-semibold text-[#1c1410]">Add from the bag</h3>
+            <h3 id="add-coffee-heading" className="font-semibold text-[#1c1410]">Add from the bag</h3>
             <p className="mt-1 text-sm leading-5 text-[#78675d]">
-              A label photo is saved with your rating; Pico does not read or identify the coffee from the image yet.
+              {photoDataUrl
+                ? 'Copy the details from the label. Your label photo is saved with the rating.'
+                : 'Copy the details from the label.'}
             </p>
           </div>
-          <CameraCapture
-            photoDataUrl={photoDataUrl}
-            onCapture={(dataUrl) => {
-              setPhotoDataUrl(dataUrl);
-              if (dataUrl) setShowManualForm(true);
-            }}
-          />
-          {!showManualForm && (
-            <button
-              type="button"
-              onClick={() => setShowManualForm(true)}
-            className="w-full rounded-xl border border-[#cdbbae] bg-white py-3 font-medium text-[#6b3a2a] transition hover:border-[#8b5339] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/30"
-            >
-              Enter label details
-            </button>
-          )}
-        </section>
-      )}
-
-      {showAddCoffee && showManualForm && (
-        <section>
           {addError && (
-            <p role="alert" className="mb-3 rounded-xl bg-[#fbe9e7] px-4 py-3 text-sm text-[#8f2925]">
+            <p role="alert" className="rounded-xl bg-[#fbe9e7] px-4 py-3 text-sm text-[#8f2925]">
               {addError}
             </p>
           )}
@@ -137,6 +276,7 @@ export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
                   roaster={coffee.roaster}
                   origin={coffee.origin}
                   stars={rating.stars}
+                  imageUrl={coffee.imageUrl}
                   onClick={() => onSelectCoffee(coffee.id)}
                 />
               </li>
@@ -148,7 +288,7 @@ export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
       <section aria-labelledby="browse-heading" className="space-y-4">
         <div>
           <h3 id="browse-heading" className="text-xl font-semibold text-[#1c1410]">Browse coffees</h3>
-          <p className="mt-1 text-sm text-[#766257]">A curated starting point for your next coffee.</p>
+          <p className="mt-1 text-sm text-[#766257]">Coffees from Copenhagen roasters.</p>
         </div>
         <div className="relative">
           <span aria-hidden="true" className="pointer-events-none absolute left-4 top-3.5 text-[#766257]">
@@ -157,6 +297,7 @@ export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
           <label htmlFor="coffee-search" className="sr-only">Search coffee catalog</label>
           <input
             id="coffee-search"
+            ref={searchRef}
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -207,7 +348,8 @@ export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
                   name={coffee.name}
                   roaster={coffee.roaster}
                   origin={coffee.origin}
-                  onClick={() => onSelectCoffee(coffee.id)}
+                  imageUrl={coffee.imageUrl}
+                  onClick={() => onSelectCoffee(coffee.id, photoDataUrl)}
                 />
               </li>
             ))}
@@ -218,7 +360,7 @@ export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
             <p className="mt-1 text-sm text-[#766257]">Try another search or add this coffee yourself.</p>
             <button
               type="button"
-              onClick={() => setShowAddCoffee(true)}
+              onClick={openManualForm}
               className="mt-3 font-medium text-[#6b3a2a] underline underline-offset-4"
             >
               Add coffee

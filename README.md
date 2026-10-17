@@ -11,7 +11,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173 in your browser.
+Open http://localhost:5173/index.dev.html in your browser (`npm run dev` opens it for you).
 
 ## Test on iPhone
 
@@ -40,7 +40,7 @@ Pushes to `main` also deploy automatically via GitHub Actions.
 
 ## Core loop
 
-1. **Discover** — Search the catalog, browse by roast, or add details from a bag
+1. **Discover** — Scan a coffee bag to find it, or search, browse by roast, or add details from a bag
 2. **Rate** — Save stars, flavor tags, and a tasting note
 3. **Journal** — Revisit coffees, photos, notes, and optional brew recipes
 4. **Taste** — See your preference patterns and explainable recommendations
@@ -51,11 +51,15 @@ The default flow stays intentionally quick. Enthusiasts can expand **Brew detail
 
 ### Discover
 
-- Browse the built-in specialty coffee catalog or filter it by roast level.
-- Search by coffee, roaster, origin, process, variety, score, description, or flavor.
+- **Scan a coffee bag** (the main action): take or choose a photo of the label and Pico suggests up to three catalog coffees under "Is it one of these?". Tap one to open it with the photo attached to your rating. "None of these" opens search pre-filled with the most distinctive words read from the label, and "Add it" opens the manual form.
+  - Text is read on the device with [tesseract.js](https://github.com/naptha/tesseract.js) (English). The OCR engine is loaded only when you first scan, and on that first scan it downloads about 7 MB of engine and language data from the jsDelivr CDN, which the browser then caches. The photo itself is never uploaded.
+  - Matching (`src/lib/label-match.ts`) scores roaster and coffee name highest, then producer, region, origin, variety, and tasting notes. It tolerates OCR typos and words split across lines, folds Danish letters and accents, understands Danish country names such as "Etiopien", and gives rare words more weight than common ones like "Kenya". If only the roaster can be read, that roaster's coffees are suggested and marked "Roaster match only".
+- Browse the built-in catalog of coffees from Copenhagen roasters (`src/data/coffees-dk.json`) or filter it by roast level.
+- Search by coffee, roaster, city, origin, region, producer, process, variety, score, description, roaster tasting notes, or flavor.
+- Open a coffee to see the roaster's bag image, origin and region, producer, variety, altitude, process, roast level and filter/espresso style, tasting notes, and a link to the roaster's page. Coffees the roaster no longer sells are marked **Past coffee**.
 - Reopen recently tasted coffees.
 - Add a custom coffee by copying details from its bag.
-- Capture or choose a label photo. Pico resizes the image before storing it; it does not currently identify coffee from the photo.
+- Label photos are resized before they are stored with your rating.
 
 ### Rate and record
 
