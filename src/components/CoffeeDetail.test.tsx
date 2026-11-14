@@ -1,5 +1,6 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { addCustomCoffee } from '../lib/catalog';
 import { CoffeeDetail } from './CoffeeDetail';
 import { sizedImageUrl } from './CoffeeImage';
 import { CoffeeCard } from './SimilarList';
@@ -96,5 +97,23 @@ describe('CoffeeCard thumbnail', () => {
 
     fireEvent.error(thumbnail as HTMLImageElement);
     expect(container.querySelector('img')).toBeNull();
+  });
+});
+
+describe('Send this coffee to Pico', () => {
+  it('offers a prefilled email for a hand-added coffee only', () => {
+    const custom = addCustomCoffee({ name: 'Mørk Blend', roaster: 'Corner & Co', process: 'washed', roastLevel: 'dark' });
+    renderDetail(custom.id);
+
+    const href = screen.getByRole('link', { name: 'Send this coffee to Pico' }).getAttribute('href') ?? '';
+    expect(href.startsWith('mailto:info@sunseekerlabs.dk?')).toBe(true);
+    expect(href).not.toContain('+');
+    const params = new URLSearchParams(href.split('?')[1]);
+    expect(params.get('subject')).toBe('Add to Pico: Mørk Blend (Corner & Co)');
+    expect(params.get('body')).toContain('Roaster: Corner & Co\nOrigin: Unknown\nProcess: washed');
+
+    cleanup();
+    renderDetail('fixture-ethiopia');
+    expect(screen.queryByRole('link', { name: 'Send this coffee to Pico' })).not.toBeInTheDocument();
   });
 });

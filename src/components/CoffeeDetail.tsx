@@ -1,7 +1,7 @@
 import { getCoffeeById } from '../lib/catalog';
 import { getRatingForCoffee, getRatedCoffeeIds } from '../lib/storage';
 import { getSimilarToCoffee } from '../lib/similarity';
-import { ROAST_LEVEL_LABELS, ROAST_STYLE_LABELS, type Rating } from '../types/coffee';
+import { ROAST_LEVEL_LABELS, ROAST_STYLE_LABELS, type Coffee, type Rating } from '../types/coffee';
 import { CoffeeImage } from './CoffeeImage';
 import { FlavorTagList } from './FlavorTagPicker';
 import { RateForm } from './RateForm';
@@ -19,6 +19,28 @@ interface CoffeeDetailProps {
 }
 
 const savedDate = new Intl.DateTimeFormat(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+
+const SUGGEST_ADDRESS = 'info@sunseekerlabs.dk';
+
+/** A prefilled email so a coffee someone added by hand can reach the shared catalog. */
+function suggestCoffeeMailto(coffee: Coffee): string {
+  const body = [
+    'Please add this coffee to Pico:',
+    '',
+    `Name: ${coffee.name}`,
+    `Roaster: ${coffee.roaster}`,
+    `Origin: ${coffee.origin}`,
+    `Process: ${coffee.process}`,
+    `Roast: ${ROAST_LEVEL_LABELS[coffee.roastLevel]}`,
+    coffee.variety && `Variety: ${coffee.variety}`,
+    coffee.scaScore !== undefined && `Cupping score: ${coffee.scaScore}`,
+    '',
+    'A photo of the bag helps, if you can attach one.',
+  ].filter((line) => line !== undefined && line !== false);
+  const params = new URLSearchParams({ subject: `Add to Pico: ${coffee.name} (${coffee.roaster})`, body: body.join('\n') });
+  // mailto wants %20 for spaces, not URLSearchParams' '+'.
+  return `mailto:${SUGGEST_ADDRESS}?${params.toString().replace(/\+/g, '%20')}`;
+}
 
 export function CoffeeDetail({
   coffeeId,
@@ -165,6 +187,15 @@ export function CoffeeDetail({
               <span aria-hidden="true">↗</span>
               <span className="sr-only">(opens in a new tab)</span>
             </a>
+          )}
+          {coffee.isCustom && (
+            <p className="mt-4 text-sm text-pico-muted">
+              Not in Pico’s catalog yet.{' '}
+              <a href={suggestCoffeeMailto(coffee)} className="link">
+                Send this coffee to Pico
+              </a>{' '}
+              so others can find it.
+            </p>
           )}
         </section>
       </div>

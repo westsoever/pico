@@ -16,8 +16,8 @@ Outreach files live outside this public repo, in the owner's vault: `~/cos/02-Pr
 
 ## Should do soon after launch
 
-- [ ] **5. Learn from misses.** Coffees people add by hand stay on their phone. Add a "Send this coffee to Pico" mailto link after a manual add, prefilled with the details, about 30 minutes. This is how Vivino grew its database (see `research/vivino.md`).
-- [ ] **6. Usage numbers.** Add a cookie-free counter such as GoatCounter or Plausible. It needs no consent banner.
+- [x] **5. Learn from misses.** Done: a hand-added coffee's page has "Send this coffee to Pico", a prefilled email to info@sunseekerlabs.dk. Coffees people add by hand stay on their phone. Add a "Send this coffee to Pico" mailto link after a manual add, prefilled with the details, about 30 minutes. This is how Vivino grew its database (see `research/vivino.md`).
+- [ ] **6. Usage numbers.** Deferred (owner, 2026-11-14): count users once logins exist, no page counter now. Add a cookie-free counter such as GoatCounter or Plausible. It needs no consent banner.
 - [ ] **7. About and privacy page.** Deferred (owner, 2026-11-14): Pico will become an app, so maybe not needed. An App Store listing still needs a privacy policy URL. Say there is no account and no tracking, data stays on the phone, and label photos are never uploaded. Name who runs Pico and give a contact.
 - [x] **8. First scan is slow.** Done: touching the scan button starts the download while the camera is open. The OCR reader downloads about 7 MB on first use. The status line now says so. Consider preloading it when the scan button is tapped.
 - [x] **9. Android icon.** Done: `public/icon-192.png`, `public/icon-512.png` in the manifest and the deploy copy step. The manifest only has an SVG. Add 192px and 512px PNG icons.
