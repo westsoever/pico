@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "test": "NODE_OPTIONS=--no-experimental-webstorage vitest run",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "catalog": "node scripts/build-catalog.ts"
   },
   "dependencies": {
     "react": "^19.2.7",
