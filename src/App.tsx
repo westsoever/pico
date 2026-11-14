@@ -241,12 +241,7 @@ function App() {
   );
 
   return (
-    <Layout
-      activeTab={activeTab}
-      onTabChange={navigateToTab}
-      title={selectedCoffeeId ? 'Coffee details' : undefined}
-      subtitle={selectedCoffeeId ? 'Taste, rate, and remember this coffee' : undefined}
-    >
+    <Layout activeTab={activeTab} onTabChange={navigateToTab}>
       {content}
       {notice && (
         <div

@@ -1,18 +1,11 @@
 import { getCoffeeById } from '../lib/catalog';
 import { getRatingForCoffee, getRatedCoffeeIds } from '../lib/storage';
 import { getSimilarToCoffee } from '../lib/similarity';
-import {
-  BREW_METHOD_OPTIONS,
-  GRIND_SIZE_OPTIONS,
-  ROAST_LEVEL_LABELS,
-  ROAST_STYLE_LABELS,
-  type Rating,
-} from '../types/coffee';
+import { ROAST_LEVEL_LABELS, ROAST_STYLE_LABELS, type Rating } from '../types/coffee';
 import { CoffeeImage } from './CoffeeImage';
 import { FlavorTagList } from './FlavorTagPicker';
 import { RateForm } from './RateForm';
 import { SimilarList } from './SimilarList';
-import { StarDisplay } from './StarRating';
 import { PicoMark } from './ui/Icons';
 
 interface CoffeeDetailProps {
@@ -23,6 +16,8 @@ interface CoffeeDetailProps {
   onSelectCoffee: (coffeeId: string) => void;
   onDirtyChange?: (isDirty: boolean) => void;
 }
+
+const savedDate = new Intl.DateTimeFormat(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
 
 export function CoffeeDetail({
   coffeeId,
@@ -38,29 +33,18 @@ export function CoffeeDetail({
 
   if (!coffee) {
     return (
-      <div className="text-center">
-        <p className="text-[#766257]">Coffee not found.</p>
-        <button type="button" onClick={onBack} className="mt-4 text-[#6b3a2a] underline">
+      <div className="py-12 text-center">
+        <h1 className="section-title">Coffee not found</h1>
+        <p className="mt-2 text-pico-muted">It may have been removed from this browser.</p>
+        <button type="button" onClick={onBack} className="btn btn-secondary mt-6">
           Go back
         </button>
       </div>
     );
   }
 
-  const similar = getSimilarToCoffee(coffee, ratedIds, 5);
+  const similar = getSimilarToCoffee(coffee, ratedIds, 4);
   const photo = pendingPhoto ?? existingRating?.photoDataUrl;
-  const brew = existingRating?.brew;
-  const brewSummary = brew
-    ? [
-        BREW_METHOD_OPTIONS.find((option) => option.value === brew.method)?.label,
-        brew.doseGrams !== undefined ? `${brew.doseGrams} g coffee` : undefined,
-        brew.waterGrams !== undefined ? `${brew.waterGrams} g water` : undefined,
-        brew.yieldGrams !== undefined ? `${brew.yieldGrams} g yield` : undefined,
-        brew.temperatureCelsius !== undefined ? `${brew.temperatureCelsius} °C` : undefined,
-        GRIND_SIZE_OPTIONS.find((option) => option.value === brew.grind)?.label,
-        brew.brewTimeSeconds !== undefined ? `${brew.brewTimeSeconds} sec` : undefined,
-      ].filter(Boolean)
-    : [];
   const roast = [
     `${ROAST_LEVEL_LABELS[coffee.roastLevel]} roast`,
     coffee.roastStyle && ROAST_STYLE_LABELS[coffee.roastStyle],
@@ -78,107 +62,103 @@ export function CoffeeDetail({
     { label: 'Roaster', value: [coffee.roaster, coffee.roasterCity].filter(Boolean).join(', ') },
     { label: 'SCA score', value: coffee.scaScore?.toString() },
   ].filter((detail) => detail.value);
+  const imageBox = 'aspect-square w-full rounded-[var(--radius-lg)] border border-pico-line bg-pico-tinted';
   const placeholder = (
-    <div className="flex h-28 items-center justify-center rounded-2xl bg-gradient-to-br from-[#f3e8de] to-[#e7d4c4]" aria-hidden="true">
-      <PicoMark className="h-12 w-12 text-[#8d5941]" />
+    <div className={`${imageBox} flex items-center justify-center text-pico-accent`} aria-hidden="true">
+      <PicoMark className="h-16 w-16" />
     </div>
   );
 
   return (
-    <div className="mx-auto max-w-lg space-y-8">
-      <button type="button" onClick={onBack} className="rounded-lg text-sm font-medium text-[#6b3a2a] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/30">
-        ← Back
-      </button>
+    <div className="space-y-10">
+      <div>
+        <button type="button" onClick={onBack} className="link mb-5 text-sm no-underline">
+          ← Back
+        </button>
 
-      {photo ? (
-        <img
-          src={photo}
-          alt={`${coffee.name} coffee bag label`}
-          className="h-56 w-full rounded-2xl object-cover shadow-sm"
-        />
-      ) : (
-        <CoffeeImage
-          src={coffee.imageUrl}
-          alt={`${coffee.name} bag from ${coffee.roaster}`}
-          className="h-56 w-full rounded-2xl bg-[#f3e8de] object-contain shadow-sm"
-          fallback={placeholder}
-        />
-      )}
-
-      <header>
-        <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#8b5339]">{coffee.roaster}</p>
-        <h2 className="mt-1 text-3xl font-semibold tracking-tight text-[#1c1410]">{coffee.name}</h2>
-        {coffee.available === false && (
-          <p className="mt-2 inline-block rounded-full bg-[#efe6dd] px-3 py-1 text-xs font-semibold text-[#6f5c51]">
-            Past coffee · no longer sold by the roaster
-          </p>
-        )}
-        <p className="mt-4 text-sm leading-6 text-[#6f5c51]">{coffee.description}</p>
-        <div className="mt-4">
-          <FlavorTagList tags={coffee.flavorTags} />
-        </div>
-        <dl className="mt-5 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 rounded-2xl border border-[#e3d6ca] bg-[#fbf7f2] p-4 text-sm">
-          {details.map(({ label, value, capitalize }) => (
-            <div key={label} className="contents">
-              <dt className="font-medium text-[#8b5339]">{label}</dt>
-              <dd className={`text-[#1c1410] ${capitalize ? 'first-letter:uppercase' : ''}`}>{value}</dd>
-            </div>
-          ))}
-        </dl>
-        {coffee.sourceUrl && (
-          <a
-            href={coffee.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-1 rounded-lg text-sm font-semibold text-[#6b3a2a] underline decoration-[#c4956a] underline-offset-4 focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/30"
-          >
-            View at roaster{' '}
-            <span aria-hidden="true">↗</span>
-            <span className="sr-only">(opens in a new tab)</span>
-          </a>
-        )}
-      </header>
-
-      {existingRating && (
-        <section className="rounded-2xl border border-[#e3d6ca] bg-[#fbf7f2] p-5" aria-labelledby="saved-rating-heading">
-          <div className="flex items-center justify-between gap-3">
-            <h3 id="saved-rating-heading" className="font-semibold text-[#1c1410]">Your saved rating</h3>
-            <StarDisplay value={existingRating.stars} size="lg" />
+        <div className="grid gap-6 md:grid-cols-[minmax(0,18rem)_1fr] md:gap-10">
+          <div className="mx-auto w-full max-w-[18rem] md:mx-0">
+            {photo ? (
+              <img src={photo} alt={`${coffee.name} coffee bag label`} className={`${imageBox} object-cover`} />
+            ) : (
+              <CoffeeImage
+                src={coffee.imageUrl}
+                alt={`${coffee.name} bag from ${coffee.roaster}`}
+                width={288}
+                className={`${imageBox} !bg-white object-contain p-3`}
+                fallback={placeholder}
+              />
+            )}
           </div>
-          {existingRating.note && (
-            <p className="mt-3 text-sm leading-6 text-[#6f5c51]">{existingRating.note}</p>
-          )}
-          {existingRating.flavorTags.length > 0 && (
-            <div className="mt-3"><FlavorTagList tags={existingRating.flavorTags} /></div>
-          )}
-          {brewSummary.length > 0 && (
-            <p className="mt-3 border-t border-[#e3d6ca] pt-3 text-xs leading-5 text-[#78675d]">
-              <span className="font-semibold text-[#6b3a2a]">Brew:</span> {brewSummary.join(' · ')}
+
+          <header className="min-w-0">
+            <p className="eyebrow">{coffee.roaster}</p>
+            <h1 className="mt-1 font-pico-display text-4xl font-bold leading-tight tracking-tight text-pico-ink">{coffee.name}</h1>
+            <p className="mt-2 capitalize text-pico-muted">
+              {[coffee.origin, coffee.process, `${coffee.roastLevel} roast`].join(' · ')}
             </p>
-          )}
+            {coffee.available === false && (
+              <p className="tag mt-3">Past coffee · no longer sold by the roaster</p>
+            )}
+            {coffee.tastingNotes && (
+              <p className="mt-4 text-lg font-medium capitalize leading-snug text-pico-brand-strong">
+                {coffee.tastingNotes.join(' · ')}
+              </p>
+            )}
+            <p className="mt-3 leading-relaxed text-pico-ink/85">{coffee.description}</p>
+            <div className="mt-4">
+              <FlavorTagList tags={coffee.flavorTags} />
+            </div>
+            {coffee.sourceUrl && (
+              <a
+                href={coffee.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link mt-5 inline-flex items-center gap-1 text-sm"
+              >
+                View at roaster{' '}
+                <span aria-hidden="true">↗</span>
+                <span className="sr-only">(opens in a new tab)</span>
+              </a>
+            )}
+          </header>
+        </div>
+      </div>
+
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)]">
+        <section className="card p-5 sm:p-6" aria-labelledby="rate-heading">
+          <h2 id="rate-heading" className="section-title">
+            {existingRating ? 'Your rating' : 'Rate this coffee'}
+          </h2>
+          <p className="mb-5 mt-1 text-sm text-pico-muted">
+            {existingRating
+              ? `Saved ${savedDate.format(new Date(existingRating.ratedAt))}. Change anything and update.`
+              : 'Stars are enough. Add notes or a brew recipe if you want to remember more.'}
+          </p>
+          <RateForm
+            coffee={coffee}
+            existingRating={existingRating}
+            photoDataUrl={pendingPhoto}
+            onSave={onSave}
+            onCancel={onBack}
+            onDirtyChange={onDirtyChange}
+          />
         </section>
-      )}
 
-      <section className="rounded-2xl border border-[#e3d6ca] bg-white p-4 shadow-sm" aria-labelledby="rate-heading">
-        <h3 id="rate-heading" className="mb-1 text-xl font-semibold text-[#1c1410]">
-          {existingRating ? 'Update your rating' : 'Rate this coffee'}
-        </h3>
-        <p className="mb-5 text-sm text-[#766257]">A quick impression is enough. Add brew details only if useful.</p>
-        <RateForm
-          coffee={coffee}
-          existingRating={existingRating}
-          photoDataUrl={pendingPhoto}
-          onSave={onSave}
-          onCancel={onBack}
-          onDirtyChange={onDirtyChange}
-        />
-      </section>
+        <section aria-labelledby="details-heading">
+          <h2 id="details-heading" className="section-title">About this coffee</h2>
+          <dl className="mt-4 divide-y divide-pico-line text-sm">
+            {details.map(({ label, value, capitalize }) => (
+              <div key={label} className="grid grid-cols-[7.5rem_1fr] gap-3 py-2.5">
+                <dt className="text-pico-muted">{label}</dt>
+                <dd className={`font-medium text-pico-ink ${capitalize ? 'first-letter:uppercase' : ''}`}>{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      </div>
 
-      <SimilarList
-        items={similar}
-        onSelect={onSelectCoffee}
-        title="Similar coffees"
-      />
+      <SimilarList items={similar} onSelect={onSelectCoffee} title="Similar coffees" />
     </div>
   );
 }

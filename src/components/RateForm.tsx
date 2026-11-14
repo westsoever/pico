@@ -127,21 +127,21 @@ function RateFormFields({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <p className="mb-2 block text-sm font-semibold text-[#6b3a2a]">Your rating <span className="text-[#a33b2b]">*</span></p>
+        <p className="field-label">Stars</p>
         <StarRating value={stars} onChange={setStars} />
-        {stars === 0 && <p className="mt-1 text-xs text-[#766257]">Choose a star rating to save.</p>}
+        {stars === 0 && <p className="mt-1 text-xs text-pico-muted">Tap a star to rate.</p>}
       </div>
 
       <div>
-        <p className="mb-2 block text-sm font-semibold text-[#6b3a2a]">What stood out?</p>
+        <p className="field-label">What stood out?</p>
         <FlavorTagPicker selected={flavorTags} onChange={setFlavorTags} />
       </div>
 
       <div>
-        <label htmlFor="note" className="mb-2 block text-sm font-medium text-[#6b3a2a]">
-          Tasting note <span className="font-normal text-[#766257]">(optional)</span>
+        <label htmlFor="note" className="field-label">
+          Tasting note <span className="font-normal text-pico-muted">(optional)</span>
         </label>
         <textarea
           id="note"
@@ -149,11 +149,11 @@ function RateFormFields({
           onChange={(e) => setNote(e.target.value)}
           rows={3}
           placeholder="What would you want to remember?"
-          className="w-full rounded-xl border border-[#e8dfd6] bg-white px-4 py-3 text-[#1c1410] placeholder:text-[#766257] focus:border-[#6b3a2a] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/20"
+          className="field py-3"
         />
       </div>
 
-      <div className="border-t border-[#eadfd6] pt-5">
+      <div className="border-t border-pico-line pt-4">
         <button
           type="button"
           aria-expanded={showBrewDetails}
@@ -163,24 +163,24 @@ function RateFormFields({
             if (showBrewDetails && brewDetailsInvalid) return;
             setShowBrewDetails((shown) => !shown);
           }}
-          className="flex w-full items-center justify-between rounded-lg text-left font-semibold text-[#6b3a2a] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/30"
+          className="flex min-h-11 w-full items-center justify-between rounded-lg text-left font-semibold text-pico-ink"
         >
           <span>
-            Brew details <span className="ml-1 text-sm font-normal text-[#766257]">(optional)</span>
+            Brew details <span className="ml-1 text-sm font-normal text-pico-muted">(optional)</span>
           </span>
-          <span aria-hidden="true">{showBrewDetails ? '−' : '+'}</span>
+          <span aria-hidden="true" className="text-xl text-pico-accent">{showBrewDetails ? '−' : '+'}</span>
         </button>
-        <p className="mt-1 text-xs text-[#766257]">
+        <p className="text-xs text-pico-muted">
           {showBrewDetails && brewDetailsInvalid
             ? 'Fix the recipe values before closing brew details.'
             : 'Keep a recipe worth repeating.'}
         </p>
 
         {showBrewDetails && (
-          <div id="brew-details" className="mt-4 space-y-4 rounded-xl bg-[#faf6f1] p-4">
+          <div id="brew-details" className="mt-4 space-y-4 rounded-[var(--radius-md)] bg-pico-tinted/60 p-4">
             <div>
-              <label htmlFor="brew-method" className="mb-1 block text-sm font-medium text-[#6b3a2a]">Method</label>
-              <select id="brew-method" value={method} onChange={(e) => setMethod(e.target.value)} className="w-full rounded-xl border border-[#ded2c7] bg-white px-3 py-2.5 text-[#1c1410] focus:border-[#6b3a2a] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/20">
+              <label htmlFor="brew-method" className="field-label">Method</label>
+              <select id="brew-method" value={method} onChange={(e) => setMethod(e.target.value)} className="field">
                 <option value="">Choose a method</option>
                 {BREW_METHOD_OPTIONS.map((option) => (
                   <option key={option.value} value={option.value}>{option.label}</option>
@@ -193,8 +193,8 @@ function RateFormFields({
               <BrewNumberField id="brew-yield" label="Yield" unit="g" value={yieldGrams} onChange={setYieldGrams} />
               <BrewNumberField id="brew-temperature" label="Temperature" unit="°C" value={temperatureCelsius} onChange={setTemperatureCelsius} max={100} />
               <div>
-                <label htmlFor="brew-grind" className="mb-1 block text-sm font-medium text-[#6b3a2a]">Grind size</label>
-                <select id="brew-grind" value={grind} onChange={(e) => setGrind(e.target.value)} className="w-full rounded-xl border border-[#ded2c7] bg-white px-3 py-2.5 text-[#1c1410] focus:border-[#6b3a2a] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/20">
+                <label htmlFor="brew-grind" className="field-label">Grind size</label>
+                <select id="brew-grind" value={grind} onChange={(e) => setGrind(e.target.value)} className="field">
                   <option value="">Choose a grind</option>
                   {GRIND_SIZE_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>{option.label}</option>
@@ -204,7 +204,7 @@ function RateFormFields({
               <BrewNumberField id="brew-time" label="Brew time" unit="sec" value={brewTimeSeconds} onChange={setBrewTimeSeconds} />
             </div>
             {brewDetailsInvalid && (
-              <p role="alert" className="text-sm text-[#9b2c2c]">
+              <p role="alert" className="text-sm text-pico-danger">
                 Use positive numbers for recipe amounts and time; temperature must be 0–100 °C.
               </p>
             )}
@@ -212,20 +212,20 @@ function RateFormFields({
         )}
       </div>
 
-      <div className="sticky bottom-20 z-10 -mx-4 flex gap-3 border-t border-[#eadfd6] bg-white/95 px-4 pb-1 pt-4 backdrop-blur">
+      <div className="flex flex-col-reverse gap-2 border-t border-pico-line pt-4 sm:flex-row sm:justify-end">
         <button
           type="button"
           onClick={() => {
             if (!isDirty || window.confirm('Discard your unsaved rating?')) onCancel();
           }}
-          className="flex-1 rounded-xl border border-[#d6c7bb] bg-white py-3 font-medium text-[#6b3a2a] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/30"
+          className="btn btn-secondary"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={stars === 0 || brewDetailsInvalid}
-          className="flex-[1.4] rounded-xl bg-[#6b3a2a] py-3 font-semibold text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6b3a2a] focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40"
+          className="btn btn-primary sm:min-w-44"
         >
           {existingRating ? 'Update rating' : 'Save to journal'}
         </button>
@@ -251,7 +251,7 @@ function BrewNumberField({
 }) {
   return (
     <div>
-      <label htmlFor={id} className="mb-1 block text-sm font-medium text-[#6b3a2a]">{label}</label>
+      <label htmlFor={id} className="field-label">{label}</label>
       <div className="relative">
         <input
           id={id}
@@ -262,9 +262,9 @@ function BrewNumberField({
           inputMode="decimal"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full rounded-xl border border-[#ded2c7] bg-white py-2.5 pl-3 pr-10 text-[#1c1410] focus:border-[#6b3a2a] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/20"
+          className="field !pr-12"
         />
-        <span className="pointer-events-none absolute right-3 top-2.5 text-sm text-[#766257]">{unit}</span>
+        <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-sm text-pico-muted">{unit}</span>
       </div>
     </div>
   );

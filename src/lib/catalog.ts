@@ -145,10 +145,6 @@ export function getCoffeeById(id: string): Coffee | undefined {
   return getAllCoffees().find((c) => c.id === id);
 }
 
-export function getCoffeeByBarcode(barcode: string): Coffee | undefined {
-  return getAllCoffees().find((c) => c.barcode === barcode);
-}
-
 function foldForSearch(text: string): string {
   return text.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '');
 }
@@ -182,11 +178,6 @@ export function searchCoffees(query: string, limit = 8): Coffee[] {
     .sort((a, b) => b.hits - a.hits)
     .slice(0, limit)
     .map(({ coffee }) => coffee);
-}
-
-export function getCatalogCoffees(excludeIds: string[] = []): Coffee[] {
-  const excluded = new Set(excludeIds);
-  return getAllCoffees().filter((c) => !excluded.has(c.id));
 }
 
 function createCustomCoffeeId(existingCoffees: Coffee[]): string {

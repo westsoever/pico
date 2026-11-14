@@ -4,16 +4,20 @@ import { CameraIcon } from './ui/Icons';
 
 interface CameraCaptureProps {
   photoDataUrl?: string;
-  onCapture: (dataUrl: string | undefined) => void;
+  /**
+   * `dataUrl` is the small copy kept with the rating; `readableDataUrl` is a
+   * sharper copy for reading the label, never stored.
+   */
+  onCapture: (dataUrl: string | undefined, readableDataUrl?: string) => void;
   /** Main call to action on the button, e.g. "Scan a coffee bag". */
   title?: string;
   hint?: string;
-  caption?: string;
-  prominent?: boolean;
 }
 
 export const MAX_PHOTO_BYTES = 15 * 1024 * 1024;
 export const MAX_PHOTO_DIMENSION = 1600;
+/** Stored photos live in localStorage (~5 MB in total), so keep them small. */
+export const STORED_PHOTO_DIMENSION = 800;
 
 const JPEG_QUALITY = 0.82;
 const SUPPORTED_IMAGE_TYPES = new Set([
@@ -133,6 +137,7 @@ function hasTransparentPixels(context: CanvasRenderingContext2D, width: number, 
 export async function resizePhoto(
   file: File,
   environment: PhotoProcessingEnvironment = processingEnvironment(),
+  maxDimension = MAX_PHOTO_DIMENSION,
 ): Promise<string> {
   validatePhotoFile(file);
 
@@ -140,7 +145,7 @@ export async function resizePhoto(
   try {
     objectUrl = environment.createObjectURL(file);
     const image = await loadImage(environment.createImage(), objectUrl);
-    const dimensions = getResizedDimensions(image.naturalWidth, image.naturalHeight);
+    const dimensions = getResizedDimensions(image.naturalWidth, image.naturalHeight, maxDimension);
     const canvas = environment.createCanvas();
     canvas.width = dimensions.width;
     canvas.height = dimensions.height;
@@ -175,8 +180,6 @@ export function CameraCapture({
   onCapture,
   title = 'Add label photo',
   hint = 'Take a photo or choose one',
-  caption = 'Photo ready to save with your rating',
-  prominent = false,
 }: CameraCaptureProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const requestIdRef = useRef(0);
@@ -197,9 +200,10 @@ export function CameraCapture({
     setStatus({ kind: 'loading' });
 
     try {
-      const dataUrl = await resizePhoto(file);
+      const readable = await resizePhoto(file);
+      const stored = await resizePhoto(file, undefined, STORED_PHOTO_DIMENSION);
       if (!mountedRef.current || requestId !== requestIdRef.current) return;
-      onCapture(dataUrl);
+      onCapture(stored, readable);
       setStatus({ kind: 'idle' });
     } catch (error) {
       if (!mountedRef.current || requestId !== requestIdRef.current) return;
@@ -213,11 +217,11 @@ export function CameraCapture({
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       {photoDataUrl ? (
-        <figure className="relative overflow-hidden rounded-2xl border border-[#dfd2c7] bg-white">
-          <img src={photoDataUrl} alt="Selected coffee bag label" className="h-44 w-full object-cover" />
-          <figcaption className="px-3 py-2 text-xs text-[#78675d]">{caption}</figcaption>
+        <figure className="card relative flex items-center gap-3 overflow-hidden p-2 pr-3">
+          <img src={photoDataUrl} alt="Selected coffee bag label" className="h-16 w-16 rounded-xl object-cover" />
+          <figcaption className="min-w-0 flex-1 text-sm text-pico-muted">Your label photo. It is saved with your rating.</figcaption>
           <button
             type="button"
             onClick={() => {
@@ -225,7 +229,7 @@ export function CameraCapture({
               onCapture(undefined);
               setStatus({ kind: 'idle' });
             }}
-            className="absolute right-2 top-2 rounded-full bg-[#1c1410]/80 px-3 py-1.5 text-xs font-medium text-white focus:outline-none focus:ring-2 focus:ring-white"
+            className="btn btn-secondary !min-h-9 !px-3 text-xs"
           >
             Remove photo
           </button>
@@ -236,22 +240,16 @@ export function CameraCapture({
           onClick={() => inputRef.current?.click()}
           disabled={status.kind === 'loading'}
           aria-describedby={statusId}
-          className={
-            prominent
-              ? 'flex w-full items-center justify-center gap-4 rounded-3xl bg-[#6b3a2a] px-5 py-7 text-white shadow-md transition hover:bg-[#582f22] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a] focus:ring-offset-2 disabled:opacity-60'
-              : 'flex w-full items-center justify-center gap-3 rounded-2xl border border-dashed border-[#bd9d87] bg-white px-4 py-6 text-[#6b3a2a] transition hover:border-[#6b3a2a] hover:bg-[#fffaf5] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/30 disabled:opacity-60'
-          }
+          className="flex w-full items-center gap-4 rounded-[var(--radius-lg)] bg-pico-brand px-5 py-5 text-left text-white shadow-md transition hover:bg-pico-brand-strong disabled:opacity-60"
         >
-          {prominent ? (
-            <CameraIcon className="h-9 w-9 shrink-0" />
-          ) : (
-            <span aria-hidden="true" className="text-xl">▣</span>
-          )}
-          <span className="text-left">
-            <span className={`block font-semibold ${prominent ? 'text-lg' : ''}`}>
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/15">
+            <CameraIcon className="h-7 w-7" />
+          </span>
+          <span>
+            <span className="block text-lg font-semibold">
               {status.kind === 'loading' ? 'Preparing photo…' : title}
             </span>
-            <span className={`block text-xs font-normal ${prominent ? 'text-white/80' : 'text-[#766257]'}`}>{hint}</span>
+            <span className="block text-sm text-white/80">{hint}</span>
           </span>
         </button>
       )}
@@ -260,15 +258,15 @@ export function CameraCapture({
         id={statusId}
         role={status.kind === 'error' ? 'alert' : 'status'}
         aria-live="polite"
-        className={`text-xs ${status.kind === 'error' ? 'text-[#9b2c2c]' : 'sr-only'}`}
+        className={`text-sm ${status.kind === 'error' ? 'text-pico-danger' : 'sr-only'}`}
       >
         {status.kind === 'error' ? status.message : status.kind === 'loading' ? 'Preparing photo.' : ''}
       </p>
+      {/* No `capture` attribute: with it, iOS opens only the camera and the photo roll is unreachable. */}
       <input
         ref={inputRef}
         type="file"
         accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
-        capture="environment"
         className="hidden"
         aria-label="Choose a coffee label photo"
         onChange={(e) => {

@@ -21,7 +21,7 @@ describe('Pico app interactions', () => {
     );
 
     expect(
-      await screen.findByRole('heading', { level: 2, name: 'Halo Hartume' }),
+      await screen.findByRole('heading', { level: 1, name: 'Halo Hartume' }),
     ).toBeInTheDocument();
     expect(window.location.hash).toBe('#/coffee/fixture-ethiopia?from=discover');
 
@@ -84,7 +84,7 @@ describe('Pico app interactions', () => {
     window.location.hash = '#/coffee/fixture-ethiopia?from=journal';
     fireEvent(window, new HashChangeEvent('hashchange'));
     expect(
-      await screen.findByRole('heading', { level: 2, name: 'Halo Hartume' }),
+      await screen.findByRole('heading', { level: 1, name: 'Halo Hartume' }),
     ).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: '← Back' }));
@@ -97,12 +97,12 @@ describe('Pico app interactions', () => {
     window.location.hash = '#/discover';
     render(<App />);
 
-    await user.click(screen.getByRole('button', { name: '+ Add coffee' }));
+    await user.click(screen.getByRole('button', { name: 'Add a coffee' }));
     await user.type(screen.getByRole('textbox', { name: 'Coffee name' }), 'Test Lot');
     await user.type(screen.getByRole('textbox', { name: 'Roaster' }), 'Test Roaster');
     await user.click(screen.getByRole('button', { name: 'Continue to rating' }));
 
-    expect(await screen.findByRole('heading', { level: 2, name: 'Test Lot' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Test Lot' })).toBeInTheDocument();
     expect(JSON.parse(localStorage.getItem('pico-custom-coffees') ?? '[]')).toHaveLength(1);
 
     await user.click(screen.getByRole('button', { name: 'Cancel' }));

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { addCustomCoffee, getAllCoffees, getCatalogCoffees, getCoffeeById, searchCoffees } from '../lib/catalog';
+import { addCustomCoffee, getAllCoffees, getCoffeeById, searchCoffees } from '../lib/catalog';
 import {
   isRoasterOnlyMatch,
   matchCoffeesFromText,
@@ -9,10 +9,11 @@ import {
 } from '../lib/label-match';
 import { readLabelText } from '../lib/label-ocr';
 import { loadUserData } from '../lib/storage';
-import type { ManualCoffeeInput, RoastLevel } from '../types/coffee';
+import type { ManualCoffeeInput } from '../types/coffee';
 import { CameraCapture } from './CameraCapture';
+import { PageHeader } from './Layout';
 import { ManualCoffeeForm } from './ManualCoffeeForm';
-import { CoffeeCard } from './SimilarList';
+import { CoffeeCard, CoffeeGrid, CoffeeTile } from './SimilarList';
 import { SearchIcon } from './ui/Icons';
 
 interface ScanViewProps {
@@ -28,22 +29,22 @@ type ScanState =
   | { kind: 'no-text' }
   | { kind: 'error' };
 
+const PAGE_SIZE = 24;
+
 function matchSummary(match: LabelMatch): string {
   if (isRoasterOnlyMatch(match)) return 'Roaster match only · check the coffee name';
   return `Matched ${match.matched.slice(0, 3).join(', ')}`;
 }
 
-const secondaryButton =
-  'rounded-xl border border-[#cdbbae] bg-white px-4 py-2.5 text-sm font-semibold text-[#6b3a2a] transition hover:border-[#8b5339] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/30';
-
 export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
   const [query, setQuery] = useState('');
+  const [roaster, setRoaster] = useState<string>('all');
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [photoDataUrl, setPhotoDataUrl] = useState<string | undefined>();
   const [scan, setScan] = useState<ScanState>({ kind: 'idle' });
   const [showManualForm, setShowManualForm] = useState(false);
   const [shouldFocusManualForm, setShouldFocusManualForm] = useState(false);
   const [addError, setAddError] = useState('');
-  const [roastFilter, setRoastFilter] = useState<RoastLevel | 'all'>('all');
   const manualPanelRef = useRef<HTMLElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const scanRequestRef = useRef(0);
@@ -64,21 +65,27 @@ export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
   useEffect(() => {
     if (!showManualForm || !shouldFocusManualForm) return;
     manualPanelRef.current?.focus();
+    manualPanelRef.current?.scrollIntoView?.({ block: 'start' });
     setShouldFocusManualForm(false);
   }, [shouldFocusManualForm, showManualForm]);
+
+  const allCoffees = getAllCoffees();
+  const roasterCounts = new Map<string, number>();
+  for (const coffee of allCoffees) roasterCounts.set(coffee.roaster, (roasterCounts.get(coffee.roaster) ?? 0) + 1);
+  const roasters = [...roasterCounts.keys()].sort((a, b) => a.localeCompare(b));
 
   const recentRatings = loadUserData().ratings
     .slice()
     .sort((a, b) => Date.parse(b.ratedAt) - Date.parse(a.ratedAt))
-    .slice(0, 2)
+    .slice(0, 3)
     .flatMap((rating) => {
       const coffee = getCoffeeById(rating.coffeeId);
       return coffee ? [{ coffee, rating }] : [];
     });
-  const searchResults = query.trim() ? searchCoffees(query, 20) : getCatalogCoffees();
-  const results = searchResults
-    .filter((coffee) => roastFilter === 'all' || coffee.roastLevel === roastFilter)
-    .slice(0, query.trim() ? 20 : 8);
+  const isSearching = query.trim().length > 0;
+  const matching = (isSearching ? searchCoffees(query, allCoffees.length) : allCoffees)
+    .filter((coffee) => roaster === 'all' || coffee.roaster === roaster);
+  const results = matching.slice(0, visibleCount);
 
   const readLabel = async (dataUrl: string) => {
     const requestId = ++scanRequestRef.current;
@@ -99,19 +106,24 @@ export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
     }
   };
 
-  const handleCapture = (dataUrl: string | undefined) => {
+  const handleCapture = (dataUrl: string | undefined, readableDataUrl?: string) => {
     setPhotoDataUrl(dataUrl);
     if (dataUrl) {
-      void readLabel(dataUrl);
+      void readLabel(readableDataUrl ?? dataUrl);
     } else {
       scanRequestRef.current += 1;
       setScan({ kind: 'idle' });
     }
   };
 
+  const updateQuery = (value: string) => {
+    setQuery(value);
+    setVisibleCount(PAGE_SIZE);
+  };
+
   const openSearch = (terms: string[] = []) => {
-    setQuery(terms.join(' '));
-    setRoastFilter('all');
+    updateQuery(terms.join(' '));
+    setRoaster('all');
     searchRef.current?.focus();
     searchRef.current?.scrollIntoView?.({ block: 'center' });
   };
@@ -133,142 +145,128 @@ export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
 
   const fallbackActions = (searchLabel: string, terms: string[] = []) => (
     <div className="flex flex-wrap gap-2">
-      <button type="button" onClick={() => openSearch(terms)} className={secondaryButton}>
+      <button type="button" onClick={() => openSearch(terms)} className="btn btn-secondary">
         {searchLabel}
       </button>
-      <button type="button" onClick={openManualForm} className={secondaryButton}>
+      <button type="button" onClick={openManualForm} className="btn btn-secondary">
         Add it
       </button>
     </div>
   );
 
   return (
-    <div className="mx-auto max-w-lg space-y-8">
-      <header className="space-y-4">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#8b5339]">Discover</p>
-          <h2 className="mt-1 text-3xl font-semibold tracking-tight text-[#1c1410]">What are you drinking?</h2>
-          <p className="mt-2 text-sm leading-6 text-[#78675d]">
-            Snap the bag and Pico finds the coffee, so you can see or add your rating.
-          </p>
-        </div>
+    <div className="space-y-10">
+      <div className="mx-auto max-w-xl">
+        <PageHeader title="Discover" subtitle="What are you drinking? Scan the bag and Pico finds it." />
         <CameraCapture
-          prominent
           title="Scan a coffee bag"
-          hint="Take a photo of the label or choose one"
-          caption="Label photo · saved with your rating"
+          hint="Take a photo of the label, or choose one"
           photoDataUrl={photoDataUrl}
           onCapture={handleCapture}
         />
-        <p className="text-xs leading-5 text-[#78675d]">
+        <p className="mt-2 text-xs text-pico-muted">
           Pico reads the label on this device. The photo is never uploaded.
         </p>
-      </header>
 
-      <section aria-live="polite" aria-label="Label scan results" className="space-y-3 empty:hidden">
-        {scan.kind === 'reading' && (
-          <p role="status" className="flex items-center gap-2 rounded-2xl bg-[#f8f3ee] px-4 py-3 text-sm font-medium text-[#6b3a2a]">
-            <span aria-hidden="true" className="h-3 w-3 animate-pulse rounded-full bg-[#8b5339]" />
-            Reading label…
+        <section aria-live="polite" aria-label="Label scan results" className="mt-5 space-y-3 empty:hidden">
+          {scan.kind === 'reading' && (
+            <p role="status" className="card flex items-center gap-3 p-4 text-sm font-medium text-pico-brand-strong">
+              <span aria-hidden="true" className="h-3 w-3 animate-pulse rounded-full bg-pico-accent" />
+              Reading label…
+            </p>
+          )}
+
+          {scan.kind === 'matches' && (
+            <>
+              <h2 className="section-title">Is it one of these?</h2>
+              <ul className="space-y-2">
+                {scan.matches.map((match) => (
+                  <li key={match.coffee.id}>
+                    <CoffeeCard
+                      name={match.coffee.name}
+                      roaster={match.coffee.roaster}
+                      origin={match.coffee.origin}
+                      imageUrl={match.coffee.imageUrl}
+                      detail={matchSummary(match)}
+                      onClick={() => onSelectCoffee(match.coffee.id, photoDataUrl)}
+                    />
+                  </li>
+                ))}
+              </ul>
+              {fallbackActions('None of these', scan.terms)}
+            </>
+          )}
+
+          {scan.kind === 'no-match' && (
+            <>
+              <p className="text-sm text-pico-muted">
+                Pico read the label but did not find this coffee in the catalog.
+              </p>
+              {fallbackActions('Search the catalog', scan.terms)}
+            </>
+          )}
+
+          {scan.kind === 'no-text' && (
+            <>
+              <p className="text-sm text-pico-muted">
+                No text could be read from this photo. Try again closer to the label and in good light, or search instead.
+              </p>
+              {fallbackActions('Search instead')}
+            </>
+          )}
+
+          {scan.kind === 'error' && (
+            <>
+              <p className="text-sm text-pico-muted">
+                The label reader could not start. It needs a connection the first time it runs. You can search instead.
+              </p>
+              {fallbackActions('Search instead')}
+            </>
+          )}
+        </section>
+
+        {!showManualForm && (
+          <p className="mt-4 text-sm text-pico-muted">
+            Not in the catalog?{' '}
+            <button type="button" onClick={openManualForm} className="link">
+              Add a coffee
+            </button>
           </p>
         )}
 
-        {scan.kind === 'matches' && (
-          <>
-            <h3 className="text-xl font-semibold text-[#1c1410]">Is it one of these?</h3>
-            <ul className="space-y-2">
-              {scan.matches.map((match) => (
-                <li key={match.coffee.id}>
-                  <CoffeeCard
-                    name={match.coffee.name}
-                    roaster={match.coffee.roaster}
-                    origin={match.coffee.origin}
-                    imageUrl={match.coffee.imageUrl}
-                    detail={matchSummary(match)}
-                    onClick={() => onSelectCoffee(match.coffee.id, photoDataUrl)}
-                  />
-                </li>
-              ))}
-            </ul>
-            {fallbackActions('None of these', scan.terms)}
-          </>
+        {showManualForm && (
+          <section
+            id="add-coffee-panel"
+            ref={manualPanelRef}
+            tabIndex={-1}
+            aria-labelledby="add-coffee-heading"
+            className="mt-6 space-y-3 scroll-mt-4 focus:outline-none"
+          >
+            <div>
+              <h2 id="add-coffee-heading" className="section-title">Add from the bag</h2>
+              <p className="mt-1 text-sm text-pico-muted">
+                {photoDataUrl
+                  ? 'Copy the details from the label. Your label photo is saved with the rating.'
+                  : 'Copy the details from the label.'}
+              </p>
+            </div>
+            {addError && (
+              <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-pico-danger">
+                {addError}
+              </p>
+            )}
+            <ManualCoffeeForm
+              onSubmit={handleManualSubmit}
+              onCancel={() => setShowManualForm(false)}
+            />
+          </section>
         )}
-
-        {scan.kind === 'no-match' && (
-          <>
-            <p className="text-sm leading-6 text-[#6f5c51]">
-              Pico read the label but did not find this coffee in the catalog.
-            </p>
-            {fallbackActions('Search the catalog', scan.terms)}
-          </>
-        )}
-
-        {scan.kind === 'no-text' && (
-          <>
-            <p className="text-sm leading-6 text-[#6f5c51]">
-              No text could be read from this photo. Try again closer to the label and in good light, or search instead.
-            </p>
-            {fallbackActions('Search instead')}
-          </>
-        )}
-
-        {scan.kind === 'error' && (
-          <>
-            <p className="text-sm leading-6 text-[#6f5c51]">
-              The label reader could not start. It needs a connection the first time it runs. You can search instead.
-            </p>
-            {fallbackActions('Search instead')}
-          </>
-        )}
-      </section>
-
-      <div>
-        <button
-          type="button"
-          aria-expanded={showManualForm}
-          aria-controls="add-coffee-panel"
-          onClick={() => setShowManualForm((open) => !open)}
-          className="w-full rounded-2xl border border-[#cdbbae] bg-white px-5 py-3 text-sm font-semibold text-[#6b3a2a] transition hover:border-[#8b5339] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/30"
-        >
-          {showManualForm ? 'Close add coffee' : '+ Add coffee'}
-        </button>
       </div>
-
-      {showManualForm && (
-        <section
-          id="add-coffee-panel"
-          ref={manualPanelRef}
-          tabIndex={-1}
-          aria-labelledby="add-coffee-heading"
-          className="space-y-3 focus:outline-none"
-        >
-          <div>
-            <h3 id="add-coffee-heading" className="font-semibold text-[#1c1410]">Add from the bag</h3>
-            <p className="mt-1 text-sm leading-5 text-[#78675d]">
-              {photoDataUrl
-                ? 'Copy the details from the label. Your label photo is saved with the rating.'
-                : 'Copy the details from the label.'}
-            </p>
-          </div>
-          {addError && (
-            <p role="alert" className="rounded-xl bg-[#fbe9e7] px-4 py-3 text-sm text-[#8f2925]">
-              {addError}
-            </p>
-          )}
-          <ManualCoffeeForm
-            onSubmit={handleManualSubmit}
-            onCancel={() => setShowManualForm(false)}
-          />
-        </section>
-      )}
 
       {recentRatings.length > 0 && (
         <section aria-labelledby="recent-heading" className="space-y-3">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#8b5339]">Pick up where you left off</p>
-            <h3 id="recent-heading" className="mt-1 text-xl font-semibold text-[#1c1410]">Recently rated</h3>
-          </div>
-          <ul className="space-y-2">
+          <h2 id="recent-heading" className="section-title">Recently rated</h2>
+          <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {recentRatings.map(({ coffee, rating }) => (
               <li key={coffee.id}>
                 <CoffeeCard
@@ -287,11 +285,13 @@ export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
 
       <section aria-labelledby="browse-heading" className="space-y-4">
         <div>
-          <h3 id="browse-heading" className="text-xl font-semibold text-[#1c1410]">Browse coffees</h3>
-          <p className="mt-1 text-sm text-[#766257]">Coffees from Copenhagen roasters.</p>
+          <h2 id="browse-heading" className="section-title">Browse coffees</h2>
+          <p className="mt-1 text-sm text-pico-muted">
+            {allCoffees.length} coffees from {roasters.length} Copenhagen roasters.
+          </p>
         </div>
         <div className="relative">
-          <span aria-hidden="true" className="pointer-events-none absolute left-4 top-3.5 text-[#766257]">
+          <span aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-pico-subtle">
             <SearchIcon className="h-5 w-5" />
           </span>
           <label htmlFor="coffee-search" className="sr-only">Search coffee catalog</label>
@@ -300,70 +300,76 @@ export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
             ref={searchRef}
             type="search"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search coffee, roaster, origin…"
-            className="w-full rounded-2xl border border-[#ded2c7] bg-white py-3 pl-10 pr-4 text-[#1c1410] shadow-sm placeholder:text-[#766257] focus:border-[#6b3a2a] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/20"
+            onChange={(e) => updateQuery(e.target.value)}
+            placeholder="Search coffee, roaster, origin, flavor…"
+            className="field !pl-11"
             autoComplete="off"
           />
         </div>
-        <div className="flex gap-2 overflow-x-auto pb-1" aria-label="Filter by roast">
-          {(['all', 'light', 'medium', 'dark'] as const).map((roast) => (
+        <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1" role="group" aria-label="Filter by roaster">
+          {['all', ...roasters].map((name) => (
             <button
-              key={roast}
+              key={name}
               type="button"
-              aria-pressed={roastFilter === roast}
-              onClick={() => setRoastFilter(roast)}
-              className={`shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-medium capitalize transition focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/30 ${
-                roastFilter === roast
-                  ? 'border-[#6b3a2a] bg-[#6b3a2a] text-white'
-                  : 'border-[#ded2c7] bg-white text-[#6b3a2a] hover:border-[#8b5339]'
-              }`}
+              aria-pressed={roaster === name}
+              onClick={() => {
+                setRoaster(name);
+                setVisibleCount(PAGE_SIZE);
+              }}
+              className="chip"
             >
-              {roast === 'all' ? 'All roasts' : roast}
+              {name === 'all' ? 'All roasters' : name}
             </button>
           ))}
         </div>
-        <div className="flex items-center justify-between">
-          <p className="text-sm font-medium text-[#78675d]" aria-live="polite">
-            {query.trim() ? `${results.length} match${results.length === 1 ? '' : 'es'}` : 'Featured catalog'}
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-sm font-medium text-pico-muted" aria-live="polite">
+            {matching.length} {matching.length === 1 ? 'coffee' : 'coffees'}
           </p>
-          {(query || roastFilter !== 'all') && (
+          {(query || roaster !== 'all') && (
             <button
               type="button"
               onClick={() => {
-                setQuery('');
-                setRoastFilter('all');
+                updateQuery('');
+                setRoaster('all');
               }}
-              className="text-sm font-medium text-[#6b3a2a] underline decoration-[#c4956a] underline-offset-4"
+              className="link text-sm"
             >
               Clear
             </button>
           )}
         </div>
         {results.length > 0 ? (
-          <ul className="space-y-2">
-            {results.map((coffee) => (
-              <li key={coffee.id}>
-                <CoffeeCard
-                  name={coffee.name}
-                  roaster={coffee.roaster}
-                  origin={coffee.origin}
-                  imageUrl={coffee.imageUrl}
-                  onClick={() => onSelectCoffee(coffee.id, photoDataUrl)}
-                />
-              </li>
-            ))}
-          </ul>
+          <>
+            <CoffeeGrid>
+              {results.map((coffee) => (
+                <li key={coffee.id}>
+                  <CoffeeTile
+                    coffee={coffee}
+                    badge={coffee.available === false ? 'Past coffee' : undefined}
+                    onClick={() => onSelectCoffee(coffee.id, photoDataUrl)}
+                  />
+                </li>
+              ))}
+            </CoffeeGrid>
+            {matching.length > results.length && (
+              <div className="text-center">
+                <button
+                  type="button"
+                  onClick={() => setVisibleCount((count) => count + PAGE_SIZE)}
+                  className="btn btn-secondary"
+                >
+                  Show more coffees
+                </button>
+              </div>
+            )}
+          </>
         ) : (
-          <div className="rounded-2xl border border-dashed border-[#d8c9bd] px-5 py-8 text-center">
-            <p className="font-medium text-[#1c1410]">No coffees found</p>
-            <p className="mt-1 text-sm text-[#766257]">Try another search or add this coffee yourself.</p>
-            <button
-              type="button"
-              onClick={openManualForm}
-              className="mt-3 font-medium text-[#6b3a2a] underline underline-offset-4"
-            >
-              Add coffee
+          <div className="rounded-[var(--radius-lg)] border border-dashed border-pico-line-strong px-5 py-8 text-center">
+            <p className="font-semibold text-pico-ink">No coffees found</p>
+            <p className="mt-1 text-sm text-pico-muted">Try another search, or add this coffee yourself.</p>
+            <button type="button" onClick={openManualForm} className="btn btn-secondary mt-4">
+              Add a coffee
             </button>
           </div>
         )}

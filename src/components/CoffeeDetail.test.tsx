@@ -1,7 +1,18 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { CoffeeDetail } from './CoffeeDetail';
+import { sizedImageUrl } from './CoffeeImage';
 import { CoffeeCard } from './SimilarList';
+
+describe('sizedImageUrl', () => {
+  it('asks Shopify for a small copy and leaves other hosts alone', () => {
+    expect(sizedImageUrl('https://cdn.shopify.com/s/files/a.png?v=1', 400)).toBe(
+      'https://cdn.shopify.com/s/files/a.png?v=1&width=400',
+    );
+    expect(sizedImageUrl('https://example.com/a.png', 400)).toBe('https://example.com/a.png');
+    expect(sizedImageUrl('not a url', 400)).toBe('not a url');
+  });
+});
 
 afterEach(cleanup);
 

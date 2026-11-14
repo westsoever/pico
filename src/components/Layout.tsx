@@ -13,66 +13,22 @@ export interface LayoutProps {
   activeTab: Tab;
   onTabChange: (tab: Tab) => void;
   children: ReactNode;
-  /** Overrides the active section name in the page header. */
-  title?: string;
-  /** Adds supporting context below the page title. */
-  subtitle?: string;
-  /** Optional control rendered alongside the contextual title. */
-  headerAction?: ReactNode;
 }
 
-const tabs: {
-  id: Tab;
-  label: string;
-  description: string;
-  icon: ComponentType<IconProps>;
-}[] = [
-  {
-    id: 'scan',
-    label: 'Discover',
-    description: 'Find a coffee worth remembering',
-    icon: DiscoverIcon,
-  },
-  {
-    id: 'repertoire',
-    label: 'Journal',
-    description: 'Your coffees, notes, and ratings',
-    icon: JournalIcon,
-  },
-  {
-    id: 'you',
-    label: 'Taste',
-    description: 'A clearer picture of what you enjoy',
-    icon: TasteIcon,
-  },
+const tabs: { id: Tab; label: string; icon: ComponentType<IconProps> }[] = [
+  { id: 'scan', label: 'Discover', icon: DiscoverIcon },
+  { id: 'repertoire', label: 'Journal', icon: JournalIcon },
+  { id: 'you', label: 'Taste', icon: TasteIcon },
 ];
 
-export function Layout({
-  activeTab,
-  onTabChange,
-  children,
-  title,
-  subtitle,
-  headerAction,
-}: LayoutProps) {
-  const activeSection = tabs.find((tab) => tab.id === activeTab) ?? tabs[0];
-
+/** App frame only: each view renders its own page heading. */
+export function Layout({ activeTab, onTabChange, children }: LayoutProps) {
   return (
     <div className="app-shell">
       <header className="app-header">
         <div className="app-brand" aria-label="Pico">
-          <span className="app-brand__mark">
-            <PicoMark />
-          </span>
-          <span className="app-brand__name">Pico</span>
-        </div>
-
-        <div className="app-heading">
-          <div className="app-heading__copy">
-            <h1>{title ?? activeSection.label}</h1>
-            <p>{subtitle ?? activeSection.description}</p>
-          </div>
-          {headerAction ? <div className="app-heading__action">{headerAction}</div> : null}
+          <PicoMark />
+          <span className="app-brand__name" aria-hidden="true">Pico</span>
         </div>
       </header>
 
@@ -80,7 +36,6 @@ export function Layout({
         <div className="app-nav__items">
           {tabs.map(({ id, label, icon: Icon }) => {
             const isActive = activeTab === id;
-
             return (
               <button
                 key={id}
@@ -104,5 +59,14 @@ export function Layout({
         <div className="app-main__inner">{children}</div>
       </main>
     </div>
+  );
+}
+
+export function PageHeader({ title, subtitle }: { title: string; subtitle?: ReactNode }) {
+  return (
+    <header className="page-header">
+      <h1>{title}</h1>
+      {subtitle && <p>{subtitle}</p>}
+    </header>
   );
 }

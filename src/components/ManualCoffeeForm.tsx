@@ -7,8 +7,7 @@ interface ManualCoffeeFormProps {
   onCancel?: () => void;
 }
 
-const inputClassName =
-  'w-full rounded-xl border border-[#e8dfd6] bg-white px-4 py-3 text-[#1c1410] placeholder:text-[#766257] focus:border-[#6b3a2a] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/20';
+const inputClassName = 'field';
 
 export function ManualCoffeeForm({ onSubmit, onCancel }: ManualCoffeeFormProps) {
   const [name, setName] = useState('');
@@ -47,16 +46,11 @@ export function ManualCoffeeForm({ onSubmit, onCancel }: ManualCoffeeFormProps) 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl border border-[#e2d6cc] bg-white p-5 shadow-sm">
-      <div>
-        <h3 className="text-lg font-semibold text-[#1c1410]">Coffee details</h3>
-        <p className="mt-1 text-sm leading-5 text-[#78675d]">
-          Copy what you can from the label. Only name, roaster, roast, and process are required.
-        </p>
-      </div>
+    <form onSubmit={handleSubmit} className="card space-y-4 p-5">
+      <p className="text-sm text-pico-muted">Only the name and roaster are required.</p>
 
       <div>
-        <label htmlFor="coffee-name" className="mb-2 block text-sm font-medium text-[#6b3a2a]">
+        <label htmlFor="coffee-name" className="field-label">
           Coffee name
         </label>
         <input
@@ -72,7 +66,7 @@ export function ManualCoffeeForm({ onSubmit, onCancel }: ManualCoffeeFormProps) 
       </div>
 
       <div>
-        <label htmlFor="coffee-roaster" className="mb-2 block text-sm font-medium text-[#6b3a2a]">
+        <label htmlFor="coffee-roaster" className="field-label">
           Roaster
         </label>
         <input
@@ -87,8 +81,8 @@ export function ManualCoffeeForm({ onSubmit, onCancel }: ManualCoffeeFormProps) 
       </div>
 
       <div>
-        <label htmlFor="coffee-origin" className="mb-2 block text-sm font-medium text-[#6b3a2a]">
-          Origin (optional)
+        <label htmlFor="coffee-origin" className="field-label">
+          Origin
         </label>
         <input
           id="coffee-origin"
@@ -102,7 +96,7 @@ export function ManualCoffeeForm({ onSubmit, onCancel }: ManualCoffeeFormProps) 
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label htmlFor="coffee-roast" className="mb-2 block text-sm font-medium text-[#6b3a2a]">
+          <label htmlFor="coffee-roast" className="field-label">
             Roast
           </label>
           <select
@@ -120,7 +114,7 @@ export function ManualCoffeeForm({ onSubmit, onCancel }: ManualCoffeeFormProps) 
         </div>
 
         <div>
-          <label htmlFor="coffee-process" className="mb-2 block text-sm font-medium text-[#6b3a2a]">
+          <label htmlFor="coffee-process" className="field-label">
             Process
           </label>
           <select
@@ -140,7 +134,7 @@ export function ManualCoffeeForm({ onSubmit, onCancel }: ManualCoffeeFormProps) 
 
       {process === 'other' && (
         <div>
-          <label htmlFor="coffee-custom-process" className="mb-2 block text-sm font-medium text-[#6b3a2a]">
+          <label htmlFor="coffee-custom-process" className="field-label">
             Custom process
           </label>
           <input
@@ -157,7 +151,7 @@ export function ManualCoffeeForm({ onSubmit, onCancel }: ManualCoffeeFormProps) 
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label htmlFor="coffee-variety" className="mb-2 block text-sm font-medium text-[#6b3a2a]">
+          <label htmlFor="coffee-variety" className="field-label">
             Variety
           </label>
           <input
@@ -171,7 +165,7 @@ export function ManualCoffeeForm({ onSubmit, onCancel }: ManualCoffeeFormProps) 
         </div>
 
         <div>
-          <label htmlFor="coffee-sca-score" className="mb-2 block text-sm font-medium text-[#6b3a2a]">
+          <label htmlFor="coffee-sca-score" className="field-label">
             SCA Score
           </label>
           <input
@@ -187,8 +181,8 @@ export function ManualCoffeeForm({ onSubmit, onCancel }: ManualCoffeeFormProps) 
             aria-invalid={scaScoreInvalid}
             aria-describedby="sca-score-help"
           />
-          <p id="sca-score-help" className={`mt-1 text-xs ${scaScoreInvalid ? 'text-[#9b2c2c]' : 'text-[#766257]'}`}>
-            {scaScoreInvalid ? 'Enter a score from 0 to 100.' : 'Specialty Coffee Association (0–100)'}
+          <p id="sca-score-help" className={`mt-1 text-xs ${scaScoreInvalid ? 'text-pico-danger' : 'text-pico-muted'}`}>
+            {scaScoreInvalid ? 'Enter a score from 0 to 100.' : 'On the bag, if given (0–100)'}
           </p>
         </div>
       </div>
@@ -198,7 +192,7 @@ export function ManualCoffeeForm({ onSubmit, onCancel }: ManualCoffeeFormProps) 
           <button
             type="button"
             onClick={onCancel}
-            className="flex-1 rounded-xl border border-[#d6c7bb] bg-white py-3 font-medium text-[#6b3a2a] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/30"
+            className="btn btn-secondary flex-1"
           >
             Cancel
           </button>
@@ -206,7 +200,7 @@ export function ManualCoffeeForm({ onSubmit, onCancel }: ManualCoffeeFormProps) 
         <button
           type="submit"
           disabled={!canSubmit}
-          className="flex-1 rounded-xl bg-[#6b3a2a] py-3 font-medium text-white focus:outline-none focus:ring-2 focus:ring-[#6b3a2a] focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40"
+          className="btn btn-primary flex-1"
         >
           Continue to rating
         </button>
