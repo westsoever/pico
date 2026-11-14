@@ -72,3 +72,17 @@ The catalog is bundled into the app, so it adds to the first download. At about 
 - 3,000 coffees: about 2.7 MB raw and 0.6 MB gzipped. Measured in Node on a laptop with a synthetic catalog of 3,000 entries: search takes 6 ms per keystroke and label matching 225 ms per scan. Expect a phone to be a few times slower, which is still usable.
 - Past about 5,000 coffees, load the catalog with `fetch` after the first screen instead of bundling it.
 - The roaster filter on Discover is one row of chips. It works for a few dozen roasters; past that it needs a dropdown or search.
+
+## Where more coffees can come from (researched 2026-11-14)
+
+No open dataset covers specialty roasted coffee in Denmark. What exists:
+
+| Source | What it has | Terms | Use for Pico |
+|---|---|---|---|
+| Roaster Shopify stores (`<shop>/products.json`) | Every coffee a roaster sells: name, body text with origin/process/notes, images, availability | Facts are fine to restate; descriptions and photos are the roaster's copyright | Main source. Ask roasters for permission, take facts, write our own descriptions, link images back. |
+| Open Food Facts | 15,800 coffees with barcodes; Denmark: 36, all supermarket brands (Merrild, BKI, Nescafé, Coop) | ODbL (share-alike), images CC BY-SA | Barcode lookup at scan time only. Do not bundle rows, or the whole catalog may become ODbL. |
+| CQI Coffee Quality Database (GitHub/Kaggle scrapes, 2018) | ~1,340 green-lot cupping scores | Underlying CQI terms unknown | Vocabulary reference for origins, processes, varieties. Do not ship. |
+| Cup of Excellence, Coffee Review | Auction lots; ~10,000 reviews | All rights reserved; Coffee Review forbids copying | Link out at most. |
+| SCA / World Coffee Research | Flavor Wheel (CC BY-NC-ND 4.0), Sensory Lexicon (personal-use copies), CVA cupping forms (redistribute unmodified only) | No per-coffee data or API | Write our own note-to-flavor-tag mapping; do not copy the wheel's tree. |
+
+`scaScore`: SCA publishes no scores of specific coffees, and its 2024 Coffee Value Assessment replaced the old 100-point form. Only fill `scaScore` when the roaster prints a score, and treat it as the roaster's claim.
