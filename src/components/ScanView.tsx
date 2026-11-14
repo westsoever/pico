@@ -293,7 +293,7 @@ export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
         <div>
           <h2 id="browse-heading" className="section-title">Browse coffees</h2>
           <p className="mt-1 text-sm text-pico-muted">
-            {allCoffees.length} coffees from {roasters.length} Copenhagen roasters.
+            {allCoffees.length} coffees from {roasters.length} Danish roasters.
           </p>
         </div>
         <div className="relative">

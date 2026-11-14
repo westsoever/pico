@@ -68,7 +68,7 @@ The dry run warns when an entry lacks `imageUrl`, `sourceUrl`, `tastingNotes`, `
 
 The catalog is bundled into the app, so it adds to the first download. At about 0.9 KB per coffee (0.2 KB gzipped):
 
-- 20 coffees today: 18 KB.
+- 75 coffees today (2026-11-14): 65 KB, 12 KB gzipped.
 - 3,000 coffees: about 2.7 MB raw and 0.6 MB gzipped. Measured in Node on a laptop with a synthetic catalog of 3,000 entries: search takes 6 ms per keystroke and label matching 225 ms per scan. Expect a phone to be a few times slower, which is still usable.
 - Past about 5,000 coffees, load the catalog with `fetch` after the first screen instead of bundling it.
 - The roaster filter on Discover is one row of chips. It works for a few dozen roasters; past that it needs a dropdown or search.
