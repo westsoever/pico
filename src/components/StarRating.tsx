@@ -1,11 +1,17 @@
 interface StarRatingProps {
   value: number;
   onChange: (value: number) => void;
-  size?: 'sm' | 'lg';
 }
 
-export function StarRating({ value, onChange, size = 'lg' }: StarRatingProps) {
-  const starSize = size === 'lg' ? 'text-3xl' : 'text-lg';
+function Star({ filled, className }: { filled: boolean; className: string }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill={filled ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round">
+      <path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8L12 3.6Z" />
+    </svg>
+  );
+}
+
+export function StarRating({ value, onChange }: StarRatingProps) {
   const moveTo = (nextValue: number, group: HTMLDivElement) => {
     const clamped = Math.min(5, Math.max(1, nextValue));
     onChange(clamped);
@@ -14,7 +20,7 @@ export function StarRating({ value, onChange, size = 'lg' }: StarRatingProps) {
 
   return (
     <div
-      className="flex w-fit gap-1"
+      className="-ml-1.5 flex w-fit"
       role="radiogroup"
       aria-label="Your rating, from 1 to 5 stars"
       onKeyDown={(event) => {
@@ -42,21 +48,22 @@ export function StarRating({ value, onChange, size = 'lg' }: StarRatingProps) {
           tabIndex={value === star || (value === 0 && star === 1) ? 0 : -1}
           data-star={star}
           onClick={() => onChange(star)}
-          className={`${starSize} min-h-11 min-w-11 rounded-lg text-[#c17d52] transition hover:bg-[#f5ebe3] focus:outline-none focus:ring-2 focus:ring-[#6b3a2a] active:scale-95`}
+          className="flex h-12 w-12 items-center justify-center rounded-lg text-pico-star transition hover:bg-pico-tinted active:scale-95"
           aria-label={`${star} out of 5 stars`}
         >
-          <span aria-hidden="true">{star <= value ? '★' : '☆'}</span>
+          <Star filled={star <= value} className="h-9 w-9" />
         </button>
       ))}
     </div>
   );
 }
 
-export function StarDisplay({ value, size = 'sm' }: { value: number; size?: 'sm' | 'lg' }) {
-  const starSize = size === 'lg' ? 'text-2xl' : 'text-sm';
+export function StarDisplay({ value }: { value: number }) {
   return (
-    <span className={`${starSize} text-[#c4956a]`} aria-label={`${value} out of 5 stars`}>
-      {'★'.repeat(value)}{'☆'.repeat(5 - value)}
+    <span className="flex shrink-0 text-pico-star" role="img" aria-label={`${value} out of 5 stars`}>
+      {[1, 2, 3, 4, 5].map((star) => (
+        <Star key={star} filled={star <= value} className="h-4 w-4" />
+      ))}
     </span>
   );
 }

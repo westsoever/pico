@@ -25,11 +25,7 @@ export function FlavorTagPicker({ selected, onChange }: FlavorTagPickerProps) {
             type="button"
             aria-pressed={isSelected}
             onClick={() => toggle(tag)}
-            className={`min-h-10 rounded-full border px-3.5 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[#6b3a2a]/40 ${
-              isSelected
-                ? 'border-[#6b3a2a] bg-[#6b3a2a] text-white'
-                : 'border-[#dfd2c7] bg-[#f8f3ee] text-[#6b3a2a] hover:border-[#b99178] hover:bg-[#f1e8df]'
-            }`}
+            className="chip"
           >
             {FLAVOR_TAG_LABELS[tag]}
           </button>
@@ -46,7 +42,7 @@ export function FlavorTagList({ tags }: { tags: FlavorTag[] }) {
       {tags.map((tag) => (
         <span
           key={tag}
-          className="rounded-full bg-[#ede5dc] px-2.5 py-0.5 text-xs font-medium text-[#6b3a2a]"
+          className="tag"
         >
           {FLAVOR_TAG_LABELS[tag]}
         </span>

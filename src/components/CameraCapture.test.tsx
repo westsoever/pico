@@ -176,11 +176,11 @@ describe('photo processing helpers', () => {
 });
 
 describe('CameraCapture', () => {
-  it('shows an accessible error for invalid input and keeps mobile capture enabled', async () => {
+  it('shows an accessible error for invalid input and lets phones pick from the photo roll', async () => {
     render(<CameraCapture onCapture={vi.fn()} />);
     const input = screen.getByLabelText('Choose a coffee label photo');
 
-    expect(input).toHaveAttribute('capture', 'environment');
+    expect(input).not.toHaveAttribute('capture');
     fireEvent.change(input, {
       target: { files: [new File(['text'], 'note.txt', { type: 'text/plain' })] },
     });

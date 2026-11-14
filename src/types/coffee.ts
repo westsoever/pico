@@ -25,7 +25,6 @@ export interface Coffee {
   scaScore?: number;
   flavorTags: FlavorTag[];
   description: string;
-  barcode?: string;
   isCustom?: boolean;
   roasterCity?: string;
   region?: string;

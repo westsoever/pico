@@ -41,8 +41,8 @@ export function JournalIcon(props: IconProps) {
 export function TasteIcon(props: IconProps) {
   return (
     <svg {...iconDefaults} aria-hidden="true" {...props}>
-      <path d="M18.7 5.3C15.4 2 9.4 3.4 6.1 6.8c-3.4 3.3-4.8 9.3-1.5 12.6 3.3 3.3 9.3 1.9 12.6-1.5 3.4-3.3 4.8-9.3 1.5-12.6Z" />
-      <path d="M16.7 7.2c-1.4 1.1-2.4 2.5-3.1 4.2-.7 1.8-1.8 3.2-3.3 4.3a9 9 0 0 1-4.1 1.6" />
+      <path d="M4.75 9.25h11v4.5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5v-4.5Z" />
+      <path d="M15.75 10.25h1.5a2.5 2.5 0 0 1 0 5h-1.9M8.75 3.75c-.6.8-.6 1.7 0 2.5M12.25 3.75c-.6.8-.6 1.7 0 2.5" />
     </svg>
   );
 }

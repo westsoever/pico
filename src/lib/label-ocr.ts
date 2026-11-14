@@ -17,6 +17,11 @@ function getWorker(): Promise<Worker> {
   return workerPromise;
 }
 
+/** Starts loading the OCR engine ahead of the first scan; a failure retries on the real read. */
+export function preloadLabelReader(): void {
+  getWorker().catch(() => undefined);
+}
+
 /** Returns the text read from a label photo (an image data URL). */
 export async function readLabelText(imageDataUrl: string): Promise<string> {
   const worker = await getWorker();

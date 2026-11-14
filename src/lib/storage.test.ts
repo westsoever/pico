@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { Rating, TasteProfile } from '../types/coffee';
-import { loadUserData, saveRating, saveUserData } from './storage';
+import { getCoffeeById } from './catalog';
+import { exportJournal, getRatingForCoffee, importJournal, loadUserData, saveRating, saveUserData } from './storage';
 
 const STORAGE_KEY = 'pico-user-data';
 
@@ -255,5 +256,58 @@ describe('Pico user-data storage compatibility', () => {
       avgRating: 4,
       ratingCount: 1,
     });
+  });
+});
+
+describe('Pico journal backup', () => {
+  const customCoffee = {
+    id: 'custom-abc',
+    name: 'Hand-added',
+    roaster: 'Corner Roaster',
+    origin: 'Unknown',
+    process: 'Washed',
+    roastLevel: 'light',
+    flavorTags: [],
+    description: 'Added to your Pico journal.',
+    isCustom: true,
+  };
+
+  it('restores ratings and hand-added coffees from an export on an empty phone', () => {
+    saveRating(rating({ photoDataUrl: 'data:image/jpeg;base64,dGVzdA==' }));
+    saveRating(rating({ coffeeId: 'custom-abc', stars: 2 }));
+    localStorage.setItem('pico-custom-coffees', JSON.stringify([customCoffee]));
+    const backup = exportJournal();
+
+    localStorage.clear();
+    expect(importJournal(backup)).toEqual({ ratings: 2, coffees: 1 });
+
+    expect(loadUserData().ratings.map(({ coffeeId }) => coffeeId).sort()).toEqual(['custom-abc', 'fixture-ethiopia']);
+    expect(getCoffeeById('custom-abc')?.name).toBe('Hand-added');
+    expect(importJournal(backup)).toEqual({ ratings: 0, coffees: 0 });
+  });
+
+  it('keeps the newer rating when both the phone and the backup have the coffee', () => {
+    saveRating(rating({ coffeeId: 'a', stars: 2, ratedAt: '2026-08-01T00:00:00.000Z' }));
+    saveRating(rating({ coffeeId: 'b', stars: 2, ratedAt: '2026-08-01T00:00:00.000Z' }));
+    const backup = JSON.stringify({
+      ratings: [
+        rating({ coffeeId: 'a', stars: 5, ratedAt: '2026-09-01T00:00:00.000Z' }),
+        rating({ coffeeId: 'b', stars: 5, ratedAt: '2026-07-01T00:00:00.000Z' }),
+        rating({ coffeeId: 'c', photoDataUrl: 'javascript:alert(1)' }),
+      ],
+      customCoffees: [{ ...customCoffee, id: 'fixture-ethiopia' }],
+    });
+
+    expect(importJournal(backup)).toEqual({ ratings: 2, coffees: 0 });
+    const stars = Object.fromEntries(loadUserData().ratings.map((r) => [r.coffeeId, r.stars]));
+    expect(stars).toEqual({ a: 5, b: 2, c: 4 });
+    expect(getRatingForCoffee('c')).not.toHaveProperty('photoDataUrl');
+  });
+
+  it('rejects a file that is not a backup and leaves the journal alone', () => {
+    saveRating(rating());
+    expect(() => importJournal('not json')).toThrow('not a Pico backup');
+    expect(() => importJournal('{"ratings":{}}')).toThrow('not a Pico backup');
+    expect(loadUserData().ratings).toHaveLength(1);
   });
 });

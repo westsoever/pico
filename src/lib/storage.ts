@@ -9,6 +9,7 @@ import {
   type Rating,
   type UserData,
 } from '../types/coffee';
+import { loadCustomCoffees, mergeCustomCoffees } from './catalog';
 import { computeTasteProfile } from './taste-profile';
 
 const STORAGE_KEY = 'pico-user-data';
@@ -95,7 +96,9 @@ function sanitizeRating(value: unknown): Rating | null {
     ratedAt,
   };
 
-  if (typeof value.photoDataUrl === 'string') rating.photoDataUrl = value.photoDataUrl;
+  if (typeof value.photoDataUrl === 'string' && value.photoDataUrl.startsWith('data:image/')) {
+    rating.photoDataUrl = value.photoDataUrl;
+  }
   const brew = sanitizeBrewJournal(value.brew);
   if (brew) rating.brew = brew;
 
@@ -161,6 +164,49 @@ export function saveRating(rating: Rating): UserData {
   };
   saveUserData(sanitizedData);
   return sanitizedData;
+}
+
+export function removeRating(coffeeId: string): void {
+  const { ratings } = loadUserData();
+  saveUserData({ ratings: ratings.filter((rating) => rating.coffeeId !== coffeeId), tasteProfile: null });
+}
+
+/** The whole journal as a JSON backup file: ratings plus the coffees added by hand. */
+export function exportJournal(): string {
+  return JSON.stringify({
+    app: 'pico',
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    ratings: loadUserData().ratings,
+    customCoffees: loadCustomCoffees(),
+  });
+}
+
+/**
+ * Merges a backup made by exportJournal into this phone's journal; for a coffee in both,
+ * the newer rating wins. Throws on a file that is not a Pico backup, leaving the journal as it was.
+ */
+export function importJournal(text: string): { ratings: number; coffees: number } {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    throw new Error('This file is not a Pico backup.');
+  }
+  if (!isRecord(parsed) || !Array.isArray(parsed.ratings)) {
+    throw new Error('This file is not a Pico backup.');
+  }
+
+  const coffees = mergeCustomCoffees(Array.isArray(parsed.customCoffees) ? parsed.customCoffees : []);
+  const existing = loadUserData().ratings;
+  // Existing ratings go last so a tie keeps the one already on this phone.
+  const ratings = sanitizeRatings([...parsed.ratings, ...existing]);
+  const existingRatedAt = new Map(existing.map((rating) => [rating.coffeeId, rating.ratedAt]));
+  saveUserData({ ratings, tasteProfile: null });
+  return {
+    ratings: ratings.filter((rating) => existingRatedAt.get(rating.coffeeId) !== rating.ratedAt).length,
+    coffees,
+  };
 }
 
 export function getRatingForCoffee(coffeeId: string): Rating | undefined {

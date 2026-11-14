@@ -6,7 +6,7 @@ import { ScanView } from './ScanView';
 
 const PHOTO = 'data:image/jpeg;base64,bGFiZWw=';
 
-vi.mock('../lib/label-ocr', () => ({ readLabelText: vi.fn() }));
+vi.mock('../lib/label-ocr', () => ({ readLabelText: vi.fn(), preloadLabelReader: vi.fn() }));
 
 // The real capture resizes through canvas, which jsdom lacks.
 vi.mock('./CameraCapture', () => ({
@@ -113,6 +113,17 @@ describe('ScanView label scanning', () => {
     await user.click(screen.getByRole('button', { name: 'Continue to rating' }));
 
     expect(onSelectCoffee).toHaveBeenCalledWith(expect.stringMatching(/^custom-/), PHOTO, true);
+  });
+
+  it('fills in the roaster read from the label when adding a coffee by hand', async () => {
+    readLabel.mockResolvedValue('FIXTURE ROASTERS\nBrand new lot');
+    const { user, scan, results } = renderScan();
+
+    await scan();
+    await user.click(await results().findByRole('button', { name: 'Add it' }));
+
+    expect(screen.getByRole('textbox', { name: 'Roaster' })).toHaveValue('Fixture Roasters');
+    expect(screen.getByRole('textbox', { name: 'Coffee name' })).toHaveValue('');
   });
 
   it('offers search when the label reader cannot start', async () => {

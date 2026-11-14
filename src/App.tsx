@@ -5,7 +5,7 @@ import { CoffeeDetail } from './components/CoffeeDetail';
 import { RepertoireView } from './components/RepertoireView';
 import { YouView } from './components/YouView';
 import { removeCustomCoffee } from './lib/catalog';
-import { saveRating } from './lib/storage';
+import { removeRating, saveRating } from './lib/storage';
 import type { Rating } from './types/coffee';
 
 interface AppRoute {
@@ -185,6 +185,8 @@ function App() {
   const handleSave = (rating: Omit<Rating, 'ratedAt'>) => {
     try {
       saveRating({ ...rating, ratedAt: new Date().toISOString() });
+      // Ask the browser not to evict the journal under storage pressure; a no-op where unsupported.
+      void navigator.storage?.persist?.().catch(() => undefined);
       pendingCustomId.current = undefined;
       setRefreshKey((k) => k + 1);
       setNotice({ message: 'Saved to your coffee journal.', tone: 'status' });
@@ -205,12 +207,28 @@ function App() {
     }
   };
 
+  const handleRemove = (coffeeId: string) => {
+    if (!window.confirm('Remove this coffee from your journal?')) return;
+    try {
+      removeRating(coffeeId);
+      // A coffee you added yourself only exists for your journal, so it goes too.
+      if (coffeeId.startsWith('custom-')) removeCustomCoffee(coffeeId);
+      setRefreshKey((k) => k + 1);
+      setNotice({ message: 'Removed from your journal.', tone: 'status' });
+      reportDirty(false);
+      navigate(tabHash('repertoire'));
+    } catch {
+      setNotice({ message: 'Could not remove this coffee. Please try again.', tone: 'error' });
+    }
+  };
+
   const content = selectedCoffeeId ? (
     <CoffeeDetail
       key={selectedCoffeeId}
       coffeeId={selectedCoffeeId}
       pendingPhoto={pendingPhoto}
       onSave={handleSave}
+      onRemove={handleRemove}
       onBack={handleBack}
       onDirtyChange={reportDirty}
       onSelectCoffee={(id) => {
@@ -229,6 +247,7 @@ function App() {
       onSelectCoffee={handleSelectCoffee}
       refreshKey={refreshKey}
       onDiscover={() => navigateToTab('scan')}
+      onNotice={(message, tone) => setNotice({ message, tone })}
     />
   ) : (
     <YouView
@@ -241,12 +260,7 @@ function App() {
   );
 
   return (
-    <Layout
-      activeTab={activeTab}
-      onTabChange={navigateToTab}
-      title={selectedCoffeeId ? 'Coffee details' : undefined}
-      subtitle={selectedCoffeeId ? 'Taste, rate, and remember this coffee' : undefined}
-    >
+    <Layout activeTab={activeTab} onTabChange={navigateToTab}>
       {content}
       {notice && (
         <div

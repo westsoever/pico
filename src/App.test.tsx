@@ -21,7 +21,7 @@ describe('Pico app interactions', () => {
     );
 
     expect(
-      await screen.findByRole('heading', { level: 2, name: 'Halo Hartume' }),
+      await screen.findByRole('heading', { level: 1, name: 'Halo Hartume' }),
     ).toBeInTheDocument();
     expect(window.location.hash).toBe('#/coffee/fixture-ethiopia?from=discover');
 
@@ -84,7 +84,7 @@ describe('Pico app interactions', () => {
     window.location.hash = '#/coffee/fixture-ethiopia?from=journal';
     fireEvent(window, new HashChangeEvent('hashchange'));
     expect(
-      await screen.findByRole('heading', { level: 2, name: 'Halo Hartume' }),
+      await screen.findByRole('heading', { level: 1, name: 'Halo Hartume' }),
     ).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: '← Back' }));
@@ -97,12 +97,12 @@ describe('Pico app interactions', () => {
     window.location.hash = '#/discover';
     render(<App />);
 
-    await user.click(screen.getByRole('button', { name: '+ Add coffee' }));
+    await user.click(screen.getByRole('button', { name: 'Add a coffee' }));
     await user.type(screen.getByRole('textbox', { name: 'Coffee name' }), 'Test Lot');
     await user.type(screen.getByRole('textbox', { name: 'Roaster' }), 'Test Roaster');
     await user.click(screen.getByRole('button', { name: 'Continue to rating' }));
 
-    expect(await screen.findByRole('heading', { level: 2, name: 'Test Lot' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Test Lot' })).toBeInTheDocument();
     expect(JSON.parse(localStorage.getItem('pico-custom-coffees') ?? '[]')).toHaveLength(1);
 
     await user.click(screen.getByRole('button', { name: 'Cancel' }));
@@ -185,5 +185,21 @@ describe('Pico app interactions', () => {
     expect(confirm).toHaveBeenCalledTimes(2);
     expect(window.location.hash).toBe('#/coffee/fixture-ethiopia?from=discover');
     expect(screen.getByRole('textbox', { name: /Tasting note/i })).toHaveValue('Unsaved');
+  });
+
+  it('removes a rated coffee from the journal after confirming', async () => {
+    const user = userEvent.setup();
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
+    localStorage.setItem('pico-user-data', JSON.stringify({
+      ratings: [{ coffeeId: 'fixture-ethiopia', stars: 4, flavorTags: [], note: '', ratedAt: '2026-11-14T00:00:00.000Z' }],
+    }));
+    window.location.hash = '#/coffee/fixture-ethiopia?from=journal';
+    render(<App />);
+
+    await user.click(screen.getByRole('button', { name: 'Remove from journal' }));
+
+    expect(await screen.findByRole('heading', { level: 1, name: 'Journal' })).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('Removed from your journal.');
+    expect(JSON.parse(localStorage.getItem('pico-user-data') ?? '{}').ratings).toEqual([]);
   });
 });
