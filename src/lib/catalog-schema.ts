@@ -2,6 +2,7 @@ import {
   FLAVOR_TAGS,
   ROAST_STYLES,
   type Coffee,
+  type FlavorTag,
   type RoastStyle,
 } from '../types/coffee.ts';
 
@@ -36,7 +37,6 @@ export function catalogEntryProblems(value: unknown): string[] {
   if (value.scaScore !== undefined && !(typeof value.scaScore === 'number' && Number.isFinite(value.scaScore))) {
     problems.push('scaScore must be a number');
   }
-  if (value.barcode !== undefined && typeof value.barcode !== 'string') problems.push('barcode must be text');
   return problems;
 }
 
@@ -82,7 +82,6 @@ export function parseCatalogCoffee(value: unknown): Coffee | undefined {
     scaScore: value.scaScore,
     flavorTags: value.flavorTags,
     description: value.description,
-    barcode: value.barcode,
     roasterCity: optionalText(value.roasterCity),
     region: optionalText(value.region),
     producer: optionalText(value.producer),
@@ -110,4 +109,35 @@ export function parseCatalog(entries: unknown): Coffee[] {
     if (coffee && !byId.has(coffee.id)) byId.set(coffee.id, coffee);
   }
   return [...byId.values()];
+}
+
+/**
+ * Pico's own map from roaster tasting-note words to its 10 flavor tags.
+ * Written for Pico (not copied from the SCA/WCR flavor wheel). Words match whole, plurals included.
+ */
+const NOTE_WORDS: Record<FlavorTag, string[]> = {
+  berry: ['berry', 'berries', 'blackberry', 'blackcurrant', 'cassis', 'raspberry', 'strawberry', 'blueberry', 'cranberry', 'redcurrant', 'red currant', 'blackcurrant', 'currant', 'gooseberry', 'lingonberry', 'elderberry', 'boysenberry', 'mulberry', 'forest fruit'],
+  citrus: ['citrus', 'lemon', 'lime', 'orange', 'grapefruit', 'bergamot', 'mandarin', 'tangerine', 'clementine', 'yuzu', 'kumquat', 'pomelo'],
+  fruity: ['fruit', 'fruity', 'apple', 'pear', 'peach', 'apricot', 'plum', 'nectarine', 'cherry', 'grape', 'raisin', 'fig', 'date', 'prune', 'mango', 'pineapple', 'papaya', 'passion fruit', 'passionfruit', 'lychee', 'melon', 'watermelon', 'banana', 'kiwi', 'guava', 'rhubarb', 'pomegranate', 'tamarind', 'jam', 'tropical', 'cider'],
+  floral: ['floral', 'florals', 'flower', 'flowers', 'jasmine', 'rose', 'hibiscus', 'lavender', 'elderflower', 'blossom', 'chamomile', 'honeysuckle', 'violet', 'lilac', 'orange blossom'],
+  chocolate: ['chocolate', 'cocoa', 'cacao', 'mocha', 'brownie'],
+  nutty: ['nut', 'nuts', 'nutty', 'hazelnut', 'almond', 'pecan', 'walnut', 'peanut', 'cashew', 'macadamia', 'pistachio', 'marzipan', 'praline'],
+  caramel: ['caramel', 'toffee', 'brown sugar', 'cane sugar', 'molasses', 'honey', 'maple', 'syrup', 'butterscotch', 'panela', 'fudge', 'dulce de leche', 'vanilla', 'candy', 'candied'],
+  spice: ['spice', 'spices', 'spicy', 'cinnamon', 'clove', 'nutmeg', 'cardamom', 'pepper', 'ginger', 'anise', 'licorice', 'liquorice'],
+  bright: ['bright', 'juicy', 'tart', 'crisp', 'lively', 'zesty', 'vibrant', 'sparkling', 'acidity', 'black tea'],
+  'heavy-body': ['full body', 'full-bodied', 'heavy', 'syrupy', 'creamy', 'velvety', 'round body'],
+};
+
+/** Whole words, plurals tolerated: "blackberries" finds "blackberry", "almonds" finds "almond". */
+const NOTE_PATTERNS = (Object.entries(NOTE_WORDS) as [FlavorTag, string[]][]).map(([tag, words]) => {
+  const stems = words.map((word) => word.replace(/y$/, '(?:y|ie)').replace(/ /g, '[\\s-]+'));
+  return [tag, new RegExp(`\\b(?:${stems.join('|')})s?\\b`, 'i')] as const;
+});
+
+/** Flavor tags for a coffee from the roaster's tasting notes, in Pico's tag order. */
+export function flavorTagsFromNotes(notes: string[]): FlavorTag[] {
+  const text = notes.join(' · ');
+  const found = new Set(NOTE_PATTERNS.filter(([, pattern]) => pattern.test(text)).map(([tag]) => tag));
+  if (found.has('berry')) found.add('fruity');
+  return FLAVOR_TAGS.filter((tag) => found.has(tag));
 }

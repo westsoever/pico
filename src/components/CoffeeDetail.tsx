@@ -12,6 +12,7 @@ interface CoffeeDetailProps {
   coffeeId: string;
   pendingPhoto?: string;
   onSave: (rating: Omit<Rating, 'ratedAt'>) => boolean;
+  onRemove?: (coffeeId: string) => void;
   onBack: () => void;
   onSelectCoffee: (coffeeId: string) => void;
   onDirtyChange?: (isDirty: boolean) => void;
@@ -23,6 +24,7 @@ export function CoffeeDetail({
   coffeeId,
   pendingPhoto,
   onSave,
+  onRemove,
   onBack,
   onSelectCoffee,
   onDirtyChange,
@@ -131,6 +133,11 @@ export function CoffeeDetail({
             onCancel={onBack}
             onDirtyChange={onDirtyChange}
           />
+          {existingRating && onRemove && (
+            <button type="button" onClick={() => onRemove(coffee.id)} className="link mt-4 text-sm !text-pico-danger">
+              Remove from journal
+            </button>
+          )}
         </section>
 
         <section aria-labelledby="details-heading">

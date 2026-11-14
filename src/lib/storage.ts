@@ -163,6 +163,11 @@ export function saveRating(rating: Rating): UserData {
   return sanitizedData;
 }
 
+export function removeRating(coffeeId: string): void {
+  const { ratings } = loadUserData();
+  saveUserData({ ratings: ratings.filter((rating) => rating.coffeeId !== coffeeId), tasteProfile: null });
+}
+
 export function getRatingForCoffee(coffeeId: string): Rating | undefined {
   return loadUserData().ratings.find((r) => r.coffeeId === coffeeId);
 }

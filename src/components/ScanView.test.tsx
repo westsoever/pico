@@ -115,6 +115,17 @@ describe('ScanView label scanning', () => {
     expect(onSelectCoffee).toHaveBeenCalledWith(expect.stringMatching(/^custom-/), PHOTO, true);
   });
 
+  it('fills in the roaster read from the label when adding a coffee by hand', async () => {
+    readLabel.mockResolvedValue('FIXTURE ROASTERS\nBrand new lot');
+    const { user, scan, results } = renderScan();
+
+    await scan();
+    await user.click(await results().findByRole('button', { name: 'Add it' }));
+
+    expect(screen.getByRole('textbox', { name: 'Roaster' })).toHaveValue('Fixture Roasters');
+    expect(screen.getByRole('textbox', { name: 'Coffee name' })).toHaveValue('');
+  });
+
   it('offers search when the label reader cannot start', async () => {
     readLabel.mockRejectedValue(new Error('offline'));
     const { scan, results } = renderScan();

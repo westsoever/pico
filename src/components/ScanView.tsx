@@ -86,6 +86,8 @@ export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
   const matching = (isSearching ? searchCoffees(query, allCoffees.length) : allCoffees)
     .filter((coffee) => roaster === 'all' || coffee.roaster === roaster);
   const results = matching.slice(0, visibleCount);
+  const bestMatch = scan.kind === 'matches' ? scan.matches[0] : undefined;
+  const labelRoaster = bestMatch?.matched.includes(bestMatch.coffee.roaster) ? bestMatch.coffee.roaster : undefined;
 
   const readLabel = async (dataUrl: string) => {
     const requestId = ++scanRequestRef.current;
@@ -172,7 +174,7 @@ export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
           {scan.kind === 'reading' && (
             <p role="status" className="card flex items-center gap-3 p-4 text-sm font-medium text-pico-brand-strong">
               <span aria-hidden="true" className="h-3 w-3 animate-pulse rounded-full bg-pico-accent" />
-              Reading label…
+              Reading label… The first scan takes longer while the reader loads.
             </p>
           )}
 
@@ -256,6 +258,7 @@ export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
               </p>
             )}
             <ManualCoffeeForm
+              initialRoaster={labelRoaster}
               onSubmit={handleManualSubmit}
               onCancel={() => setShowManualForm(false)}
             />

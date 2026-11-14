@@ -12,7 +12,7 @@
  */
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { catalogEntryProblems, parseCatalogCoffee } from '../src/lib/catalog-schema.ts';
+import { catalogEntryProblems, flavorTagsFromNotes, parseCatalogCoffee } from '../src/lib/catalog-schema.ts';
 import type { Coffee } from '../src/types/coffee.ts';
 
 const root = join(import.meta.dirname, '..');
@@ -58,6 +58,13 @@ for (const file of batchFiles) {
     if (!coffee) {
       report.invalid.push(`${where}: ${problems.join('; ') || 'custom coffees (isCustom) cannot enter the catalog'}`);
       return;
+    }
+    if (coffee.flavorTags.length === 0) {
+      // Empty tags mean "work them out": from the notes, else keep what the catalog already has.
+      const known = catalog.get(coffee.id);
+      const derived = flavorTagsFromNotes(coffee.tastingNotes ?? known?.tastingNotes ?? []);
+      coffee.flavorTags = derived.length > 0 ? derived : known?.flavorTags ?? [];
+      if (derived.length > 0) report.warnings.push(`${coffee.id}: flavorTags filled from notes: ${derived.join(', ')}`);
     }
     const warn = (merged: Coffee) => {
       const dropped = Object.keys(entry as object).filter((key) => !(key in coffee));

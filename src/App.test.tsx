@@ -186,4 +186,20 @@ describe('Pico app interactions', () => {
     expect(window.location.hash).toBe('#/coffee/fixture-ethiopia?from=discover');
     expect(screen.getByRole('textbox', { name: /Tasting note/i })).toHaveValue('Unsaved');
   });
+
+  it('removes a rated coffee from the journal after confirming', async () => {
+    const user = userEvent.setup();
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
+    localStorage.setItem('pico-user-data', JSON.stringify({
+      ratings: [{ coffeeId: 'fixture-ethiopia', stars: 4, flavorTags: [], note: '', ratedAt: '2026-11-14T00:00:00.000Z' }],
+    }));
+    window.location.hash = '#/coffee/fixture-ethiopia?from=journal';
+    render(<App />);
+
+    await user.click(screen.getByRole('button', { name: 'Remove from journal' }));
+
+    expect(await screen.findByRole('heading', { level: 1, name: 'Journal' })).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('Removed from your journal.');
+    expect(JSON.parse(localStorage.getItem('pico-user-data') ?? '{}').ratings).toEqual([]);
+  });
 });

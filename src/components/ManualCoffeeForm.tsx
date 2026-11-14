@@ -5,13 +5,15 @@ import { COFFEE_PROCESSES, ROAST_LEVEL_LABELS } from '../types/coffee';
 interface ManualCoffeeFormProps {
   onSubmit: (input: ManualCoffeeInput) => void;
   onCancel?: () => void;
+  /** Roaster read from the label, so the person only types the coffee name. */
+  initialRoaster?: string;
 }
 
 const inputClassName = 'field';
 
-export function ManualCoffeeForm({ onSubmit, onCancel }: ManualCoffeeFormProps) {
+export function ManualCoffeeForm({ onSubmit, onCancel, initialRoaster }: ManualCoffeeFormProps) {
   const [name, setName] = useState('');
-  const [roaster, setRoaster] = useState('');
+  const [roaster, setRoaster] = useState(initialRoaster ?? '');
   const [origin, setOrigin] = useState('');
   const [process, setProcess] = useState<string>('washed');
   const [customProcess, setCustomProcess] = useState('');

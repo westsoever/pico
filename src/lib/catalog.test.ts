@@ -23,7 +23,6 @@ const validCustomCoffee: Coffee = {
   scaScore: 86,
   flavorTags: ['caramel', 'citrus'],
   description: 'A valid persisted custom coffee.',
-  barcode: '123456789',
   isCustom: true,
 };
 

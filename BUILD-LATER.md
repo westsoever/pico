@@ -5,7 +5,6 @@ Features deferred from the current local-first product. Pico now covers **discov
 | Feature | Notes |
 |---------|-------|
 | Smarter label scan | On-device text reading (Tesseract) + catalog matching is built; next: AI vision for curved/low-light bags and unknown coffees |
-| Barcode database | Full product barcode coverage beyond seed data |
 | User accounts + sync | Backend, auth, cross-device persistence |
 | Community ratings | Aggregate scores from all users |
 | Marketplace / buy | Roaster links, affiliate purchases |
