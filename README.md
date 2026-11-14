@@ -40,7 +40,7 @@ Pushes to `main` also deploy automatically via GitHub Actions.
 
 ## Core loop
 
-1. **Discover** — Scan a coffee bag to find it, or search, browse by roast, or add details from a bag
+1. **Discover** — Scan a coffee bag to find it, or search, browse by roaster, or add details from a bag
 2. **Rate** — Save stars, flavor tags, and a tasting note
 3. **Journal** — Revisit coffees, photos, notes, and optional brew recipes
 4. **Taste** — See your preference patterns and explainable recommendations
@@ -54,12 +54,12 @@ The default flow stays intentionally quick. Enthusiasts can expand **Brew detail
 - **Scan a coffee bag** (the main action): take or choose a photo of the label and Pico suggests up to three catalog coffees under "Is it one of these?". Tap one to open it with the photo attached to your rating. "None of these" opens search pre-filled with the most distinctive words read from the label, and "Add it" opens the manual form.
   - Text is read on the device with [tesseract.js](https://github.com/naptha/tesseract.js) (English). The OCR engine is loaded only when you first scan, and on that first scan it downloads about 7 MB of engine and language data from the jsDelivr CDN, which the browser then caches. The photo itself is never uploaded.
   - Matching (`src/lib/label-match.ts`) scores roaster and coffee name highest, then producer, region, origin, variety, and tasting notes. It tolerates OCR typos and words split across lines, folds Danish letters and accents, understands Danish country names such as "Etiopien", and gives rare words more weight than common ones like "Kenya". If only the roaster can be read, that roaster's coffees are suggested and marked "Roaster match only".
-- Browse the built-in catalog of coffees from Copenhagen roasters (`src/data/coffees-dk.json`) or filter it by roast level.
+- Browse every coffee in the built-in catalog from Copenhagen roasters (`src/data/coffees-dk.json`) as a grid of bag shots, or filter it by roaster. New coffees are added through batches; see [src/data/README.md](./src/data/README.md).
 - Search by coffee, roaster, city, origin, region, producer, process, variety, score, description, roaster tasting notes, or flavor.
 - Open a coffee to see the roaster's bag image, origin and region, producer, variety, altitude, process, roast level and filter/espresso style, tasting notes, and a link to the roaster's page. Coffees the roaster no longer sells are marked **Past coffee**.
 - Reopen recently tasted coffees.
 - Add a custom coffee by copying details from its bag.
-- Label photos are resized before they are stored with your rating.
+- Label photos are read at 1600 px but stored at 800 px, so dozens fit in browser storage.
 
 ### Rate and record
 
@@ -80,7 +80,7 @@ The default flow stays intentionally quick. Enthusiasts can expand **Brew detail
 
 - Review saved coffees with ratings, notes, photos, flavors, dates, and brew summaries.
 - Search across coffee metadata, notes, and displayed flavor tags.
-- Filter by favorites, attached photos, or roast level.
+- Filter by favorites or attached photos.
 - Sort by newest, highest rated, or coffee name.
 - View journal totals, average rating, and photo count.
 
@@ -104,6 +104,7 @@ The default flow stays intentionally quick. Enthusiasts can expand **Brew detail
 ## Quality checks
 
 ```bash
+npm run catalog   # dry-run check of the coffee catalog and any pending batches
 npm test
 npm run lint
 npm run build

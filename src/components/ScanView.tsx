@@ -156,7 +156,7 @@ export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
 
   return (
     <div className="space-y-10">
-      <div className="mx-auto max-w-xl">
+      <div className="max-w-xl">
         <PageHeader title="Discover" subtitle="What are you drinking? Scan the bag and Pico finds it." />
         <CameraCapture
           title="Scan a coffee bag"
