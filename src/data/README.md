@@ -19,6 +19,7 @@ coffees-dk.json     the merged catalog the app ships
 
 The merge rules:
 
+- Never hand-edit `coffees-dk.json`. Batch files stay in `batches/` and every `--write` replays all of them, so a hand edit to a coffee that a batch also lists is overwritten. Put every change in a new batch file instead.
 - Batches apply in file-name order, so a later file wins.
 - **Ids never change.** Saved ratings in people's browsers point at them. To update a coffee, reuse its id. A batch entry with a known id is merged into the existing coffee, and fields the entry leaves out are kept.
 - A new id whose roaster and name already exist under another id is held back as a likely duplicate.
@@ -68,5 +69,6 @@ The dry run warns when an entry lacks `imageUrl`, `sourceUrl`, `tastingNotes`, `
 The catalog is bundled into the app, so it adds to the first download. At about 0.9 KB per coffee (0.2 KB gzipped):
 
 - 20 coffees today: 18 KB.
-- 3,000 coffees: about 2.7 MB raw and 0.6 MB gzipped. Measured with a synthetic catalog of 3,000 entries: search takes 6 ms per keystroke and label matching 225 ms per scan. Both are fine.
+- 3,000 coffees: about 2.7 MB raw and 0.6 MB gzipped. Measured in Node on a laptop with a synthetic catalog of 3,000 entries: search takes 6 ms per keystroke and label matching 225 ms per scan. Expect a phone to be a few times slower, which is still usable.
 - Past about 5,000 coffees, load the catalog with `fetch` after the first screen instead of bundling it.
+- The roaster filter on Discover is one row of chips. It works for a few dozen roasters; past that it needs a dropdown or search.

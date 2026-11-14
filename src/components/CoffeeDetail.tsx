@@ -65,64 +65,52 @@ export function CoffeeDetail({
   const imageBox = 'aspect-square w-full rounded-[var(--radius-lg)] border border-pico-line bg-pico-tinted';
   const placeholder = (
     <div className={`${imageBox} flex items-center justify-center text-pico-accent`} aria-hidden="true">
-      <PicoMark className="h-16 w-16" />
+      <PicoMark className="h-1/2 w-1/2" />
     </div>
   );
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8">
       <div>
-        <button type="button" onClick={onBack} className="link mb-5 text-sm no-underline">
+        <button type="button" onClick={onBack} className="link mb-4 text-sm no-underline">
           ← Back
         </button>
 
-        <div className="grid gap-6 md:grid-cols-[minmax(0,18rem)_1fr] md:gap-10">
-          <div className="mx-auto w-full max-w-[18rem] md:mx-0">
-            {photo ? (
-              <img src={photo} alt={`${coffee.name} coffee bag label`} className={`${imageBox} object-cover`} />
-            ) : (
-              <CoffeeImage
-                src={coffee.imageUrl}
-                alt={`${coffee.name} bag from ${coffee.roaster}`}
-                width={288}
-                className={`${imageBox} !bg-white object-contain p-3`}
-                fallback={placeholder}
-              />
-            )}
-          </div>
+        {/* Thumbnail beside the title on phones, so the stars are on screen right after a scan. */}
+        <div className="grid grid-cols-[6.5rem_minmax(0,1fr)] items-center gap-4 md:grid-cols-[14rem_minmax(0,1fr)] md:gap-8">
+          {photo ? (
+            <img src={photo} alt={`${coffee.name} coffee bag label`} className={`${imageBox} object-cover`} />
+          ) : (
+            <CoffeeImage
+              src={coffee.imageUrl}
+              alt={`${coffee.name} bag from ${coffee.roaster}`}
+              width={224}
+              className={`${imageBox} !bg-white object-contain p-2`}
+              fallback={placeholder}
+            />
+          )}
 
           <header className="min-w-0">
             <p className="eyebrow">{coffee.roaster}</p>
-            <h1 className="mt-1 font-pico-display text-4xl font-bold leading-tight tracking-tight text-pico-ink">{coffee.name}</h1>
-            <p className="mt-2 capitalize text-pico-muted">
-              {[coffee.origin, coffee.process, `${coffee.roastLevel} roast`].join(' · ')}
+            <h1 className="mt-1 font-pico-display text-[1.75rem] font-bold leading-tight tracking-tight text-pico-ink md:text-4xl">{coffee.name}</h1>
+            <p className="mt-1 text-sm text-pico-muted md:text-base">
+              {coffee.origin} · <span className="capitalize">{coffee.process}</span>
             </p>
             {coffee.available === false && (
-              <p className="tag mt-3">Past coffee · no longer sold by the roaster</p>
+              <p className="tag mt-2">Past coffee · no longer sold by the roaster</p>
             )}
             {coffee.tastingNotes && (
-              <p className="mt-4 text-lg font-medium capitalize leading-snug text-pico-brand-strong">
+              <p className="mt-2 hidden text-lg font-medium capitalize leading-snug text-pico-brand-strong md:block">
                 {coffee.tastingNotes.join(' · ')}
               </p>
             )}
-            <p className="mt-3 leading-relaxed text-pico-ink/85">{coffee.description}</p>
-            <div className="mt-4">
-              <FlavorTagList tags={coffee.flavorTags} />
-            </div>
-            {coffee.sourceUrl && (
-              <a
-                href={coffee.sourceUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="link mt-5 inline-flex items-center gap-1 text-sm"
-              >
-                View at roaster{' '}
-                <span aria-hidden="true">↗</span>
-                <span className="sr-only">(opens in a new tab)</span>
-              </a>
-            )}
           </header>
         </div>
+        {coffee.tastingNotes && (
+          <p className="mt-4 font-medium capitalize leading-snug text-pico-brand-strong md:hidden">
+            {coffee.tastingNotes.join(' · ')}
+          </p>
+        )}
       </div>
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)]">
@@ -130,10 +118,10 @@ export function CoffeeDetail({
           <h2 id="rate-heading" className="section-title">
             {existingRating ? 'Your rating' : 'Rate this coffee'}
           </h2>
-          <p className="mb-5 mt-1 text-sm text-pico-muted">
+          <p className="mb-4 mt-1 text-sm text-pico-muted">
             {existingRating
               ? `Saved ${savedDate.format(new Date(existingRating.ratedAt))}. Change anything and update.`
-              : 'Stars are enough. Add notes or a brew recipe if you want to remember more.'}
+              : 'Stars are enough. Add notes or a brew recipe if you want.'}
           </p>
           <RateForm
             coffee={coffee}
@@ -147,6 +135,10 @@ export function CoffeeDetail({
 
         <section aria-labelledby="details-heading">
           <h2 id="details-heading" className="section-title">About this coffee</h2>
+          {coffee.description && <p className="mt-3 leading-relaxed text-pico-ink/85">{coffee.description}</p>}
+          <div className="mt-3">
+            <FlavorTagList tags={coffee.flavorTags} />
+          </div>
           <dl className="mt-4 divide-y divide-pico-line text-sm">
             {details.map(({ label, value, capitalize }) => (
               <div key={label} className="grid grid-cols-[7.5rem_1fr] gap-3 py-2.5">
@@ -155,6 +147,18 @@ export function CoffeeDetail({
               </div>
             ))}
           </dl>
+          {coffee.sourceUrl && (
+            <a
+              href={coffee.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link mt-4 inline-flex items-center gap-1 text-sm"
+            >
+              View at roaster{' '}
+              <span aria-hidden="true">↗</span>
+              <span className="sr-only">(opens in a new tab)</span>
+            </a>
+          )}
         </section>
       </div>
 
