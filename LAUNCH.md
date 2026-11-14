@@ -6,11 +6,11 @@ Outreach files live outside this public repo, in the owner's vault: `~/cos/02-Pr
 
 ## Must fix before launch
 
-- [ ] **1. Journal backup.** Ratings live only in localStorage. Safari on iPhone deletes a site's stored data after 7 days without a visit, unless the site was added to the Home Screen. Build both:
+- [x] **1. Journal backup.** Done: the Journal shows a dismissible Home Screen hint on iPhone/iPad Safari once it has a rating, and has "Save backup" / "Restore backup" (JSON file, ratings + hand-added coffees, newer rating wins). Restore is also on the empty Journal, for a new phone. Ratings live only in localStorage. Safari on iPhone deletes a site's stored data after 7 days without a visit, unless the site was added to the Home Screen. Build both:
   - an "Add Pico to your Home Screen" hint after the first save (iOS Safari only, dismissible);
   - export and import of the journal as a JSON file (ratings + custom coffees), for example on the Journal page.
   About 1–2 hours. `navigator.storage.persist()` is already requested after a save, but it does not stop Safari's 7-day rule.
-- [ ] **2. Scan test on a real iPhone (owner).** Scan 10 real bags. A synthetic eval on degraded roaster photos found the right coffee in the top 3 for only 11 of 20. If it is weak, word the action "Scan to search" so people expect the fallback.
+- [ ] **2. Scan test on a real iPhone (owner).** Scan 10 real bags. A synthetic eval on degraded roaster photos found the right coffee in the top 3 for only 11 of 20. If it is weak, word the action "Scan to search" so people expect the fallback. While on the iPhone, also check: the Home Screen hint shows on the Journal in Safari (not from the Home Screen icon), "Save backup" saves a file to Files, and "Restore backup" reads it back.
 - [ ] **3. Roaster permission.** The 20 catalog coffees show roaster photos and text without permission. Send the YAMM email. Until roasters reply, decide whether to keep only facts and the roaster link, and drop photos for roasters who have not answered.
 - [ ] **4. Grow the catalog.** It has 20 coffees from 6 roasters, so most scans will miss. Use roaster replies, or 2–3 hours of manual entry from roaster shops, to reach 60–100 coffees via `src/data/batches/` and `npm run catalog` (see `src/data/README.md`). Leave `flavorTags` empty; the script fills them from tasting notes.
 
@@ -44,4 +44,5 @@ Also done:
 - iOS can choose from the photo library.
 - Tasting notes map to flavor tags (`flavorTagsFromNotes`).
 - Barcode field removed: Pico recognises bags by their label only.
-- 87 tests pass.
+- Journal backup: Home Screen hint, save and restore a JSON backup.
+- 91 tests pass.

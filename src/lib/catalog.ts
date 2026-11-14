@@ -1,6 +1,6 @@
 import catalogData from '../data/coffees-dk.json';
 import type { Coffee, ManualCoffeeInput } from '../types/coffee';
-import { hasCoffeeFields, parseCatalog } from './catalog-schema';
+import { hasCoffeeFields, parseCatalog, parseCatalogCoffee } from './catalog-schema';
 
 export { parseCatalog, parseCatalogCoffee } from './catalog-schema';
 
@@ -12,7 +12,7 @@ function isCoffee(value: unknown): value is Coffee {
 
 const catalog: Coffee[] = parseCatalog(catalogData);
 
-function loadCustomCoffees(): Coffee[] {
+export function loadCustomCoffees(): Coffee[] {
   try {
     const raw = localStorage.getItem(CUSTOM_COFFEES_KEY);
     if (!raw) return [];
@@ -111,6 +111,22 @@ export function addCustomCoffee(input: ManualCoffeeInput): Coffee {
   saveCustomCoffees(customCoffees);
 
   return coffee;
+}
+
+/** Adds valid custom coffees from a backup; coffees already on this phone are kept. Returns how many were added. */
+export function mergeCustomCoffees(candidates: unknown[]): number {
+  const customCoffees = loadCustomCoffees();
+  const knownIds = new Set([...catalog, ...customCoffees].map(({ id }) => id));
+  const added: Coffee[] = [];
+  for (const candidate of candidates) {
+    // parseCatalogCoffee also drops unsafe optional fields (e.g. non-http links) from an untrusted file.
+    const coffee = isCoffee(candidate) ? parseCatalogCoffee({ ...candidate, isCustom: undefined }) : undefined;
+    if (!coffee || !coffee.id.startsWith('custom-') || knownIds.has(coffee.id)) continue;
+    knownIds.add(coffee.id);
+    added.push({ ...coffee, isCustom: true });
+  }
+  if (added.length > 0) saveCustomCoffees([...customCoffees, ...added]);
+  return added.length;
 }
 
 export function removeCustomCoffee(id: string): void {

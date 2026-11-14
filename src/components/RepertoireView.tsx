@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { getCoffeeById } from '../lib/catalog';
-import { loadUserData } from '../lib/storage';
+import { exportJournal, importJournal, loadUserData } from '../lib/storage';
 import { BREW_METHOD_OPTIONS, FLAVOR_TAG_LABELS } from '../types/coffee';
 import type { Coffee, Rating } from '../types/coffee';
 import { CoffeeImage } from './CoffeeImage';
@@ -12,6 +12,7 @@ interface RepertoireViewProps {
   onSelectCoffee: (coffeeId: string) => void;
   refreshKey: number;
   onDiscover?: () => void;
+  onNotice?: (message: string, tone: 'status' | 'error') => void;
 }
 
 type JournalEntry = {
@@ -100,8 +101,120 @@ function JournalEntryCard({
   );
 }
 
-export function RepertoireView({ onSelectCoffee, refreshKey, onDiscover }: RepertoireViewProps) {
+const HOME_HINT_KEY = 'pico-home-screen-hint-dismissed';
+
+/** Safari on iPhone/iPad wipes a site's storage after 7 days without a visit, unless it runs from the Home Screen. */
+function HomeScreenHint() {
+  // navigator.standalone exists only on iOS/iPadOS, and is false outside Home Screen mode.
+  const inIosBrowser = (navigator as Navigator & { standalone?: boolean }).standalone === false;
+  const [dismissed, setDismissed] = useState(() => {
+    try {
+      return localStorage.getItem(HOME_HINT_KEY) === '1';
+    } catch {
+      return false;
+    }
+  });
+  if (!inIosBrowser || dismissed) return null;
+
+  const dismiss = () => {
+    setDismissed(true);
+    try {
+      localStorage.setItem(HOME_HINT_KEY, '1');
+    } catch {
+      // Dismissal only lasts this visit when storage is unavailable.
+    }
+  };
+
+  return (
+    <section aria-label="Keep your journal" className="card mb-5 p-4">
+      <h2 className="font-semibold text-pico-ink">Keep your journal safe</h2>
+      <p className="mt-1 text-sm text-pico-muted">
+        Safari deletes a website’s data after 7 days without a visit. Add Pico to your Home Screen to keep
+        your journal: tap Share, then “Add to Home Screen”.
+      </p>
+      <button type="button" onClick={dismiss} className="btn btn-secondary mt-3">
+        Got it
+      </button>
+    </section>
+  );
+}
+
+function JournalBackup({
+  canExport,
+  onImported,
+  onNotice,
+}: {
+  canExport: boolean;
+  onImported: () => void;
+  onNotice?: (message: string, tone: 'status' | 'error') => void;
+}) {
+  const fileInput = useRef<HTMLInputElement>(null);
+
+  const saveBackup = () => {
+    const url = URL.createObjectURL(new Blob([exportJournal()], { type: 'application/json' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `pico-journal-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    // Revoking right away can cancel the download in some browsers.
+    window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
+  };
+
+  const restoreBackup = async (file: File | undefined) => {
+    if (!file) return;
+    try {
+      const { ratings, coffees } = importJournal(await file.text());
+      onImported();
+      onNotice?.(
+        ratings === 0 && coffees === 0
+          ? 'Your journal already has everything in this backup.'
+          : `Restored ${ratings} ${ratings === 1 ? 'rating' : 'ratings'} from your backup.`,
+        'status',
+      );
+    } catch (error) {
+      const storageFull = error instanceof DOMException && error.name === 'QuotaExceededError';
+      onNotice?.(
+        storageFull
+          ? 'Not enough storage on this phone to restore this backup.'
+          : error instanceof Error && error.message.startsWith('This file')
+            ? error.message
+            : 'Could not restore this backup.',
+        'error',
+      );
+    } finally {
+      if (fileInput.current) fileInput.current.value = '';
+    }
+  };
+
+  return (
+    <div className="flex flex-wrap justify-center gap-2">
+      {canExport && (
+        <button type="button" onClick={saveBackup} className="btn btn-secondary">
+          Save backup
+        </button>
+      )}
+      <button type="button" onClick={() => fileInput.current?.click()} className="btn btn-secondary">
+        Restore backup
+      </button>
+      <input
+        ref={fileInput}
+        type="file"
+        accept="application/json,.json"
+        className="sr-only"
+        tabIndex={-1}
+        aria-label="Backup file"
+        onChange={(event) => void restoreBackup(event.target.files?.[0])}
+      />
+    </div>
+  );
+}
+
+export function RepertoireView({ onSelectCoffee, refreshKey, onDiscover, onNotice }: RepertoireViewProps) {
   void refreshKey;
+  const [, setImportCount] = useState(0);
+  const onImported = () => setImportCount((count) => count + 1);
   const { ratings } = loadUserData();
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState<Filter>('all');
@@ -163,6 +276,10 @@ export function RepertoireView({ onSelectCoffee, refreshKey, onDiscover }: Reper
               Find a coffee
             </button>
           )}
+          <p className="mt-6 text-sm text-pico-muted">Moving from another phone?</p>
+          <div className="mt-2">
+            <JournalBackup canExport={false} onImported={onImported} onNotice={onNotice} />
+          </div>
         </section>
       </>
     );
@@ -177,6 +294,8 @@ export function RepertoireView({ onSelectCoffee, refreshKey, onDiscover }: Reper
         title="Journal"
         subtitle={`${entries.length} ${entries.length === 1 ? 'coffee' : 'coffees'} rated · ${average.toFixed(1)}★ on average`}
       />
+
+      <HomeScreenHint />
 
       <section aria-label="Journal controls" className="space-y-3">
         <label className="relative block">
@@ -239,6 +358,14 @@ export function RepertoireView({ onSelectCoffee, refreshKey, onDiscover }: Reper
           </button>
         </div>
       )}
+
+      <section aria-label="Back up your journal" className="mt-10 border-t border-pico-line pt-6 text-center">
+        <h2 className="section-title">Back up your journal</h2>
+        <p className="mx-auto mt-1 mb-4 max-w-sm text-sm text-pico-muted">
+          Your journal lives only on this phone. Save a backup file now and then, and restore it on any phone.
+        </p>
+        <JournalBackup canExport onImported={onImported} onNotice={onNotice} />
+      </section>
     </div>
   );
 }

@@ -247,6 +247,7 @@ function App() {
       onSelectCoffee={handleSelectCoffee}
       refreshKey={refreshKey}
       onDiscover={() => navigateToTab('scan')}
+      onNotice={(message, tone) => setNotice({ message, tone })}
     />
   ) : (
     <YouView

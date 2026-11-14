@@ -52,4 +52,18 @@ describe('RepertoireView controls', () => {
     expect(names).toEqual(['Gatomboya', 'Halo Hartume']);
     expect(JSON.parse(localStorage.getItem('pico-user-data') ?? '{}').ratings).toHaveLength(2);
   });
+
+  it('restores a backup file from the empty journal', async () => {
+    const user = userEvent.setup();
+    const onNotice = vi.fn();
+    render(<RepertoireView onSelectCoffee={vi.fn()} refreshKey={0} onNotice={onNotice} />);
+    expect(screen.queryByRole('button', { name: 'Save backup' })).not.toBeInTheDocument();
+
+    const file = new File([JSON.stringify({ ratings })], 'pico-journal.json', { type: 'application/json' });
+    await user.upload(screen.getByLabelText('Backup file'), file);
+
+    expect(await screen.findByRole('heading', { name: 'Gatomboya' })).toBeInTheDocument();
+    expect(onNotice).toHaveBeenCalledWith('Restored 2 ratings from your backup.', 'status');
+    expect(screen.getByRole('button', { name: 'Save backup' })).toBeInTheDocument();
+  });
 });
