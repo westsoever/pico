@@ -181,6 +181,8 @@ export function CoffeeDetail({
               href={coffee.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
+              data-goatcounter-click={`roaster-${coffee.id}`}
+              data-goatcounter-title={coffee.name}
               className="link mt-4 inline-flex items-center gap-1 text-sm"
             >
               View at roaster{' '}
