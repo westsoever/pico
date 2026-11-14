@@ -10,6 +10,7 @@ on:
       - 'app-icon.svg'
       - 'favicon.svg'
       - 'apple-touch-icon.png'
+      - 'icon-*.png'
       - 'manifest.webmanifest'
       - '.nojekyll'
   workflow_dispatch:
@@ -48,14 +49,14 @@ jobs:
           cp -r dist docs
           cp -r dist/assets assets
           cp dist/index.html index.html
-          cp dist/app-icon.svg dist/favicon.svg dist/apple-touch-icon.png dist/manifest.webmanifest .
+          cp dist/app-icon.svg dist/favicon.svg dist/apple-touch-icon.png dist/icon-*.png dist/manifest.webmanifest .
           touch .nojekyll docs/.nojekyll
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Deploy site to GitHub Pages
           # One line: the action only reads the first line of a multi-line pattern.
-          file_pattern: index.html assets/** docs/** app-icon.svg favicon.svg apple-touch-icon.png manifest.webmanifest .nojekyll
+          file_pattern: index.html assets/** docs/** app-icon.svg favicon.svg apple-touch-icon.png icon-*.png manifest.webmanifest .nojekyll
 
       - uses: peaceiris/actions-gh-pages@v4
         with:

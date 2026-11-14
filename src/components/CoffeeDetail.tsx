@@ -62,7 +62,7 @@ export function CoffeeDetail({
     { label: 'Roast', value: roast },
     { label: "Roaster's notes", value: coffee.tastingNotes?.join(', '), capitalize: true },
     { label: 'Roaster', value: [coffee.roaster, coffee.roasterCity].filter(Boolean).join(', ') },
-    { label: 'SCA score', value: coffee.scaScore?.toString() },
+    { label: 'Cupping score', value: coffee.scaScore?.toString() },
   ].filter((detail) => detail.value);
   const imageBox = 'aspect-square w-full rounded-[var(--radius-lg)] border border-pico-line bg-pico-tinted';
   const placeholder = (

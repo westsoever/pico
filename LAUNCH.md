@@ -20,9 +20,9 @@ Outreach files live outside this public repo, in the owner's vault: `~/cos/02-Pr
 - [ ] **6. Usage numbers.** Add a cookie-free counter such as GoatCounter or Plausible. It needs no consent banner.
 - [ ] **7. About and privacy page.** Say there is no account and no tracking, data stays on the phone, and label photos are never uploaded. Name who runs Pico and give a contact.
 - [ ] **8. First scan is slow.** The OCR reader downloads about 7 MB on first use. The status line now says so. Consider preloading it when the scan button is tapped.
-- [ ] **9. Android icon.** The manifest only has an SVG. Add 192px and 512px PNG icons.
-- [ ] **10. Link previews.** Add Open Graph title, description, and image to `index.dev.html`.
-- [ ] **11. "SCA score" label.** Rename it to "Cupping score" in `CoffeeDetail.tsx` and `ManualCoffeeForm.tsx`. The SCA publishes no per-coffee scores; see `research/sca.md`.
+- [x] **9. Android icon.** Done: `public/icon-192.png`, `public/icon-512.png` in the manifest and the deploy copy step. The manifest only has an SVG. Add 192px and 512px PNG icons.
+- [x] **10. Link previews.** Done (image: the 512px icon). Add Open Graph title, description, and image to `index.dev.html`.
+- [x] **11. "SCA score" label.** Done. Rename it to "Cupping score" in `CoffeeDetail.tsx` and `ManualCoffeeForm.tsx`. The SCA publishes no per-coffee scores; see `research/sca.md`.
 
 ## Later (from Vivino's playbook)
 

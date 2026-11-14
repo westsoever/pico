@@ -168,7 +168,7 @@ export function ManualCoffeeForm({ onSubmit, onCancel, initialRoaster }: ManualC
 
         <div>
           <label htmlFor="coffee-sca-score" className="field-label">
-            SCA Score
+            Cupping score
           </label>
           <input
             id="coffee-sca-score"
