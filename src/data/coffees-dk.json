@@ -1,371 +1,359 @@
 [
   {
-    "roaster": "Coffee Collective",
-    "imageUrl": "https://cdn.shopify.com/s/files/1/0744/9031/5020/files/Kieni250gfront.png?v=1783513947",
-    "sourceUrl": "https://coffeecollective.dk/products/kieni-250-g",
-    "available": true,
     "id": "coffee-collective-kieni",
     "name": "Kieni",
+    "roaster": "Coffee Collective",
     "origin": "Kenya",
-    "region": "Nyeri",
-    "producer": "Kieni Cooperative",
     "process": "washed",
-    "variety": "SL28, SL34, Batian, Ruiru 11",
-    "altitude": "1600–1800 masl",
     "roastLevel": "light",
-    "roastStyle": "filter",
-    "tastingNotes": [
-      "blackcurrant",
-      "blackberry",
-      "rhubarb"
-    ],
+    "variety": "SL28, SL34, Batian, Ruiru 11",
     "flavorTags": [
       "berry",
       "fruity",
       "heavy-body"
     ],
     "description": "A long-running Direct Trade relationship coffee from a Nyeri cooperative, with a full, clean body and dark-berry sweetness. Also sold in an espresso roast.",
-    "roasterCity": "Copenhagen"
+    "roasterCity": "Copenhagen",
+    "region": "Nyeri",
+    "producer": "Kieni Cooperative",
+    "altitude": "1600–1800 masl",
+    "roastStyle": "filter",
+    "tastingNotes": [
+      "blackcurrant",
+      "blackberry",
+      "rhubarb"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0744/9031/5020/files/Kieni250gfront.png?v=1783513947",
+    "sourceUrl": "https://coffeecollective.dk/products/kieni-250-g",
+    "available": true
   },
   {
-    "roaster": "Coffee Collective",
-    "imageUrl": "https://cdn.shopify.com/s/files/1/0744/9031/5020/files/Vista_Hermosa_espresso_250g.png?v=1791375062",
-    "sourceUrl": "https://coffeecollective.dk/products/vista-hermosa-espresso-250g",
-    "available": true,
     "id": "coffee-collective-vista-hermosa-espresso",
     "name": "Vista Hermosa Espresso",
+    "roaster": "Coffee Collective",
     "origin": "Guatemala",
+    "process": "washed",
+    "roastLevel": "light",
+    "variety": "Bourbon, Caturra, Catuai",
+    "flavorTags": [
+      "chocolate",
+      "nutty"
+    ],
+    "description": "A balanced, clean espresso roast from the family farm that was Coffee Collective's first Direct Trade partner. Soft chocolate and nut sweetness.",
+    "roasterCity": "Copenhagen",
     "region": "Huehuetenango",
     "producer": "Vista Hermosa (Edwin Martinez)",
-    "process": "washed",
-    "variety": "Bourbon, Caturra, Catuai",
     "altitude": "1450–1880 masl",
-    "roastLevel": "light",
     "roastStyle": "espresso",
     "tastingNotes": [
       "light chocolate",
       "vanilla",
       "pecan nuts"
     ],
-    "flavorTags": [
-      "chocolate",
-      "nutty"
-    ],
-    "description": "A balanced, clean espresso roast from the family farm that was Coffee Collective's first Direct Trade partner. Soft chocolate and nut sweetness.",
-    "roasterCity": "Copenhagen"
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0744/9031/5020/files/Vista_Hermosa_espresso_250g.png?v=1791375062",
+    "sourceUrl": "https://coffeecollective.dk/products/vista-hermosa-espresso-250g",
+    "available": true
   },
   {
-    "roaster": "Coffee Collective",
-    "imageUrl": "https://cdn.shopify.com/s/files/1/0744/9031/5020/files/Mulugeta200gfront_b3980666-5076-49df-b2e5-47bf857acf9a.png?v=1789127023",
-    "sourceUrl": "https://coffeecollective.dk/products/mulugeta-anaerobic-200g",
-    "available": true,
     "id": "coffee-collective-mulugeta-anaerobic",
     "name": "Mulugeta Anaerobic",
+    "roaster": "Coffee Collective",
     "origin": "Ethiopia",
+    "process": "anaerobic",
+    "roastLevel": "light",
+    "variety": "74-158 Kurume",
+    "flavorTags": [
+      "fruity",
+      "berry"
+    ],
+    "description": "An intense, aromatic anaerobic natural from a high-altitude Sidama producer who placed in Cup of Excellence 2024. Candy-like berry up front with green apple and melon.",
+    "roasterCity": "Copenhagen",
     "region": "Sidama",
     "producer": "Mulugeta Muntasha",
-    "process": "anaerobic",
-    "variety": "74-158 Kurume",
     "altitude": "2100–2300 masl",
-    "roastLevel": "light",
     "roastStyle": "filter",
     "tastingNotes": [
       "strawberry candy",
       "green apples",
       "honeydew melon"
     ],
-    "flavorTags": [
-      "fruity",
-      "berry"
-    ],
-    "description": "An intense, aromatic anaerobic natural from a high-altitude Sidama producer who placed in Cup of Excellence 2024. Candy-like berry up front with green apple and melon.",
-    "roasterCity": "Copenhagen"
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0744/9031/5020/files/Mulugeta200gfront_b3980666-5076-49df-b2e5-47bf857acf9a.png?v=1789127023",
+    "sourceUrl": "https://coffeecollective.dk/products/mulugeta-anaerobic-200g",
+    "available": true
   },
   {
-    "roaster": "Coffee Collective",
-    "imageUrl": "https://cdn.shopify.com/s/files/1/0744/9031/5020/files/RodrigoHoyos250gfront.png?v=1783676229",
-    "sourceUrl": "https://coffeecollective.dk/products/rodrigo-hoyos-250g",
-    "available": true,
     "id": "coffee-collective-rodrigo-hoyos",
     "name": "Rodrigo Hoyos",
+    "roaster": "Coffee Collective",
     "origin": "Colombia",
-    "region": "Huila",
-    "producer": "Rodrigo Hoyos",
     "process": "washed",
-    "variety": "Pink Bourbon",
-    "altitude": "1900 masl",
     "roastLevel": "light",
-    "roastStyle": "filter",
-    "tastingNotes": [
-      "redcurrant",
-      "brown sugar",
-      "dark chocolate"
-    ],
+    "variety": "Pink Bourbon",
     "flavorTags": [
       "berry",
       "bright",
       "chocolate"
     ],
     "description": "A washed Pink Bourbon from Huila that stays bright and balanced, pairing redcurrant acidity with brown-sugar and cocoa depth.",
-    "roasterCity": "Copenhagen"
+    "roasterCity": "Copenhagen",
+    "region": "Huila",
+    "producer": "Rodrigo Hoyos",
+    "altitude": "1900 masl",
+    "roastStyle": "filter",
+    "tastingNotes": [
+      "redcurrant",
+      "brown sugar",
+      "dark chocolate"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0744/9031/5020/files/RodrigoHoyos250gfront.png?v=1783676229",
+    "sourceUrl": "https://coffeecollective.dk/products/rodrigo-hoyos-250g",
+    "available": true
   },
   {
-    "roaster": "April",
-    "imageUrl": "https://cdn.shopify.com/s/files/1/1510/0358/files/filter250g.jpg?v=1788768632",
-    "sourceUrl": "https://www.aprilcoffeeroasters.com/product/kamavindi-kenya-washed-mixed-varietals-aa",
-    "available": true,
     "id": "april-kamavindi-aa",
     "name": "Kamavindi AA",
+    "roaster": "April",
     "origin": "Kenya",
-    "producer": "Peter Mbature (Kamavindi)",
     "process": "washed",
-    "variety": "SL34, SL28 (AA)",
     "roastLevel": "light",
-    "roastStyle": "omni",
-    "tastingNotes": [
-      "blackberries",
-      "red apple",
-      "florals"
-    ],
+    "variety": "SL34, SL28 (AA)",
     "flavorTags": [
       "berry",
       "fruity",
       "floral"
     ],
     "description": "A washed AA lot from Peter Mbature's Kamavindi farm in Kenya, sold in both filter and espresso roasts with the same dark-berry and floral profile.",
-    "roasterCity": "Copenhagen"
+    "roasterCity": "Copenhagen",
+    "producer": "Peter Mbature (Kamavindi)",
+    "roastStyle": "omni",
+    "tastingNotes": [
+      "blackberries",
+      "red apple",
+      "florals"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/1510/0358/files/filter250g.jpg?v=1788768632",
+    "sourceUrl": "https://www.aprilcoffeeroasters.com/product/kamavindi-kenya-washed-mixed-varietals-aa",
+    "available": true
   },
   {
-    "roaster": "April",
-    "imageUrl": "https://cdn.shopify.com/s/files/1/1510/0358/files/espresso250g.jpg?v=1788768683",
-    "sourceUrl": "https://www.aprilcoffeeroasters.com/product/tadesse-ethiopia-natural-krume-74158",
-    "available": true,
     "id": "april-tadesse-natural",
     "name": "Tadesse Natural",
+    "roaster": "April",
     "origin": "Ethiopia",
-    "producer": "Tadesse Hanka (Tadesse)",
     "process": "natural",
-    "variety": "Krume 74158",
     "roastLevel": "light",
+    "variety": "Krume 74158",
+    "flavorTags": [
+      "fruity",
+      "citrus"
+    ],
+    "description": "A natural-process Ethiopian lot of the Kurume 74158 variety, juicy with stone fruit and mandarin. Available as filter and espresso roasts (this page is the espresso listing).",
+    "roasterCity": "Copenhagen",
+    "producer": "Tadesse Hanka (Tadesse)",
     "roastStyle": "omni",
     "tastingNotes": [
       "peach",
       "yellow plum",
       "mandarin orange"
     ],
-    "flavorTags": [
-      "fruity",
-      "citrus"
-    ],
-    "description": "A natural-process Ethiopian lot of the Kurume 74158 variety, juicy with stone fruit and mandarin. Available as filter and espresso roasts (this page is the espresso listing).",
-    "roasterCity": "Copenhagen"
+    "imageUrl": "https://cdn.shopify.com/s/files/1/1510/0358/files/espresso250g.jpg?v=1788768683",
+    "sourceUrl": "https://www.aprilcoffeeroasters.com/product/tadesse-ethiopia-natural-krume-74158",
+    "available": true
   },
   {
-    "roaster": "April",
-    "imageUrl": "https://cdn.shopify.com/s/files/1/1510/0358/files/filter250g.jpg?v=1788768632",
-    "sourceUrl": "https://www.aprilcoffeeroasters.com/product/volcan-azul-costa-rica-washed-sl28",
-    "available": true,
     "id": "april-volcan-azul",
     "name": "Volcan Azul",
+    "roaster": "April",
     "origin": "Costa Rica",
+    "process": "washed",
+    "roastLevel": "light",
+    "variety": "SL28",
+    "flavorTags": [
+      "floral",
+      "fruity"
+    ],
+    "description": "An SL28 grown on the Cardamomo plot of Don Alejo Castro's fifth-generation estate. Floral and plummy, offered in filter and espresso roasts.",
+    "roasterCity": "Copenhagen",
     "region": "Alajuela",
     "producer": "Alejo Castro (Volcan Azul)",
-    "process": "washed",
-    "variety": "SL28",
-    "roastLevel": "light",
     "roastStyle": "omni",
     "tastingNotes": [
       "florals",
       "plum",
       "stone fruit"
     ],
-    "flavorTags": [
-      "floral",
-      "fruity"
-    ],
-    "description": "An SL28 grown on the Cardamomo plot of Don Alejo Castro's fifth-generation estate. Floral and plummy, offered in filter and espresso roasts.",
-    "roasterCity": "Copenhagen"
+    "imageUrl": "https://cdn.shopify.com/s/files/1/1510/0358/files/filter250g.jpg?v=1788768632",
+    "sourceUrl": "https://www.aprilcoffeeroasters.com/product/volcan-azul-costa-rica-washed-sl28",
+    "available": true
   },
   {
-    "roaster": "Prolog",
-    "imageUrl": "https://cdn.shopify.com/s/files/1/0052/3599/8790/files/NUWASENCHI_6776d4e6-df74-498e-b507-0b7d6c30aa25.png?v=1791365027",
-    "sourceUrl": "https://prologcoffee.com/products/nuwa-senchi",
-    "available": true,
     "id": "prolog-nuwa-senchi",
     "name": "Nuwa Senchi",
+    "roaster": "Prolog",
     "origin": "Peru",
-    "region": "Lonya Grande, Amazonas",
-    "producer": "Sonia Diaz",
     "process": "washed",
-    "variety": "Geisha, Marshell, Bourbon",
-    "altitude": "1800–1950 masl",
     "roastLevel": "light",
-    "tastingNotes": [
-      "stone fruit",
-      "milk chocolate",
-      "nutty"
-    ],
+    "variety": "Geisha, Marshell, Bourbon",
     "flavorTags": [
       "fruity",
       "chocolate",
       "nutty"
     ],
     "description": "The first harvest from Sonia Diaz's Geisha, Marshell and Bourbon plants in Amazonas, and Prolog's first purchase from her. Round and sweet, with stone fruit and milk chocolate.",
-    "roasterCity": "Copenhagen"
+    "roasterCity": "Copenhagen",
+    "region": "Lonya Grande, Amazonas",
+    "producer": "Sonia Diaz",
+    "altitude": "1800–1950 masl",
+    "tastingNotes": [
+      "stone fruit",
+      "milk chocolate",
+      "nutty"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0052/3599/8790/files/NUWASENCHI_6776d4e6-df74-498e-b507-0b7d6c30aa25.png?v=1791365027",
+    "sourceUrl": "https://prologcoffee.com/products/nuwa-senchi",
+    "available": true
   },
   {
-    "roaster": "Prolog",
-    "imageUrl": "https://cdn.shopify.com/s/files/1/0052/3599/8790/files/KigariAA.png?v=1788336607",
-    "sourceUrl": "https://prologcoffee.com/products/kigari-aa",
-    "available": true,
     "id": "prolog-kigari-aa",
     "name": "Kigari AA",
+    "roaster": "Prolog",
     "origin": "Kenya",
-    "region": "Meru County",
-    "producer": "Kigari Farmers Cooperative Society",
     "process": "washed",
-    "variety": "Ruiru 11, SL28, Batian",
-    "altitude": "1600–1900 masl",
     "roastLevel": "light",
-    "tastingNotes": [
-      "red fruit",
-      "pomegranate",
-      "black tea"
-    ],
+    "variety": "Ruiru 11, SL28, Batian",
     "flavorTags": [
       "fruity",
       "bright"
     ],
     "description": "A classic Kenyan AA from a Meru cooperative of four wet mills, with lasting acidity and red-fruit sweetness. Prolog has bought from Kigari in three harvests.",
-    "roasterCity": "Copenhagen"
+    "roasterCity": "Copenhagen",
+    "region": "Meru County",
+    "producer": "Kigari Farmers Cooperative Society",
+    "altitude": "1600–1900 masl",
+    "tastingNotes": [
+      "red fruit",
+      "pomegranate",
+      "black tea"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0052/3599/8790/files/KigariAA.png?v=1788336607",
+    "sourceUrl": "https://prologcoffee.com/products/kigari-aa",
+    "available": true
   },
   {
-    "roaster": "Prolog",
-    "imageUrl": "https://cdn.shopify.com/s/files/1/0052/3599/8790/files/Diima-Danche_SQ_W.png?v=1786955987",
-    "sourceUrl": "https://prologcoffee.com/products/diima-danche",
-    "available": true,
     "id": "prolog-diima-danche",
     "name": "Diima Danche",
+    "roaster": "Prolog",
     "origin": "Ethiopia",
-    "region": "Gedeo, Gedeb",
-    "producer": "Danche Washing Station",
     "process": "natural",
-    "variety": "Heirloom",
-    "altitude": "2000–2300 masl",
     "roastLevel": "light",
-    "tastingNotes": [
-      "berry jam",
-      "violet",
-      "milk chocolate"
-    ],
+    "variety": "Heirloom",
     "flavorTags": [
       "berry",
       "floral",
       "chocolate"
     ],
     "description": "A certified-organic natural from the SNAP-owned Danche station in Gedeb, layering jammy berry with violet aromatics and a milk-chocolate finish.",
-    "roasterCity": "Copenhagen"
+    "roasterCity": "Copenhagen",
+    "region": "Gedeo, Gedeb",
+    "producer": "Danche Washing Station",
+    "altitude": "2000–2300 masl",
+    "tastingNotes": [
+      "berry jam",
+      "violet",
+      "milk chocolate"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0052/3599/8790/files/Diima-Danche_SQ_W.png?v=1786955987",
+    "sourceUrl": "https://prologcoffee.com/products/diima-danche",
+    "available": true
   },
   {
-    "roaster": "Andersen & Maillard",
-    "imageUrl": "https://cdn.shopify.com/s/files/1/0439/2956/7397/files/kenyamuthuaini.png?v=1788871758",
-    "sourceUrl": "https://www.andersenmaillard.dk/products/several-co-operatives-smallholder-farms-ruiru-sl-28-batian-washed",
-    "available": true,
     "id": "andersen-maillard-muthua-ini",
     "name": "Muthua-Ini",
+    "roaster": "Andersen & Maillard",
     "origin": "Kenya",
-    "region": "Nyeri County",
-    "producer": "Muthua-Ini Factory (Mutheka Coffee Farmers Society)",
     "process": "washed",
-    "variety": "Ruiru 11, SL28, Batian",
-    "altitude": "1675 masl",
     "roastLevel": "light",
-    "tastingNotes": [
-      "raspberry",
-      "red currant",
-      "floral"
-    ],
+    "variety": "Ruiru 11, SL28, Batian",
     "flavorTags": [
       "berry",
       "fruity",
       "floral"
     ],
     "description": "A washed Kenyan lot processed at the Muthua-Ini factory east of the Aberdares, dried on raised beds. Raspberry and red currant with a floral lift.",
-    "roasterCity": "Copenhagen"
+    "roasterCity": "Copenhagen",
+    "region": "Nyeri County",
+    "producer": "Muthua-Ini Factory (Mutheka Coffee Farmers Society)",
+    "altitude": "1675 masl",
+    "tastingNotes": [
+      "raspberry",
+      "red currant",
+      "floral"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0439/2956/7397/files/kenyamuthuaini.png?v=1788871758",
+    "sourceUrl": "https://www.andersenmaillard.dk/products/several-co-operatives-smallholder-farms-ruiru-sl-28-batian-washed",
+    "available": true
   },
   {
-    "roaster": "Andersen & Maillard",
-    "imageUrl": "https://cdn.shopify.com/s/files/1/0439/2956/7397/files/colombia_santa_monica.png?v=1777890960",
-    "sourceUrl": "https://www.andersenmaillard.dk/products/jairo-arcila-santa-monica-caturra-natural",
-    "available": true,
     "id": "andersen-maillard-santa-monica",
     "name": "Santa Monica",
+    "roaster": "Andersen & Maillard",
     "origin": "Colombia",
-    "region": "Quindío",
-    "producer": "Jairo Arcila",
     "process": "natural",
-    "variety": "Caturra",
     "roastLevel": "light",
-    "tastingNotes": [
-      "lime",
-      "red apple",
-      "honey",
-      "brown spices"
-    ],
+    "variety": "Caturra",
     "flavorTags": [
       "citrus",
       "fruity",
       "spice"
     ],
     "description": "A Caturra natural from third-generation grower Jairo Arcila, fermented aerobically for 45 hours before drying. Fruit-forward, with lime, apple and warm spice.",
-    "roasterCity": "Copenhagen"
+    "roasterCity": "Copenhagen",
+    "region": "Quindío",
+    "producer": "Jairo Arcila",
+    "tastingNotes": [
+      "lime",
+      "red apple",
+      "honey",
+      "brown spices"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0439/2956/7397/files/colombia_santa_monica.png?v=1777890960",
+    "sourceUrl": "https://www.andersenmaillard.dk/products/jairo-arcila-santa-monica-caturra-natural",
+    "available": true
   },
   {
-    "roaster": "Andersen & Maillard",
-    "imageUrl": "https://cdn.shopify.com/s/files/1/0439/2956/7397/files/el_salvador.png?v=1764594598",
-    "sourceUrl": "https://www.andersenmaillard.dk/products/sigfredo-corado-los-angeles-pacamara-washed",
-    "available": true,
     "id": "andersen-maillard-los-angeles-pacamara",
     "name": "Los Angeles Pacamara",
+    "roaster": "Andersen & Maillard",
     "origin": "El Salvador",
-    "region": "Ahuachapán",
-    "producer": "Sigfredo Corado (Finca Los Angeles)",
     "process": "washed",
-    "variety": "Pacamara",
     "roastLevel": "light",
-    "tastingNotes": [
-      "wild strawberry",
-      "cherry",
-      "toffee"
-    ],
+    "variety": "Pacamara",
     "flavorTags": [
       "berry",
       "fruity",
       "caramel"
     ],
     "description": "Washed Pacamara from a farm planted entirely to that variety in the Ahuachapán mountains. Wild strawberry and cherry over a toffee sweetness.",
-    "roasterCity": "Copenhagen"
+    "roasterCity": "Copenhagen",
+    "region": "Ahuachapán",
+    "producer": "Sigfredo Corado (Finca Los Angeles)",
+    "tastingNotes": [
+      "wild strawberry",
+      "cherry",
+      "toffee"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0439/2956/7397/files/el_salvador.png?v=1764594598",
+    "sourceUrl": "https://www.andersenmaillard.dk/products/sigfredo-corado-los-angeles-pacamara-washed",
+    "available": true
   },
   {
-    "roaster": "Kontra Coffee",
-    "imageUrl": "https://www.kontracoffee.com/Files/Images/Ecom/38200014_1.png",
-    "sourceUrl": "https://www.kontracoffee.com/butik/kaffe/ristegrad/lysristet-kaffe/kenya-gicherori-lysristet-250g",
-    "available": true,
-    "roastLevel": "light",
     "id": "kontra-kenya-gicherori",
     "name": "Kenya Gicherori",
+    "roaster": "Kontra Coffee",
     "origin": "Kenya",
-    "region": "Embu County (Mount Kenya)",
-    "producer": "Gicherori Factory (Kibugu Farmers Cooperative Society)",
     "process": "washed",
+    "roastLevel": "light",
     "variety": "SL28, SL32",
-    "altitude": "1600–2000 masl",
-    "tastingNotes": [
-      "raspberry",
-      "blackcurrant",
-      "acacia honey",
-      "lemon"
-    ],
     "flavorTags": [
       "berry",
       "fruity",
@@ -373,81 +361,81 @@
       "bright"
     ],
     "description": "A light roast from smallholders around Gicherori factory on the slopes of Mount Kenya, sun-dried on raised beds. Fruity and tart with berry and lemon.",
-    "roasterCity": "Copenhagen"
+    "roasterCity": "Copenhagen",
+    "region": "Embu County (Mount Kenya)",
+    "producer": "Gicherori Factory (Kibugu Farmers Cooperative Society)",
+    "altitude": "1600–2000 masl",
+    "tastingNotes": [
+      "raspberry",
+      "blackcurrant",
+      "acacia honey",
+      "lemon"
+    ],
+    "imageUrl": "https://www.kontracoffee.com/Files/Images/Ecom/38200014_1.png",
+    "sourceUrl": "https://www.kontracoffee.com/butik/kaffe/ristegrad/lysristet-kaffe/kenya-gicherori-lysristet-250g",
+    "available": true
   },
   {
-    "roaster": "Kontra Coffee",
-    "imageUrl": "https://www.kontracoffee.com/Files/Images/Ecom/38200029_1.png",
-    "sourceUrl": "https://www.kontracoffee.com/butik/kaffe/ristegrad/lysristet-kaffe/etiopien-guji-lysristet",
-    "available": true,
-    "roastLevel": "light",
     "id": "kontra-ethiopia-guji",
     "name": "Ethiopia Guji",
+    "roaster": "Kontra Coffee",
     "origin": "Ethiopia",
+    "process": "natural",
+    "roastLevel": "light",
+    "variety": "JARC 74112",
+    "flavorTags": [
+      "fruity",
+      "chocolate"
+    ],
+    "description": "A juicy natural from 44 small producers in Guji, processed at Dambi Uddo and dried on raised beds. Stone fruit and kiwi with a milk-chocolate finish.",
+    "roasterCity": "Copenhagen",
     "region": "Guji, Oromia",
     "producer": "Dambi Uddo station (44 smallholders)",
-    "process": "natural",
-    "variety": "JARC 74112",
     "altitude": "2000–2200 masl",
     "tastingNotes": [
       "peach",
       "kiwi",
       "milk chocolate"
     ],
-    "flavorTags": [
-      "fruity",
-      "chocolate"
-    ],
-    "description": "A juicy natural from 44 small producers in Guji, processed at Dambi Uddo and dried on raised beds. Stone fruit and kiwi with a milk-chocolate finish.",
-    "roasterCity": "Copenhagen"
+    "imageUrl": "https://www.kontracoffee.com/Files/Images/Ecom/38200029_1.png",
+    "sourceUrl": "https://www.kontracoffee.com/butik/kaffe/ristegrad/lysristet-kaffe/etiopien-guji-lysristet",
+    "available": true
   },
   {
-    "roaster": "Kontra Coffee",
-    "imageUrl": "https://www.kontracoffee.com/Files/Images/Ecom/38200115_1.png",
-    "sourceUrl": "https://www.kontracoffee.com/butik/kaffe/ristegrad/lysristet-kaffe/etiopien-shakiso-lysristet",
-    "available": true,
-    "roastLevel": "light",
     "id": "kontra-ethiopia-shakiso",
     "name": "Ethiopia Shakiso",
+    "roaster": "Kontra Coffee",
     "origin": "Ethiopia",
-    "region": "Guji, Oromia",
-    "producer": "Shakiso washing station (Testi Coffee)",
     "process": "washed",
+    "roastLevel": "light",
     "variety": "JARC varieties and local landraces",
-    "altitude": "1850–2100 masl",
-    "tastingNotes": [
-      "black tea",
-      "dried apricot",
-      "floral"
-    ],
     "flavorTags": [
       "floral",
       "fruity",
       "bright"
     ],
     "description": "A washed Guji lot fermented in cold water for up to 100 hours, which gives a very clear, tea-like cup with apricot and floral notes.",
-    "roasterCity": "Copenhagen"
+    "roasterCity": "Copenhagen",
+    "region": "Guji, Oromia",
+    "producer": "Shakiso washing station (Testi Coffee)",
+    "altitude": "1850–2100 masl",
+    "tastingNotes": [
+      "black tea",
+      "dried apricot",
+      "floral"
+    ],
+    "imageUrl": "https://www.kontracoffee.com/Files/Images/Ecom/38200115_1.png",
+    "sourceUrl": "https://www.kontracoffee.com/butik/kaffe/ristegrad/lysristet-kaffe/etiopien-shakiso-lysristet",
+    "available": true
   },
   {
-    "roaster": "Kontra Coffee",
-    "imageUrl": "https://www.kontracoffee.com/Files/Images/Ecom/38200119_1.png",
-    "sourceUrl": "https://www.kontracoffee.com/butik/kaffe/ristegrad/lysristet-kaffe/colombia-santander-lysristet",
-    "available": true,
-    "roastLevel": "light",
     "id": "kontra-colombia-santander",
     "name": "Colombia Santander",
+    "roaster": "Kontra Coffee",
     "origin": "Colombia",
-    "region": "Santander (Curití)",
-    "producer": "Hacienda El Rodeo (Reyes family)",
     "process": "washed",
+    "roastLevel": "light",
     "variety": "Castillo",
-    "altitude": "1900–2000 masl",
-    "tastingNotes": [
-      "lemon",
-      "green apple",
-      "almonds",
-      "milk chocolate"
-    ],
     "flavorTags": [
       "citrus",
       "fruity",
@@ -455,89 +443,1528 @@
       "chocolate"
     ],
     "description": "A double-fermented, washed Castillo from the Reyes family's Hacienda El Rodeo. Fresh and sweet, with lemon and apple balanced by almond and milk chocolate.",
-    "roasterCity": "Copenhagen"
+    "roasterCity": "Copenhagen",
+    "region": "Santander (Curití)",
+    "producer": "Hacienda El Rodeo (Reyes family)",
+    "altitude": "1900–2000 masl",
+    "tastingNotes": [
+      "lemon",
+      "green apple",
+      "almonds",
+      "milk chocolate"
+    ],
+    "imageUrl": "https://www.kontracoffee.com/Files/Images/Ecom/38200119_1.png",
+    "sourceUrl": "https://www.kontracoffee.com/butik/kaffe/ristegrad/lysristet-kaffe/colombia-santander-lysristet",
+    "available": true
   },
   {
-    "roaster": "La Cabra",
-    "roasterCity": "Aarhus",
-    "imageUrl": "https://cdn.shopify.com/s/files/1/1094/5212/files/Kainamui_La_Cabra_Highlight_Coffee_box_250g.webp?v=1791467210",
-    "sourceUrl": "https://lacabra.com/products/kainamui",
-    "available": true,
-    "roastLevel": "light",
-    "roastStyle": "omni",
     "id": "la-cabra-kainamui",
     "name": "Kainamui",
+    "roaster": "La Cabra",
     "origin": "Kenya",
+    "process": "washed",
+    "roastLevel": "light",
+    "variety": "SL28, Ruiru 11, Batian",
+    "flavorTags": [
+      "berry",
+      "bright"
+    ],
+    "description": "A fresh, tea-like Kenyan lot from a cooperative La Cabra has bought from since 2018. Crisp red berries over sweet brown sugar; roasted to work for filter or espresso.",
+    "roasterCity": "Aarhus",
     "region": "Kirinyaga",
     "producer": "New Ngariama FCS",
-    "process": "washed",
-    "variety": "SL28, Ruiru 11, Batian",
     "altitude": "1700 masl",
+    "roastStyle": "omni",
     "tastingNotes": [
       "red berries",
       "brown sugar",
       "black tea"
     ],
-    "flavorTags": [
-      "berry",
-      "bright"
-    ],
-    "description": "A fresh, tea-like Kenyan lot from a cooperative La Cabra has bought from since 2018. Crisp red berries over sweet brown sugar; roasted to work for filter or espresso."
+    "imageUrl": "https://cdn.shopify.com/s/files/1/1094/5212/files/Kainamui_La_Cabra_Highlight_Coffee_box_250g.webp?v=1791467210",
+    "sourceUrl": "https://lacabra.com/products/kainamui",
+    "available": true
   },
   {
-    "roaster": "La Cabra",
-    "roasterCity": "Aarhus",
-    "imageUrl": "https://cdn.shopify.com/s/files/1/1094/5212/files/Megadu_Natural_La_Cabra_Seasonal_Coffee_box_250g.webp?v=1790757719",
-    "sourceUrl": "https://lacabra.com/products/megadu",
-    "available": true,
-    "roastLevel": "light",
-    "roastStyle": "omni",
     "id": "la-cabra-megadu",
     "name": "Megadu",
+    "roaster": "La Cabra",
     "origin": "Ethiopia",
-    "region": "Guji",
-    "producer": "Bette Buna",
     "process": "natural",
+    "roastLevel": "light",
     "variety": "Heirloom",
-    "altitude": "2100 masl",
-    "tastingNotes": [
-      "brown sugar",
-      "blackberry jam",
-      "apricot"
-    ],
     "flavorTags": [
       "floral",
       "berry",
       "fruity"
     ],
-    "description": "A natural lot from the Bette Buna project in Guji, floral and ripe with jammy berry and apricot. Works for filter or espresso."
+    "description": "A natural lot from the Bette Buna project in Guji, floral and ripe with jammy berry and apricot. Works for filter or espresso.",
+    "roasterCity": "Aarhus",
+    "region": "Guji",
+    "producer": "Bette Buna",
+    "altitude": "2100 masl",
+    "roastStyle": "omni",
+    "tastingNotes": [
+      "brown sugar",
+      "blackberry jam",
+      "apricot"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/1094/5212/files/Megadu_Natural_La_Cabra_Seasonal_Coffee_box_250g.webp?v=1790757719",
+    "sourceUrl": "https://lacabra.com/products/megadu",
+    "available": true
   },
   {
-    "roaster": "La Cabra",
-    "roasterCity": "Aarhus",
-    "imageUrl": "https://cdn.shopify.com/s/files/1/1094/5212/files/Las_Flores_de_Cafe_La_Cabra_Seasonal_Coffee_box_250g.webp?v=1788176308",
-    "sourceUrl": "https://lacabra.com/products/las-flores-de-cafe",
-    "available": true,
-    "roastLevel": "light",
-    "roastStyle": "omni",
     "id": "la-cabra-las-flores-de-cafe",
     "name": "Las Flores de Cafe",
+    "roaster": "La Cabra",
     "origin": "Guatemala",
-    "region": "Huehuetenango",
-    "producer": "Huista smallholders",
     "process": "washed",
+    "roastLevel": "light",
     "variety": "Caturra, Catuai, Bourbon",
-    "altitude": "1650 masl",
-    "tastingNotes": [
-      "red berries",
-      "dark chocolate",
-      "raisins"
-    ],
     "flavorTags": [
       "berry",
       "chocolate",
       "caramel"
     ],
-    "description": "A blend of small lots from the Huista micro-region of Huehuetenango. Crisp and sweet, with red berries, dark chocolate and raisin."
+    "description": "A blend of small lots from the Huista micro-region of Huehuetenango. Crisp and sweet, with red berries, dark chocolate and raisin.",
+    "roasterCity": "Aarhus",
+    "region": "Huehuetenango",
+    "producer": "Huista smallholders",
+    "altitude": "1650 masl",
+    "roastStyle": "omni",
+    "tastingNotes": [
+      "red berries",
+      "dark chocolate",
+      "raisins"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/1094/5212/files/Las_Flores_de_Cafe_La_Cabra_Seasonal_Coffee_box_250g.webp?v=1788176308",
+    "sourceUrl": "https://lacabra.com/products/las-flores-de-cafe",
+    "available": true
+  },
+  {
+    "id": "original-coffee-traditional-espresso",
+    "name": "Traditional Espresso",
+    "roaster": "Original Coffee",
+    "origin": "Blend",
+    "process": "blend",
+    "roastLevel": "medium",
+    "variety": "Yellow Bourbon, SL28, SL34",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "nutty",
+      "berry"
+    ],
+    "description": "A medium-roast espresso blend of 86% natural Rio Verde from Minas Gerais, Brazil, and 14% washed Kibigu from Embu, Kenya. Dark chocolate and marzipan sweetness with a little berry acidity.",
+    "roasterCity": "Copenhagen",
+    "region": "Brazil, Kenya",
+    "roastStyle": "espresso",
+    "tastingNotes": [
+      "dark chocolate",
+      "dark berries",
+      "marzipan"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/2274/4615/files/Traditionel_2025.png",
+    "sourceUrl": "https://originalcoffee.dk/products/ocespresso",
+    "available": true
+  },
+  {
+    "id": "original-coffee-rio-verde",
+    "name": "Rio Verde",
+    "roaster": "Original Coffee",
+    "origin": "Brazil",
+    "process": "natural",
+    "roastLevel": "light",
+    "variety": "Yellow Bourbon",
+    "flavorTags": [
+      "chocolate",
+      "nutty",
+      "caramel"
+    ],
+    "description": "A natural Yellow Bourbon from Ipanema Coffees' Rio Verde farm in Minas Gerais, sold for filter brewing. A sweet, full cup built on dark chocolate and hazelnut.",
+    "roasterCity": "Copenhagen",
+    "region": "Minas Gerais",
+    "producer": "Ipanema Coffees",
+    "altitude": "1200 masl",
+    "roastStyle": "filter",
+    "tastingNotes": [
+      "dark chocolate",
+      "hazelnut",
+      "honey"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/2274/4615/files/RioVerde.png",
+    "sourceUrl": "https://originalcoffee.dk/products/brasilien",
+    "available": true
+  },
+  {
+    "id": "original-coffee-san-sebastian",
+    "name": "San Sebastian",
+    "roaster": "Original Coffee",
+    "origin": "Colombia",
+    "process": "washed",
+    "roastLevel": "light",
+    "variety": "Castillo",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "citrus"
+    ],
+    "description": "A washed Castillo from small farms around San Sebastián in Cauca, light-roasted for filter. Round and sweet, with cocoa under orange and plum and low acidity.",
+    "roasterCity": "Copenhagen",
+    "region": "San Sebastián, Cauca",
+    "producer": "Several small farms",
+    "altitude": "2000 masl",
+    "roastStyle": "filter",
+    "tastingNotes": [
+      "orange",
+      "cocoa",
+      "plum"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/2274/4615/files/San_Sebastian_6e6eda27-d131-4609-b607-8cd116211b85.png",
+    "sourceUrl": "https://originalcoffee.dk/products/colombia",
+    "available": true
+  },
+  {
+    "id": "original-coffee-ngerwe-espresso",
+    "name": "Ngerwe Espresso",
+    "roaster": "Original Coffee",
+    "origin": "Kenya",
+    "process": "washed",
+    "roastLevel": "light",
+    "variety": "SL28, Batian, Ruiru 11",
+    "flavorTags": [
+      "fruity",
+      "floral",
+      "berry",
+      "citrus"
+    ],
+    "description": "A washed Kenyan peaberry lot roasted light for espresso. Floral and fruity, with sweetness and acidity in balance; the same coffee is also sold as a filter roast.",
+    "roasterCity": "Copenhagen",
+    "roastStyle": "espresso",
+    "tastingNotes": [
+      "hibiscus",
+      "blood orange",
+      "blackberry"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/2274/4615/files/Ngerwe_espresso.png",
+    "sourceUrl": "https://originalcoffee.dk/products/lys-espresso",
+    "available": true
+  },
+  {
+    "id": "sensei-coffee-buesaco",
+    "name": "Buesaco Collective #2",
+    "roaster": "Sensei Coffee",
+    "origin": "Colombia",
+    "process": "honey",
+    "roastLevel": "light",
+    "variety": "Caturra, Castillo, Colombia",
+    "flavorTags": [
+      "fruity",
+      "chocolate"
+    ],
+    "description": "A honey-processed community lot from producers around Buesaco in Nariño, grown at about 2000 m. A clean cup of ripe plum over a chocolate base.",
+    "roasterCity": "Copenhagen",
+    "region": "Buesaco, Nariño",
+    "producer": "Multiple producers",
+    "altitude": "2000 masl",
+    "tastingNotes": [
+      "ripe plum",
+      "chocolate"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0839/3408/5417/files/Screenshot_2025-07-09_at_11.42.16.png",
+    "sourceUrl": "https://sensei.coffee/products/el-filo-2-copy",
+    "available": true
+  },
+  {
+    "id": "sensei-coffee-wamaguma-pb",
+    "name": "Wamaguma PB",
+    "roaster": "Sensei Coffee",
+    "origin": "Kenya",
+    "process": "washed",
+    "roastLevel": "light",
+    "variety": "SL28, Ruiru 11",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "caramel",
+      "berry"
+    ],
+    "description": "A washed peaberry lot from the Wamaguma factory in Kiambu County, roasted for both filter and espresso. Blackcurrant fruit with a cacao-nib edge; sold wholesale only.",
+    "roasterCity": "Copenhagen",
+    "region": "Gatundu, Kiambu County",
+    "producer": "Wamaguma Coffee Factory (Ritho Farmers' Cooperative Society)",
+    "altitude": "1600–1800 masl",
+    "roastStyle": "omni",
+    "tastingNotes": [
+      "blackcurrant",
+      "cacao nibs",
+      "vanilla"
+    ],
+    "sourceUrl": "https://sensei.coffee/products/kenya-pb-wamaguma-4-250g",
+    "available": true
+  },
+  {
+    "id": "sensei-coffee-la-perla",
+    "name": "La Perla",
+    "roaster": "Sensei Coffee",
+    "origin": "Peru",
+    "process": "washed",
+    "roastLevel": "light",
+    "variety": "Pache, Typica, Caturra",
+    "flavorTags": [
+      "fruity",
+      "floral",
+      "caramel"
+    ],
+    "description": "A washed lot from a women's group in the Norcafé cooperative in Amazonas, Peru. Caramel sweetness and a buttery body under light tropical fruit.",
+    "roasterCity": "Copenhagen",
+    "region": "Amazonas",
+    "producer": "Norcafé Cooperative",
+    "altitude": "1600–1800 masl",
+    "tastingNotes": [
+      "tropical fruit",
+      "mild florals",
+      "caramel"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0839/3408/5417/files/Screenshot_2025-07-09_at_11.43.09.png",
+    "sourceUrl": "https://sensei.coffee/products/la-perla",
+    "available": false
+  },
+  {
+    "id": "sensei-coffee-dhilgee-banko-gotiti",
+    "name": "Dhilgee Banko Gotiti",
+    "roaster": "Sensei Coffee",
+    "origin": "Ethiopia",
+    "process": "washed",
+    "roastLevel": "light",
+    "variety": "Heirloom",
+    "flavorTags": [
+      "fruity",
+      "bright"
+    ],
+    "description": "A washed heirloom lot from smallholders in Yirgacheffe, processed at the Wete Ambela station. Stone fruit and grape with a black-tea finish.",
+    "roasterCity": "Copenhagen",
+    "region": "Yirgacheffe",
+    "producer": "Multiple small producers",
+    "altitude": "1950–2000 masl",
+    "tastingNotes": [
+      "nectarine",
+      "white grape",
+      "jam",
+      "black tea"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0839/3408/5417/files/Screenshot_2025-07-09_at_11.57.13.png",
+    "sourceUrl": "https://sensei.coffee/products/dhilgee-wete",
+    "available": true
+  },
+  {
+    "id": "impact-roasters-zenu",
+    "name": "Zenu",
+    "roaster": "Impact Roasters",
+    "origin": "Ethiopia",
+    "process": "natural",
+    "roastLevel": "dark",
+    "flavorTags": [
+      "chocolate",
+      "floral"
+    ],
+    "description": "A natural single origin from Jimma in southwest Ethiopia, dark-roasted for espresso. A mellow, low-acid shot led by chocolate and nougat.",
+    "roasterCity": "Copenhagen",
+    "region": "Jimma",
+    "roastStyle": "espresso",
+    "tastingNotes": [
+      "chocolate",
+      "nougat",
+      "floral"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0290/1491/7180/files/zenu_EthiopianSpecialtyCoffee.png",
+    "sourceUrl": "https://impactroasters.dk/products/zenu-coffee-jimma",
+    "available": true
+  },
+  {
+    "id": "impact-roasters-desta",
+    "name": "Desta",
+    "roaster": "Impact Roasters",
+    "origin": "Ethiopia",
+    "process": "blend",
+    "roastLevel": "dark",
+    "flavorTags": [
+      "chocolate",
+      "floral",
+      "citrus"
+    ],
+    "description": "A dark-roast espresso blend of natural Jimma and washed Sidama coffees. Chocolate and nougat from the Jimma side, citrus and florals from the Sidama side.",
+    "roasterCity": "Copenhagen",
+    "region": "Jimma, Sidama",
+    "roastStyle": "espresso",
+    "tastingNotes": [
+      "chocolate",
+      "nougat",
+      "citrus",
+      "floral"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0290/1491/7180/files/Desta__EthiopianSpecialtyCoffee.png",
+    "sourceUrl": "https://impactroasters.dk/products/desta-coffee-jimma-and-sidama",
+    "available": true
+  },
+  {
+    "id": "impact-roasters-mount-kenya",
+    "name": "Mount Kenya",
+    "roaster": "Impact Roasters",
+    "origin": "Kenya",
+    "process": "washed",
+    "roastLevel": "dark",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "berry",
+      "citrus"
+    ],
+    "description": "A washed Kenyan coffee from the Mount Kenya region, sold as a dark roast. Full-bodied, with berry and citrus over a milk-chocolate note.",
+    "roasterCity": "Copenhagen",
+    "region": "Mount Kenya",
+    "tastingNotes": [
+      "berry",
+      "citrus",
+      "milk chocolate"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0290/1491/7180/files/Kenya_Coffee.png",
+    "sourceUrl": "https://impactroasters.dk/products/coffee-beans-kenya-mount-kenya-new",
+    "available": true
+  },
+  {
+    "id": "impact-roasters-kimathi",
+    "name": "Kimathi Blend",
+    "roaster": "Impact Roasters",
+    "origin": "Blend",
+    "process": "blend",
+    "roastLevel": "dark",
+    "flavorTags": [
+      "floral"
+    ],
+    "description": "A dark-roast blend of washed beans from Mount Kenya and sun-dried beans from Jimma, Ethiopia. Floral, mildly acidic and balanced in body.",
+    "roasterCity": "Copenhagen",
+    "region": "Kenya, Ethiopia",
+    "tastingNotes": [
+      "floral",
+      "slightly acidic"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0290/1491/7180/files/Kimathi_Kenya_ethiopia_blend.png",
+    "sourceUrl": "https://impactroasters.dk/products/coffee-beans-kimathi-blend-kenya-and-ethiopia-new",
+    "available": true
+  },
+  {
+    "id": "pontes-coffee-hidden-hour",
+    "name": "Hidden Hour",
+    "roaster": "Pontes Coffee",
+    "origin": "Honduras",
+    "process": "natural",
+    "roastLevel": "light",
+    "variety": "Catuai",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "nutty"
+    ],
+    "description": "A natural Catuai from Finca El Puente in La Paz, Honduras, roasted for both filter and espresso. Jammy and sweet, with chocolate and almond underneath.",
+    "roasterCity": "Copenhagen",
+    "region": "La Paz",
+    "producer": "Finca El Puente (Marysabel Caballero, Moises Herrera)",
+    "altitude": "1500–1680 masl",
+    "roastStyle": "omni",
+    "tastingNotes": [
+      "white grape",
+      "jam",
+      "chocolate",
+      "almond"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0844/6138/8106/files/Hidden_Hour_S2.jpg",
+    "sourceUrl": "https://pontescoffee.com/products/hidden-hour",
+    "available": true
+  },
+  {
+    "id": "pontes-coffee-daybreak",
+    "name": "Daybreak",
+    "roaster": "Pontes Coffee",
+    "origin": "Honduras",
+    "process": "washed",
+    "roastLevel": "light",
+    "variety": "Catuai",
+    "flavorTags": [
+      "fruity",
+      "caramel"
+    ],
+    "description": "A washed Catuai from Finca El Puente in La Paz, Honduras, roasted for filter and espresso. Toffee and nougat sweetness with a soft baked-apple fruit.",
+    "roasterCity": "Copenhagen",
+    "region": "La Paz",
+    "producer": "Finca El Puente (Marysabel Caballero, Moises Herrera)",
+    "altitude": "1500–1680 masl",
+    "roastStyle": "omni",
+    "tastingNotes": [
+      "nougat",
+      "toffee",
+      "baked apple"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0844/6138/8106/files/Daybreak_1x1_30ad3247-faf9-460d-8717-373db3b1ecb4.jpg",
+    "sourceUrl": "https://pontescoffee.com/products/daybreak",
+    "available": true
+  },
+  {
+    "id": "pontes-coffee-cosmic-canopy",
+    "name": "Cosmic Canopy",
+    "roaster": "Pontes Coffee",
+    "origin": "Ethiopia",
+    "process": "natural",
+    "roastLevel": "light",
+    "variety": "Kurume",
+    "flavorTags": [
+      "fruity",
+      "floral"
+    ],
+    "description": "A natural Kurume from Harruu Bunnaqaa farms in Guji, roasted for filter. Delicate and floral, with lychee and jasmine.",
+    "roasterCity": "Copenhagen",
+    "region": "Guji",
+    "producer": "Harruu Bunnaqaa Coffee Farms",
+    "altitude": "1900–2200 masl",
+    "roastStyle": "filter",
+    "tastingNotes": [
+      "lychee",
+      "sweet lemongrass",
+      "jasmine"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0844/6138/8106/files/Cosmic_Canopy_Pontes_Coffee.jpg",
+    "sourceUrl": "https://pontescoffee.com/products/cosmic-canopy",
+    "available": true
+  },
+  {
+    "id": "pontes-coffee-twin-rivers",
+    "name": "Twin Rivers",
+    "roaster": "Pontes Coffee",
+    "origin": "Costa Rica",
+    "process": "honey",
+    "roastLevel": "light",
+    "variety": "San Isidro",
+    "flavorTags": [
+      "fruity",
+      "caramel"
+    ],
+    "description": "A red-honey San Isidro from Finca Carrizal in Costa Rica, roasted for filter. A light, sweet cup of starfruit and pear with a vanilla note.",
+    "roasterCity": "Copenhagen",
+    "producer": "Finca Carrizal (Rodolfo & Ariela Boillat)",
+    "altitude": "1500 masl",
+    "roastStyle": "filter",
+    "tastingNotes": [
+      "starfruit",
+      "vanilla",
+      "pear skin"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0844/6138/8106/files/Twin-Rivers_Webshop-Image.jpg",
+    "sourceUrl": "https://pontescoffee.com/products/twin-rivers",
+    "available": true
+  },
+  {
+    "id": "poma-coffee-volcancito-caturra",
+    "name": "Volcancito Caturra",
+    "roaster": "POMA Coffee Research",
+    "origin": "Costa Rica",
+    "process": "honey",
+    "roastLevel": "light",
+    "variety": "Caturra",
+    "flavorTags": [
+      "fruity",
+      "spice"
+    ],
+    "description": "A honey-processed Caturra from POMA's partner farm Volcán Azul in Costa Rica, roasted light. Stone fruit meets warm spice and a nougat sweetness.",
+    "roasterCity": "Copenhagen",
+    "producer": "Volcán Azul",
+    "tastingNotes": [
+      "apricot",
+      "brown spice",
+      "nougat"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0866/4547/3605/files/volcancito_caturra_3.jpg",
+    "sourceUrl": "https://www.pomacoffee.com/products/volcancito-honey-caturra",
+    "available": true
+  },
+  {
+    "id": "poma-coffee-san-sebastian-castillo",
+    "name": "San Sebastian Castillo",
+    "roaster": "POMA Coffee Research",
+    "origin": "Colombia",
+    "process": "washed",
+    "roastLevel": "light",
+    "variety": "Castillo",
+    "flavorTags": [
+      "fruity",
+      "citrus"
+    ],
+    "description": "A washed Castillo from San Sebastián in Cauca, Colombia, roasted light. Clean and crisp, with a light body and a sweet, biscuit-like finish.",
+    "roasterCity": "Copenhagen",
+    "region": "Cauca",
+    "tastingNotes": [
+      "green apple",
+      "lemon peel",
+      "nougat",
+      "biscuit"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0866/4547/3605/files/san_sebastian_castillo_3.jpg",
+    "sourceUrl": "https://www.pomacoffee.com/products/san-sebastian-washed-castillo",
+    "available": true
+  },
+  {
+    "id": "poma-coffee-las-brisas-bourbon-aji",
+    "name": "Las Brisas Bourbon Aji",
+    "roaster": "POMA Coffee Research",
+    "origin": "Colombia",
+    "process": "washed",
+    "roastLevel": "light",
+    "variety": "Bourbon Aji",
+    "flavorTags": [
+      "floral",
+      "spice"
+    ],
+    "description": "A washed Bourbon Aji from Las Brisas in Colombia, dried slowly over 20 days and roasted light. Strongly floral and tea-like, with a hint of brown spice.",
+    "roasterCity": "Copenhagen",
+    "tastingNotes": [
+      "jasmine",
+      "lavender",
+      "elderflower",
+      "brown spice"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0866/4547/3605/files/lasbrisas_bourbonaji_1.jpg",
+    "sourceUrl": "https://www.pomacoffee.com/products/las-brisas-bourbon-aji",
+    "available": true
+  },
+  {
+    "id": "poma-coffee-volcan-azul-sl28",
+    "name": "Volcán Azul SL28",
+    "roaster": "POMA Coffee Research",
+    "origin": "Costa Rica",
+    "process": "washed",
+    "roastLevel": "light",
+    "variety": "SL28",
+    "flavorTags": [
+      "fruity",
+      "berry"
+    ],
+    "description": "A washed SL28 grown on the slopes of the Poás volcano in Costa Rica, roasted light. Red-berry and stone-fruit character with a floral edge.",
+    "roasterCity": "Copenhagen",
+    "region": "Central Valley",
+    "producer": "Volcán Azul (Alejo Castro Kahle)",
+    "altitude": "1600–1900 masl",
+    "tastingNotes": [
+      "raspberry",
+      "nectarine"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0866/4547/3605/files/volcan_azul_sl28.jpg",
+    "sourceUrl": "https://www.pomacoffee.com/products/volcan-azul-washed-sl28",
+    "available": true
+  },
+  {
+    "id": "copenhagen-coffee-lab-ps-blend",
+    "name": "PS Blend",
+    "roaster": "Copenhagen Coffee Lab",
+    "origin": "Blend",
+    "process": "blend",
+    "roastLevel": "medium",
+    "flavorTags": [
+      "chocolate",
+      "nutty",
+      "caramel"
+    ],
+    "description": "A Honduras and Peru blend roasted to work as espresso or filter. Very low acidity, a medium-heavy body and dark chocolate sweetness.",
+    "roasterCity": "Copenhagen",
+    "region": "Honduras, Peru",
+    "roastStyle": "omni",
+    "tastingNotes": [
+      "dark chocolate",
+      "walnut",
+      "caramel"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0979/9719/3563/files/2026_COFFEE_PACKSHOT_1080X1080_f7dd03df-0843-43a4-b225-5e339e9887e0.png",
+    "sourceUrl": "https://copenhagencoffeelab.com/products/ps-blend-honduras-peru",
+    "available": true
+  },
+  {
+    "id": "copenhagen-coffee-lab-proexo-espresso-blend",
+    "name": "Proexo Espresso Blend",
+    "roaster": "Copenhagen Coffee Lab",
+    "origin": "Honduras",
+    "process": "blend",
+    "roastLevel": "medium",
+    "flavorTags": [
+      "chocolate",
+      "nutty"
+    ],
+    "description": "An organic Honduran espresso blend from Proexo and several smallholders. Smooth and easygoing, with chocolate and nut sweetness.",
+    "roasterCity": "Copenhagen",
+    "roastStyle": "espresso",
+    "tastingNotes": [
+      "chocolate",
+      "nuts"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0979/9719/3563/files/2026_COFFEE_PACKSHOT_1080X1080_48080a67-0a9a-4f12-b1bf-bc02c94e6a96.png",
+    "sourceUrl": "https://copenhagencoffeelab.com/products/proexo-espresso-honduras",
+    "available": true
+  },
+  {
+    "id": "kaffevaerk-tricolore",
+    "name": "Tricolore",
+    "roaster": "Kaffevaerk",
+    "origin": "Blend",
+    "process": "blend",
+    "roastLevel": "dark",
+    "flavorTags": [
+      "chocolate",
+      "heavy-body"
+    ],
+    "description": "An organic dark-roast espresso blend in the Italian style, with some robusta in the mix. Round and strong, with no acidity to speak of.",
+    "roasterCity": "Copenhagen",
+    "region": "Brazil, El Salvador, India",
+    "roastStyle": "espresso",
+    "tastingNotes": [
+      "chocolate",
+      "full-bodied"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0888/7874/3875/files/kv-tricolore.png",
+    "sourceUrl": "https://kaffevaerk.dk/products/tricolore",
+    "available": true
+  },
+  {
+    "id": "kaffevaerk-momentum",
+    "name": "Momentum",
+    "roaster": "Kaffevaerk",
+    "origin": "Blend",
+    "process": "blend",
+    "roastLevel": "dark",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "caramel"
+    ],
+    "description": "An organic dark-roast blend made for any brewer, including bean-to-cup machines. Full body, low acidity and plenty of sweetness.",
+    "roasterCity": "Copenhagen",
+    "region": "Brazil, Colombia, El Salvador",
+    "roastStyle": "omni",
+    "tastingNotes": [
+      "dark chocolate",
+      "caramel",
+      "plum"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0888/7874/3875/files/kv-momentum.png",
+    "sourceUrl": "https://kaffevaerk.dk/products/momentum",
+    "available": true
+  },
+  {
+    "id": "kaffevaerk-scuro",
+    "name": "Scuro",
+    "roaster": "Kaffevaerk",
+    "origin": "Blend",
+    "process": "blend",
+    "roastLevel": "dark",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "berry",
+      "citrus"
+    ],
+    "description": "An organic espresso blend of natural Brazil and washed Ethiopia, roasted medium-dark. Low acidity and a full body, with some fruit still showing.",
+    "roasterCity": "Copenhagen",
+    "region": "Brazil, Ethiopia",
+    "roastStyle": "espresso",
+    "tastingNotes": [
+      "bergamot",
+      "blueberry",
+      "cocoa"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0888/7874/3875/files/kv-scuro.png",
+    "sourceUrl": "https://kaffevaerk.dk/products/scuro",
+    "available": true
+  },
+  {
+    "id": "kaffevaerk-chiaro",
+    "name": "Chiaro",
+    "roaster": "Kaffevaerk",
+    "origin": "Blend",
+    "process": "blend",
+    "roastLevel": "medium",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "nutty"
+    ],
+    "description": "Kaffevaerk's organic house espresso, a medium-roast blend of Brazil and Honduras. Works as a straight shot and in milk drinks.",
+    "roasterCity": "Copenhagen",
+    "region": "Brazil, Honduras",
+    "roastStyle": "espresso",
+    "tastingNotes": [
+      "milk chocolate",
+      "hazelnut",
+      "cherry"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0888/7874/3875/files/kv-chiaro.png",
+    "sourceUrl": "https://kaffevaerk.dk/products/chiaro",
+    "available": true
+  },
+  {
+    "id": "kaffevaerk-brasilien",
+    "name": "Brasilien",
+    "roaster": "Kaffevaerk",
+    "origin": "Brazil",
+    "process": "natural",
+    "roastLevel": "medium",
+    "variety": "Mundo Novo, Catuai, Bourbon",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "nutty"
+    ],
+    "description": "An organic natural Brazil from the Dutra family farm in Minas Gerais, roasted medium. Soft and round, for French press, filter or a mild espresso.",
+    "roasterCity": "Copenhagen",
+    "region": "São João do Manhuaçu, Minas Gerais",
+    "producer": "Fazenda Dutra",
+    "roastStyle": "omni",
+    "tastingNotes": [
+      "chocolate",
+      "nuts",
+      "fruity sweetness"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0888/7874/3875/files/kv-brasilien.png",
+    "sourceUrl": "https://kaffevaerk.dk/products/brasilien",
+    "available": true
+  },
+  {
+    "id": "copenhagen-coffee-dealers-kenya-morkristet",
+    "name": "Kenya Mørkristet",
+    "roaster": "Copenhagen Coffee Dealers",
+    "origin": "Kenya",
+    "process": "washed",
+    "roastLevel": "dark",
+    "variety": "SL28, SL34, Ruiru 11",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "berry"
+    ],
+    "description": "A washed Kenya AA Plus from Nyeri on Mount Kenya, roasted dark. Intense and full-bodied, with dark fruit and chocolate.",
+    "roasterCity": "Copenhagen",
+    "region": "Nyeri, Mount Kenya",
+    "altitude": "1700–1900 masl",
+    "tastingNotes": [
+      "blackcurrant",
+      "dark chocolate",
+      "winey"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0081/5431/6911/files/Kenya_moerkristet_kaffe_-_250g.png",
+    "sourceUrl": "https://coffeedealers.dk/products/morkristet-kaffe-fra-kenya",
+    "available": true
+  },
+  {
+    "id": "copenhagen-coffee-dealers-brasilien-morkristet",
+    "name": "Brasilien Mørkristet",
+    "roaster": "Copenhagen Coffee Dealers",
+    "origin": "Brazil",
+    "process": "natural",
+    "roastLevel": "dark",
+    "variety": "Catuaí, Bourbon",
+    "flavorTags": [
+      "chocolate",
+      "nutty",
+      "caramel"
+    ],
+    "description": "A hand-picked natural Brazil from the Cerrado, roasted dark with espresso and milk drinks in mind. Round and full, with caramel, nuts and chocolate.",
+    "roasterCity": "Copenhagen",
+    "region": "Cerrado",
+    "altitude": "900–1250 masl",
+    "roastStyle": "omni",
+    "tastingNotes": [
+      "caramel",
+      "nuts",
+      "chocolate"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0081/5431/6911/files/Brasilien_kaffe_-_250g.png",
+    "sourceUrl": "https://coffeedealers.dk/products/moerkristet-kaffe-fra-brasilien-medlemskab",
+    "available": true
+  },
+  {
+    "id": "copenhagen-coffee-dealers-colombia-mellemristet",
+    "name": "Colombia Mellemristet",
+    "roaster": "Copenhagen Coffee Dealers",
+    "origin": "Colombia",
+    "process": "washed",
+    "roastLevel": "medium",
+    "flavorTags": [
+      "fruity",
+      "nutty",
+      "caramel",
+      "berry"
+    ],
+    "description": "A washed, sun-dried Colombian from Huila, roasted medium for espresso, filter or French press. Full-bodied, with almond and a caramel finish.",
+    "roasterCity": "Copenhagen",
+    "region": "Huila",
+    "altitude": "1600–1900 masl",
+    "roastStyle": "omni",
+    "tastingNotes": [
+      "almond",
+      "berries",
+      "caramel"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0081/5431/6911/files/Colombia_kaffe_-_250g.png",
+    "sourceUrl": "https://coffeedealers.dk/products/mellemristet-kaffe-fra-colombia",
+    "available": true
+  },
+  {
+    "id": "copenhagen-coffee-dealers-rwanda-mellemristet",
+    "name": "Rwanda Mellemristet",
+    "roaster": "Copenhagen Coffee Dealers",
+    "origin": "Rwanda",
+    "process": "washed",
+    "roastLevel": "medium",
+    "variety": "Bourbon",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "citrus"
+    ],
+    "description": "A washed Bourbon from Karongi District in Rwanda, given a darker medium roast that suits espresso. Rich body, light acidity and a chocolatey finish.",
+    "roasterCity": "Copenhagen",
+    "region": "Karongi District",
+    "altitude": "1400–1900 masl",
+    "roastStyle": "omni",
+    "tastingNotes": [
+      "mango",
+      "orange",
+      "chocolate"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0081/5431/6911/files/Rwanda_mellemristet_kaffe_-_250g.png",
+    "sourceUrl": "https://coffeedealers.dk/products/mellemristet-kaffe-fra-rwanda",
+    "available": true
+  },
+  {
+    "id": "nordic-roasting-darkness-my-old-friend",
+    "name": "Darkness My Old Friend",
+    "roaster": "Nordic Roasting Co.",
+    "origin": "Honduras",
+    "process": "washed",
+    "roastLevel": "dark",
+    "variety": "Caturra, Lempira, Parainema",
+    "flavorTags": [
+      "chocolate",
+      "nutty",
+      "caramel"
+    ],
+    "description": "A washed Honduran coffee from Copan roasted medium-dark for espresso and milk drinks, with a dark-chocolate and hazelnut cup.",
+    "roasterCity": "Copenhagen",
+    "region": "Copan",
+    "roastStyle": "espresso",
+    "tastingNotes": [
+      "dark chocolate",
+      "hazelnut",
+      "caramel"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0508/6117/9048/files/250g_DMOF_Front_View_21716d5e-8290-4716-8324-13e9c48ad189.jpg",
+    "sourceUrl": "https://www.nordicroasting.com/products/demo-darkness-my-old-friend-organic-espresso-dark-roast-100-arabica",
+    "available": true
+  },
+  {
+    "id": "nordic-roasting-easy-like-sunday-morning",
+    "name": "Easy Like Sunday Morning",
+    "roaster": "Nordic Roasting Co.",
+    "origin": "Blend",
+    "process": "blend",
+    "roastLevel": "medium",
+    "flavorTags": [
+      "chocolate",
+      "nutty",
+      "caramel"
+    ],
+    "description": "A medium-roast filter blend of natural Brazil and washed Honduras, built for batch and drip brewing, with a nutty, chocolatey cup.",
+    "roasterCity": "Copenhagen",
+    "region": "Brazil, Honduras",
+    "roastStyle": "filter",
+    "tastingNotes": [
+      "hazelnut",
+      "caramel",
+      "milk chocolate"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0508/6117/9048/files/250g_ELSM_Front_View.jpg",
+    "sourceUrl": "https://www.nordicroasting.com/products/easy-like-sunday-morning-nordic-filter-blend-100-arabica",
+    "available": true
+  },
+  {
+    "id": "nordic-roasting-dont-let-me-down",
+    "name": "Don't Let Me Down",
+    "roaster": "Nordic Roasting Co.",
+    "origin": "Blend",
+    "process": "blend",
+    "roastLevel": "medium",
+    "flavorTags": [
+      "chocolate",
+      "nutty"
+    ],
+    "description": "A medium-roast espresso blend of Honduran and Indonesian arabica with 25% Ugandan robusta, giving a strong, nutty cup with milk-chocolate sweetness.",
+    "roasterCity": "Copenhagen",
+    "region": "Honduras, Indonesia, Uganda",
+    "roastStyle": "espresso",
+    "tastingNotes": [
+      "almond",
+      "hazelnut",
+      "milk chocolate"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0508/6117/9048/files/250g_DLMD_Front_View.jpg",
+    "sourceUrl": "https://www.nordicroasting.com/products/don-t-let-me-down-organic-espresso-medium-roast-75-arabica-25-robusta",
+    "available": true
+  },
+  {
+    "id": "nordic-roasting-monte-nevado",
+    "name": "Monte Nevado",
+    "roaster": "Nordic Roasting Co.",
+    "origin": "Honduras",
+    "process": "washed",
+    "roastLevel": "medium",
+    "variety": "Caturra, Lempira, Parainema",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "nutty",
+      "caramel"
+    ],
+    "description": "An organic washed lot from a single Copan farm, roasted medium for both espresso and filter, with a nutty, milk-chocolate profile and some yellow fruit.",
+    "roasterCity": "Copenhagen",
+    "region": "Copan",
+    "producer": "Herminio Perdomo",
+    "altitude": "1800 masl",
+    "roastStyle": "omni",
+    "tastingNotes": [
+      "nutty",
+      "milk chocolate",
+      "yellow fruit",
+      "cane sugar"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0508/6117/9048/files/250gFrontview_d8b9d4a4-24cf-423f-be89-6d459b089518.jpg",
+    "sourceUrl": "https://www.nordicroasting.com/products/monte-nevado-washed-arabica-copan-honduras",
+    "available": true
+  },
+  {
+    "id": "nordic-roasting-fazenda-dois-irmaos",
+    "name": "Fazenda Dois Irmãos",
+    "roaster": "Nordic Roasting Co.",
+    "origin": "Brazil",
+    "process": "natural",
+    "roastLevel": "light",
+    "variety": "Red Catuai",
+    "flavorTags": [
+      "chocolate",
+      "nutty"
+    ],
+    "description": "A natural Red Catuai from a single Cerrado Mineiro estate, light roasted, with a creamy, full body and cashew, hazelnut and chocolate flavours.",
+    "roasterCity": "Copenhagen",
+    "region": "Cerrado Mineiro, Minas Gerais",
+    "producer": "Gabriela Baracat Sanchez",
+    "altitude": "1000–1200 masl",
+    "tastingNotes": [
+      "cashew",
+      "hazelnut",
+      "chocolate"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0508/6117/9048/files/250g_Dois_Irmaos_Front_View.jpg",
+    "sourceUrl": "https://www.nordicroasting.com/products/fazenda-dois-irmaos",
+    "available": true
+  },
+  {
+    "id": "kaldi-kaffe-limu",
+    "name": "Limu",
+    "roaster": "Kaldi Kaffe",
+    "origin": "Ethiopia",
+    "process": "washed",
+    "roastLevel": "medium",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "spice"
+    ],
+    "description": "A washed Grade 2 Ethiopian from Limu, medium roasted and sold whole or ground in light and dark versions, with chocolate, soft fruit and a lightly spiced finish.",
+    "roasterCity": "Copenhagen",
+    "region": "Limu",
+    "altitude": "1100–1900 masl",
+    "tastingNotes": [
+      "chocolate",
+      "mild fruit",
+      "spice"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0995/5039/6757/files/friskristede-etiopiske-limu-arabica-hele-kaffeboenner-250g.webp",
+    "sourceUrl": "https://kaldikaffe.dk/products/sidamo-coffee-ethiopia",
+    "available": true
+  },
+  {
+    "id": "kaldi-kaffe-guji",
+    "name": "Guji",
+    "roaster": "Kaldi Kaffe",
+    "origin": "Ethiopia",
+    "process": "washed",
+    "roastLevel": "medium",
+    "flavorTags": [
+      "fruity",
+      "floral",
+      "berry",
+      "citrus"
+    ],
+    "description": "A Grade 1 Ethiopian from Guji, medium roasted and sold whole or ground in light and dark versions, with a floral, berry-and-citrus cup and lively acidity.",
+    "roasterCity": "Copenhagen",
+    "region": "Guji",
+    "altitude": "1800–2200 masl",
+    "tastingNotes": [
+      "floral",
+      "berry",
+      "citrus"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0995/5039/6757/files/friskristede-etiopiske-specialkaffe-guji-arabica-hele-kaffeboenner-250g.webp",
+    "sourceUrl": "https://kaldikaffe.dk/products/ethiopisk-harar-grade-2-ristet-kaffebonner-100-arabica-1000g",
+    "available": true
+  },
+  {
+    "id": "kaldi-kaffe-sidamo",
+    "name": "Sidamo",
+    "roaster": "Kaldi Kaffe",
+    "origin": "Ethiopia",
+    "process": "natural",
+    "roastLevel": "medium",
+    "flavorTags": [
+      "floral",
+      "citrus"
+    ],
+    "description": "A natural Grade 1 Ethiopian from Sidamo, medium roasted and sold whole or ground in light and dark versions, with jasmine, citrus and a clean, gentle sweetness.",
+    "roasterCity": "Copenhagen",
+    "region": "Sidamo",
+    "altitude": "1500–2200 masl",
+    "tastingNotes": [
+      "floral",
+      "jasmine",
+      "citrus"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0995/5039/6757/files/friskristede-etiopiske-specialkaffe-sidamo-arabica-hele-kaffeboenner-250g.webp",
+    "sourceUrl": "https://kaldikaffe.dk/products/etiopien-sidamo-grade-1-250g-ristet-hele-arabica-kaffebonner-eksklusiv-specialkaffe-med-florale-noter",
+    "available": true
+  },
+  {
+    "id": "kaldi-kaffe-yirgacheffe",
+    "name": "Yirgacheffe",
+    "roaster": "Kaldi Kaffe",
+    "origin": "Ethiopia",
+    "process": "washed",
+    "roastLevel": "medium",
+    "flavorTags": [
+      "floral",
+      "citrus"
+    ],
+    "description": "A washed Grade 2 Ethiopian from Yirgacheffe, medium roasted and sold whole or ground in light and dark versions, with a floral, citrusy cup and a tea-like body.",
+    "roasterCity": "Copenhagen",
+    "region": "Yirgacheffe",
+    "altitude": "1700–2200 masl",
+    "tastingNotes": [
+      "floral",
+      "citrus",
+      "mild sweetness"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0995/5039/6757/files/friskristede-etiopiske-yirgacheffe-arabica-hele-kaffeboenner-250g.webp",
+    "sourceUrl": "https://kaldikaffe.dk/products/ethiopisk-yirgachefe-grade-2-ristet-kaffebonner-100-arabica-250g",
+    "available": true
+  },
+  {
+    "id": "everbean-endless-night",
+    "name": "Endless Night",
+    "roaster": "EverBean",
+    "origin": "Blend",
+    "process": "blend",
+    "roastLevel": "dark",
+    "variety": "Castillo, Cenicafe, Red Catuai, Yellow Bourbon",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "caramel"
+    ],
+    "description": "A dark espresso blend of washed and natural coffees from Brazil, Colombia and Costa Rica, also suited to moka pot and AeroPress. Round and full in the cup with cocoa and dark caramel.",
+    "roasterCity": "Vejle",
+    "region": "Brazil, Colombia, Costa Rica",
+    "altitude": "600–1800 masl",
+    "roastStyle": "espresso",
+    "tastingNotes": [
+      "cocoa",
+      "dark caramel",
+      "dried fruit"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0621/0840/1837/files/endless-nights_1baf7d2b-8663-47ee-8790-b25f47f37497.jpg",
+    "sourceUrl": "https://www.everbean.dk/products/endless-night-espresso-blend",
+    "available": true
+  },
+  {
+    "id": "everbean-keho",
+    "name": "KeHo",
+    "roaster": "EverBean",
+    "origin": "Blend",
+    "process": "blend",
+    "roastLevel": "medium",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "nutty",
+      "bright",
+      "berry",
+      "spice"
+    ],
+    "description": "A Kenya and Honduras house blend for filter, French press and Chemex. The Kenyan part brings dark berry and tea depth, the Honduran part milk chocolate and a soft, round body.",
+    "roasterCity": "Vejle",
+    "region": "Kenya, Honduras",
+    "roastStyle": "filter",
+    "tastingNotes": [
+      "dark berries",
+      "spice",
+      "black tea",
+      "milk chocolate",
+      "nuts"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0621/0840/1837/files/keho.jpg",
+    "sourceUrl": "https://www.everbean.dk/products/heko",
+    "available": true
+  },
+  {
+    "id": "everbean-cota",
+    "name": "CoTa",
+    "roaster": "EverBean",
+    "origin": "Blend",
+    "process": "blend",
+    "roastLevel": "medium",
+    "flavorTags": [
+      "fruity",
+      "caramel",
+      "berry",
+      "citrus"
+    ],
+    "description": "A Costa Rica and Tanzania blend meant for filter, French press and pour-over. Sweet and soft at first, with a light fruity finish.",
+    "roasterCity": "Vejle",
+    "region": "Costa Rica, Tanzania",
+    "roastStyle": "filter",
+    "tastingNotes": [
+      "honey",
+      "citrus",
+      "stone fruit",
+      "berries"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0621/0840/1837/files/00-cota.jpg",
+    "sourceUrl": "https://www.everbean.dk/products/cota",
+    "available": true
+  },
+  {
+    "id": "lagom-coffee-bela-epoca",
+    "name": "Bela Epoca",
+    "roaster": "Lagom Coffee",
+    "origin": "Brazil",
+    "process": "natural",
+    "roastLevel": "medium",
+    "variety": "Yellow Bourbon",
+    "scaScore": 83.25,
+    "flavorTags": [
+      "chocolate",
+      "caramel"
+    ],
+    "description": "A natural Yellow Bourbon from a family farm in Alta Mogiana, roasted medium. A low-acid, chocolate-and-caramel cup.",
+    "region": "Alta Mogiana",
+    "producer": "Cunha family, Fazenda Bela Época",
+    "altitude": "900 masl",
+    "tastingNotes": [
+      "chocolate",
+      "caramel",
+      "cocoa"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/1402/1787/files/ProduktbilledeplusWEBBELAEPOCABRASILIEN.jpg",
+    "sourceUrl": "https://lagomcoffee.com/products/bela-epoca-250-g",
+    "available": true
+  },
+  {
+    "id": "lagom-coffee-humure",
+    "name": "Humure",
+    "roaster": "Lagom Coffee",
+    "origin": "Rwanda",
+    "process": "natural",
+    "roastLevel": "medium",
+    "variety": "Red Bourbon",
+    "scaScore": 85.5,
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "nutty",
+      "caramel",
+      "citrus"
+    ],
+    "description": "A natural Red Bourbon from the Humure washing station in Gatsibo, roasted medium. Orchard fruit and orange over hazelnut, chocolate and caramel.",
+    "region": "Gatsibo, Eastern Province",
+    "producer": "Humure washing station",
+    "altitude": "1625 masl",
+    "tastingNotes": [
+      "apple",
+      "orange",
+      "hazelnut",
+      "chocolate",
+      "caramel"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/1402/1787/files/ProduktbilledeplusWEBHUMURERWANDA.png",
+    "sourceUrl": "https://lagomcoffee.com/products/humure-rwanda-250-g",
+    "available": true
+  },
+  {
+    "id": "lagom-coffee-las-petunias",
+    "name": "Las Petunias",
+    "roaster": "Lagom Coffee",
+    "origin": "Colombia",
+    "process": "washed",
+    "roastLevel": "medium",
+    "variety": "Bourbon, Caturra",
+    "scaScore": 84.25,
+    "flavorTags": [
+      "fruity",
+      "caramel",
+      "berry"
+    ],
+    "description": "A washed Bourbon and Caturra lot from smallholders in Antioquia, sold in a medium or a dark roast. Caramel sweetness with red fruit and apple.",
+    "region": "Antioquia",
+    "producer": "Smallholders",
+    "altitude": "1900–2100 masl",
+    "tastingNotes": [
+      "caramel",
+      "strawberry",
+      "apple"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/1402/1787/files/ProduktbilledeplusWEBLASPETUNIASCOLOMBIA_d6c81058-d3de-4fad-92de-0bbbc7963baa.jpg",
+    "sourceUrl": "https://lagomcoffee.com/products/las-petunias-colombia-250-gram",
+    "available": true
+  },
+  {
+    "id": "haldrup-kaffesyndikat-finca-churupampa",
+    "name": "Finca Churupampa",
+    "roaster": "Haldrup Kaffesyndikat",
+    "origin": "Peru",
+    "process": "washed",
+    "roastLevel": "dark",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "nutty",
+      "bright"
+    ],
+    "description": "An organic washed Peruvian coffee from Finca Churupampa, roasted medium-dark. Dark chocolate and nuts with a light fruity edge.",
+    "roasterCity": "Haldrup",
+    "tastingNotes": [
+      "dark chocolate",
+      "nuts",
+      "fruity acidity"
+    ],
+    "sourceUrl": "https://www.kaffesyndikatet.dk/products/peru-finca-churupampa-medium-dark",
+    "available": true
+  },
+  {
+    "id": "haldrup-kaffesyndikat-seleccion-planadas",
+    "name": "Selección Planadas",
+    "roaster": "Haldrup Kaffesyndikat",
+    "origin": "Colombia",
+    "process": "washed",
+    "roastLevel": "medium",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "nutty",
+      "caramel",
+      "citrus"
+    ],
+    "description": "An organic washed Colombian from a Tolima cooperative, roasted medium for both filter and espresso. Ripe fruit over milk chocolate and caramel, with a silky body.",
+    "roasterCity": "Haldrup",
+    "region": "Tolima",
+    "producer": "Selección Planadas cooperative",
+    "roastStyle": "omni",
+    "tastingNotes": [
+      "apple",
+      "orange",
+      "milk chocolate",
+      "caramel",
+      "almond"
+    ],
+    "sourceUrl": "https://www.kaffesyndikatet.dk/products/columbia-seleccion-planadas-washed",
+    "available": true
+  },
+  {
+    "id": "haldrup-kaffesyndikat-abakundakawa-rushashi",
+    "name": "Abakundakawa Rushashi",
+    "roaster": "Haldrup Kaffesyndikat",
+    "origin": "Rwanda",
+    "process": "washed",
+    "roastLevel": "medium",
+    "variety": "Bourbon",
+    "flavorTags": [
+      "fruity",
+      "caramel",
+      "citrus"
+    ],
+    "description": "A washed Rwandan Bourbon from the Abakundakawa cooperative, roasted medium for V60, French press or espresso. Honey-sweet with tropical fruit and a clean citrus finish.",
+    "roasterCity": "Haldrup",
+    "producer": "Abakundakawa Rushashi cooperative",
+    "roastStyle": "omni",
+    "tastingNotes": [
+      "tropical fruit",
+      "honey",
+      "citrus"
+    ],
+    "sourceUrl": "https://www.kaffesyndikatet.dk/products/rwanda-abakundakawa-rushashi-washed-copy",
+    "available": true
+  },
+  {
+    "id": "piccolo-coffee-santos",
+    "name": "Santos",
+    "roaster": "Piccolo Coffee",
+    "origin": "Brazil",
+    "process": "natural",
+    "roastLevel": "medium",
+    "variety": "Catuai, Mundo Novo",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "nutty",
+      "berry"
+    ],
+    "description": "A natural Brazilian from São Paulo, offered in several roast levels from medium-light to dark and suited to espresso, V60 and French press. Soft and balanced, with chocolate and nut sweetness.",
+    "roasterCity": "Vejle",
+    "region": "São Paulo",
+    "altitude": "600–1200 masl",
+    "roastStyle": "omni",
+    "tastingNotes": [
+      "chocolate",
+      "nuts",
+      "marzipan",
+      "red berries"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0963/2215/8917/files/packshot-santos.png",
+    "sourceUrl": "https://piccolocoffee.dk/products/brasilien-santos",
+    "available": true
+  },
+  {
+    "id": "piccolo-coffee-casa-mogiana",
+    "name": "Casa Mogiana",
+    "roaster": "Piccolo Coffee",
+    "origin": "Brazil",
+    "process": "natural",
+    "roastLevel": "medium",
+    "variety": "Catuai, Mundo Novo",
+    "flavorTags": [
+      "fruity",
+      "chocolate"
+    ],
+    "description": "A natural Brazilian from Alta Mogiana aimed at espresso and milk drinks. Round and sweet with low acidity and a full body.",
+    "roasterCity": "Vejle",
+    "region": "Alta Mogiana",
+    "altitude": "800–1200 masl",
+    "roastStyle": "espresso",
+    "tastingNotes": [
+      "chocolate",
+      "apple",
+      "dried fruit"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0963/2215/8917/files/packshot-casa-mogiana.png",
+    "sourceUrl": "https://piccolocoffee.dk/products/brasilien-casa-mogiana",
+    "available": true
+  },
+  {
+    "id": "piccolo-coffee-rungeto-jam",
+    "name": "Rungeto Jam",
+    "roaster": "Piccolo Coffee",
+    "origin": "Kenya",
+    "process": "washed",
+    "roastLevel": "light",
+    "variety": "SL28, SL34, Ruiru 11",
+    "flavorTags": [
+      "fruity",
+      "bright",
+      "caramel"
+    ],
+    "description": "A washed SL28 and SL34 lot from the Karimikui factory in Kirinyaga, sold in filter and espresso roasts. A sweet, jammy Kenyan with caramel and a tea-like finish, sweeter than it is acidic.",
+    "roasterCity": "Vejle",
+    "region": "Kirinyaga",
+    "producer": "Karimikui Factory, Rung'eto Farmers Cooperative Society",
+    "altitude": "1600–1800 masl",
+    "tastingNotes": [
+      "fruit jam",
+      "caramel",
+      "black tea"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0963/2215/8917/files/rungeto-jam-packshot.jpg",
+    "sourceUrl": "https://piccolocoffee.dk/products/rungeto-jam",
+    "available": true
+  },
+  {
+    "id": "skaastrupkaffen-espresso-blend",
+    "name": "Skåstrup Espresso Blend",
+    "roaster": "Skåstrupkaffen",
+    "origin": "Blend",
+    "process": "blend",
+    "roastLevel": "dark",
+    "flavorTags": [
+      "chocolate",
+      "nutty",
+      "caramel"
+    ],
+    "description": "A dark espresso blend of Brazilian and Peruvian arabica with Indian robusta. Creamy and full, with cocoa, nuts and caramel.",
+    "region": "Brazil, Peru, India",
+    "roastStyle": "espresso",
+    "tastingNotes": [
+      "cocoa",
+      "nuts",
+      "caramel"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0770/1767/8161/files/Skaastrupespressoub.png",
+    "sourceUrl": "https://skaastrupkaffen.dk/products/skastrup-espresso-blend",
+    "available": true
+  },
+  {
+    "id": "skaastrupkaffen-colombia-espresso-crema",
+    "name": "Colombia Espresso Crema",
+    "roaster": "Skåstrupkaffen",
+    "origin": "Blend",
+    "process": "blend",
+    "roastLevel": "dark",
+    "flavorTags": [
+      "fruity",
+      "chocolate",
+      "nutty",
+      "berry"
+    ],
+    "description": "A dark espresso blend of Colombian Supremo arabica from Tolima and Indian robusta. Creamy and full, with nuts and cocoa and a hint of cranberry.",
+    "region": "Colombia, India",
+    "roastStyle": "espresso",
+    "tastingNotes": [
+      "nuts",
+      "cocoa",
+      "cranberry"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0770/1767/8161/files/ColombiaEspressoub.png",
+    "sourceUrl": "https://skaastrupkaffen.dk/products/colombia-espresso-crema",
+    "available": true
+  },
+  {
+    "id": "skaastrupkaffen-special-blend",
+    "name": "Skåstrup Special Blend",
+    "roaster": "Skåstrupkaffen",
+    "origin": "Blend",
+    "process": "blend",
+    "roastLevel": "medium",
+    "flavorTags": [
+      "chocolate",
+      "nutty"
+    ],
+    "description": "A medium-roast house blend of Brazilian and Ugandan Bourbon arabica, sold whole or ground for filter. Round, strong and sweet, with cocoa and nuts.",
+    "region": "Brazil, Uganda",
+    "tastingNotes": [
+      "cocoa",
+      "nuts",
+      "pistachio"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0770/1767/8161/files/Skaastrup_Special_ub.png",
+    "sourceUrl": "https://skaastrupkaffen.dk/products/skastrup-special-blend",
+    "available": true
   }
 ]
