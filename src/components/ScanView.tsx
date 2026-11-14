@@ -7,7 +7,7 @@ import {
   searchTermsFromText,
   type LabelMatch,
 } from '../lib/label-match';
-import { readLabelText } from '../lib/label-ocr';
+import { preloadLabelReader, readLabelText } from '../lib/label-ocr';
 import { loadUserData } from '../lib/storage';
 import type { ManualCoffeeInput } from '../types/coffee';
 import { CameraCapture } from './CameraCapture';
@@ -160,12 +160,15 @@ export function ScanView({ onSelectCoffee, addRequestKey }: ScanViewProps) {
     <div className="space-y-10">
       <div className="max-w-xl">
         <PageHeader title="Discover" subtitle="What are you drinking? Scan the bag and Pico finds it." />
-        <CameraCapture
-          title="Scan a coffee bag"
-          hint="Take a photo of the label, or choose one"
-          photoDataUrl={photoDataUrl}
-          onCapture={handleCapture}
-        />
+        {/* Start the ~7 MB OCR download as soon as the scan button is touched, while the camera is open. */}
+        <div onPointerDown={preloadLabelReader} onFocus={preloadLabelReader}>
+          <CameraCapture
+            title="Scan a coffee bag"
+            hint="Take a photo of the label, or choose one"
+            photoDataUrl={photoDataUrl}
+            onCapture={handleCapture}
+          />
+        </div>
         <p className="mt-2 text-xs text-pico-muted">
           Pico reads the label on this device. The photo is never uploaded.
         </p>

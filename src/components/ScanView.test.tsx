@@ -6,7 +6,7 @@ import { ScanView } from './ScanView';
 
 const PHOTO = 'data:image/jpeg;base64,bGFiZWw=';
 
-vi.mock('../lib/label-ocr', () => ({ readLabelText: vi.fn() }));
+vi.mock('../lib/label-ocr', () => ({ readLabelText: vi.fn(), preloadLabelReader: vi.fn() }));
 
 // The real capture resizes through canvas, which jsdom lacks.
 vi.mock('./CameraCapture', () => ({
