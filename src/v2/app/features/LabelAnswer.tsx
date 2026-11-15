@@ -12,8 +12,10 @@ import './wow.css';
 const ROASTS: RoastLevel[] = ['light', 'medium', 'dark'];
 const cap = (text: string) => text[0].toUpperCase() + text.slice(1);
 
-export function LabelAnswer({ draft, photo, profile, onRetry, retryLabel = 'Scan another bag' }: {
+export function LabelAnswer({ draft, photo, profile, onRetry, retryLabel = 'Scan another bag', onSaved }: {
   draft: LabelDraft; photo?: string; profile: TasteProfile | null; onRetry: () => void; retryLabel?: string;
+  /** Called with the new coffee's id once it is saved, before the coffee page opens. */
+  onSaved?: (coffeeId: string) => void;
 }) {
   const [id] = useState(() => `custom-${uid()}`);
   const [name, setName] = useState([draft.origin, draft.variety].filter(Boolean).join(' '));
@@ -30,6 +32,7 @@ export function LabelAnswer({ draft, photo, profile, onRetry, retryLabel = 'Scan
     if (!coffee) return;
     // Yours, like a cup: on the phone, and into the account on sign-in. Same id the match above was scored with.
     store.addUserCoffee({ ...coffee, name: name.trim(), roaster: roaster.trim() });
+    onSaved?.(id);
     window.location.hash = `/coffee/${id}`;
   };
 

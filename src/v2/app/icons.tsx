@@ -12,7 +12,8 @@ export const JournalIcon = () => <Svg><path d="M6.25 4.25h10.5a1.5 1.5 0 0 1 1.5
 export const TasteIcon = () => <Svg><path d="M4.75 9.25h11v4.5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5v-4.5Z" /><path d="M15.75 10.25h1.5a2.5 2.5 0 0 1 0 5h-1.9M8.75 3.75c-.6.8-.6 1.7 0 2.5M12.25 3.75c-.6.8-.6 1.7 0 2.5" /></Svg>;
 export const SearchIcon = () => <Svg><circle cx="10.75" cy="10.75" r="6.5" /><path d="m15.5 15.5 4 4" /></Svg>;
 export const CameraIcon = ({ size = 26 }: { size?: number }) => <Svg size={size}><path d="M4.25 8.25a1.5 1.5 0 0 1 1.5-1.5h2.1l1.4-2h5.5l1.4 2h2.1a1.5 1.5 0 0 1 1.5 1.5v9.5a1.5 1.5 0 0 1-1.5 1.5H5.75a1.5 1.5 0 0 1-1.5-1.5v-9.5Z" /><circle cx="12" cy="13" r="3.5" /></Svg>;
-export const BackIcon = () => <Svg><path d="m14.5 5.5-6.5 6.5 6.5 6.5" /></Svg>;
+export const LibraryIcon = () => <Svg><rect x="4.25" y="4.25" width="15.5" height="15.5" rx="2.5" /><circle cx="9.25" cy="9.25" r="1.5" /><path d="m4.75 17 4.5-4.5 3.5 3.5 2.5-2.5 4 4" /></Svg>;
+export const BackIcon =() => <Svg><path d="m14.5 5.5-6.5 6.5 6.5 6.5" /></Svg>;
 export const CloseIcon = () => <Svg><path d="M6 6l12 12M18 6 6 18" /></Svg>;
 export const ArrowUpRight = ({ size = 22 }: { size?: number }) => <Svg size={size}><path d="M7 17 17 7M8.5 7H17v8.5" /></Svg>;
 export const CheckIcon = () => <Svg size={20}><path d="m5 12.5 4.5 4.5L19 7.5" /></Svg>;

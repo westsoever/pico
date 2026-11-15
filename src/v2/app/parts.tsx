@@ -9,8 +9,10 @@ import imageKinds from './image-kinds.json';
 import { go } from './routing';
 import { pendingSave, tileLine } from './util';
 
-export function Bag({ coffee, w = 300 }: { coffee: Coffee; w?: number }) {
+// `photo`: the person's own photo of this coffee (store/photos.ts), shown instead of the catalog picture.
+export function Bag({ coffee, w = 300, photo }: { coffee: Coffee; w?: number; photo?: string }) {
   const [failed, setFailed] = useState(false);
+  if (photo) return <img className="p-img-photo" src={photo} alt="" />;
   if (!coffee.imageUrl || failed) {
     return <span className="p-bag-fallback">{coffee.roaster.split(' ').map((s) => s[0]).join('').slice(0, 2)}</span>;
   }
@@ -92,11 +94,11 @@ export function Nav({ active }: { active: 'discover' | 'journal' | 'taste' | '' 
   );
 }
 
-export function Tile({ coffee, badge, onClick }: { coffee: Coffee; badge?: ReactNode; onClick: () => void }) {
+export function Tile({ coffee, badge, onClick, photo }: { coffee: Coffee; badge?: ReactNode; onClick: () => void; photo?: string }) {
   return (
     <button className="p-tile" onClick={onClick}>
       <span className="p-tile__img">
-        <Bag coffee={coffee} w={300} />
+        <Bag coffee={coffee} w={300} photo={photo} />
         {badge && <span className="p-glass p-tile__badge">{badge}</span>}
       </span>
       <span className="p-tile__name">{coffee.name}</span>

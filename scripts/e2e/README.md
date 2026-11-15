@@ -9,6 +9,7 @@ to test a site that is already running instead. Needs `pip install playwright pi
 | `check_fixtures.py` | Live testers' data (`fixtures/*.json`, recorded from the live beta) loads with every cup, bookmark, sketch and setting intact. Run after every change to storage or screens. |
 | `check_no_accounts.py` | The live beta promises no accounts; `?proto` brings the fake flows back; a tester who fake-signed-in earlier keeps everything. |
 | `check_flows.py` | Core flows with `?proto`: ratings, match %, sign-up moving cups, sticky Save bar, cup detail/edit/delete, community count, sketched coffees. |
+| `check_scan.py [shots dir]` | The bag and menu scan on the production build without `?proto`, Chrome fake camera: in-app capture (no file chooser), known bag opens with its photo, the owner's mug can be added with its photo, ambiguous list, camera denied, IndexedDB blocked, 200 photos. Needs ffmpeg and network. |
 | `snap.py <dir>` + `compare.py <before> <after>` | 60 screens (5 demo states × 11 screens + 5 live screens), text and pixels. Same build twice gives 60/60; anything else is a real change. |
 | `make_fixtures.py` | Re-records the fixtures by using the site like a tester. Only when the stored shape changes on purpose. |
 
