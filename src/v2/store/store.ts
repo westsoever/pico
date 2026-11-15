@@ -6,7 +6,7 @@ import { loadCustomCoffees } from '../../lib/catalog';
 import { blendTasteSeed, computeTasteProfile, hasTasteSignal } from '../../lib/taste-profile';
 import type { BrewJournal, Coffee, FlavorTag, Rating, TasteProfile } from '../../types/coffee';
 import {
-  EMPTY, LOCAL_USER_ID, TABLES, load, save, uid,
+  EMPTY, LOCAL_USER_ID, STORAGE_KEY, TABLES, load, save, uid,
   type AnyRow, type Cup, type OutboxEntry, type PersistedState, type Table, type Tables, type User, type UserCoffee,
 } from './state';
 
@@ -14,7 +14,10 @@ export const FREE_SCANS = 5;
 const V1_KEY = 'pico-user-data';
 
 /** What screens read: the persisted state with soft-deleted rows hidden. */
-export type StoreState = PersistedState;
+export type StoreState = PersistedState & {
+  /** The last save to this phone failed (storage full or blocked). Data is still in memory; screens say "couldn't save on this phone". */
+  saveFailed: boolean;
+};
 
 export type CupPatch = Partial<Pick<Cup, 'stars' | 'note' | 'flavorTags' | 'brew'>>;
 type PushedEntry = OutboxEntry & { row: AnyRow };
@@ -25,17 +28,28 @@ const now = () => new Date().toISOString();
 
 export function createStore(storage: Storage = localStorage) {
   let data = load(storage);
+  let saveFailed = false;
   let view = toView(data);
   const listeners = new Set<() => void>();
 
+  // Another tab or the Home Screen app saved: take its state, so the two don't overwrite each other's cups.
+  if (typeof window !== 'undefined') {
+    window.addEventListener('storage', (e) => {
+      if (e.key !== STORAGE_KEY || e.storageArea !== storage) return;
+      data = load(storage);
+      view = toView(data);
+      listeners.forEach((l) => l());
+    });
+  }
+
   function toView(d: PersistedState): StoreState {
-    return { ...d, cups: visible(d.cups), saved: visible(d.saved), userCoffees: visible(d.userCoffees) };
+    return { ...d, cups: visible(d.cups), saved: visible(d.saved), userCoffees: visible(d.userCoffees), saveFailed };
   }
 
   function commit(next: PersistedState) {
     data = next;
+    saveFailed = !save(storage, next);
     view = toView(next);
-    save(storage, next);
     listeners.forEach((l) => l());
   }
 
@@ -199,12 +213,15 @@ export function createStore(storage: Storage = localStorage) {
     pending(): { entries: PushedEntry[]; changes: Tables } {
       const changes: Tables = { cups: [], saved: [], userCoffees: [] };
       const entries: PushedEntry[] = [];
+      const orphans = new Set<OutboxEntry>();
       for (const e of data.outbox) {
         const row = (data[e.table] as AnyRow[]).find((r) => r.id === e.id);
-        if (!row || row.userId === LOCAL_USER_ID) continue; // local rows wait for sign-in
+        if (!row) { orphans.add(e); continue; } // its row is gone: drop the entry, or the outbox never drains
+        if (row.userId === LOCAL_USER_ID) continue; // local rows wait for sign-in
         (changes[e.table] as AnyRow[]).push(row);
         entries.push({ ...e, row });
       }
+      if (orphans.size > 0) commit({ ...data, outbox: data.outbox.filter((e) => !orphans.has(e)) });
       return { entries, changes };
     },
 

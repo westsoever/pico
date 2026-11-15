@@ -127,10 +127,12 @@ export function load(storage: Storage): PersistedState {
   return EMPTY;
 }
 
-export function save(storage: Storage, state: PersistedState) {
+/** false when the phone refused the write (storage full, blocked): the store keeps going in memory and flags it. */
+export function save(storage: Storage, state: PersistedState): boolean {
   try {
     storage.setItem(STORAGE_KEY, JSON.stringify(state));
+    return true;
   } catch {
-    // Storage full or blocked: keep working in memory; the outbox still syncs while the tab is open.
+    return false;
   }
 }

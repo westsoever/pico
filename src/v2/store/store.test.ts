@@ -74,6 +74,34 @@ describe('v2 store', () => {
     expect(s.outbox).toEqual([{ table: 'cups', id: 'c1' }, { table: 'saved', id: 'fixture-brazil' }]);
   });
 
+  it('takes the state another tab saved, so two tabs do not overwrite each other', () => {
+    const tab1 = createStore(localStorage);
+    const tab2 = createStore(localStorage);
+    const cup = tab2.addCup('fixture-kenya', 5);
+    window.dispatchEvent(new StorageEvent('storage', { key: STORAGE_KEY, storageArea: localStorage }));
+    expect(tab1.getState().cups).toEqual([cup]);
+    tab1.addCup('fixture-ethiopia', 4); // builds on tab2's cup instead of dropping it
+    expect(createStore(localStorage).getState().cups).toHaveLength(2);
+  });
+
+  it('drops outbox entries whose row is gone, so the outbox can drain', () => {
+    const store = createStore(memoryStorage());
+    store.setUser(userA);
+    const cup = store.addCup('fixture-kenya', 5);
+    store.replaceState({ ...store.getState(), cups: [], outbox: [{ table: 'cups', id: cup.id }] });
+    expect(store.pending().entries).toEqual([]);
+    expect(store.getState().outbox).toEqual([]);
+  });
+
+  it('keeps working in memory and flags it when the phone refuses to save', () => {
+    const storage = memoryStorage();
+    storage.setItem = () => { throw new DOMException('full', 'QuotaExceededError'); };
+    const store = createStore(storage);
+    const cup = store.addCup('fixture-kenya', 5);
+    expect(store.getState().cups).toEqual([cup]);
+    expect(store.getState().saveFailed).toBe(true);
+  });
+
   it('imports the v1 journal and hand-added coffees once', () => {
     const custom = { id: 'custom-1', name: 'Home roast', roaster: 'Me', origin: 'Peru', process: 'washed', roastLevel: 'medium', flavorTags: ['nutty'], description: '', isCustom: true };
     localStorage.setItem('pico-custom-coffees', JSON.stringify([custom]));
