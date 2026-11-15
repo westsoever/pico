@@ -30,6 +30,14 @@ describe('v2 store', () => {
     expect(reloaded.getState().outbox).toEqual([{ table: 'cups', id: cup.id }]);
   });
 
+  it('keeps an edited cup in its place and puts new cups first', () => {
+    const store = createStore(memoryStorage());
+    const older = store.addCup('fixture-kenya', 3);
+    const newer = store.addCup('fixture-ethiopia', 5);
+    store.updateCup(older.id, { note: 'edited' });
+    expect(store.getState().cups.map((c) => c.id)).toEqual([newer.id, older.id]);
+  });
+
   it('moves signed-out cups into the account on sign-in, and refuses a second account', () => {
     const store = createStore(memoryStorage());
     const cup = store.addCup('fixture-ethiopia', 4);

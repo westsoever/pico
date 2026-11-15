@@ -39,7 +39,7 @@ export function createFakeRemote(communitySeed: Record<string, { average: number
 
     async fetchCommunityRatings() {
       if (offline) throw new Error('offline');
-      return communitySeed;
+      return { ...communitySeed }; // a copy, like a real response: the caller may keep it
     },
   };
   return remote;

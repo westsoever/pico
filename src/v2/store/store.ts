@@ -34,7 +34,14 @@ export class AccountConflictError extends Error {
   }
 }
 
-const visible =<T extends AnyRow>(rows: T[]) => rows.filter((r) => !r.deletedAt);
+/** Changed rows keep their place (an edited cup doesn't jump to the top of a list); new rows go first. */
+function upsertRows<T extends AnyRow>(rows: T[], changed: T[]): T[] {
+  const byId = new Map(changed.map((r) => [r.id, r]));
+  const known = new Set(rows.map((r) => r.id));
+  return [...changed.filter((r) => !known.has(r.id)), ...rows.map((r) => byId.get(r.id) ?? r)];
+}
+
+const visible = <T extends AnyRow>(rows: T[]) => rows.filter((r) => !r.deletedAt);
 const now = () => new Date().toISOString();
 
 export function createStore(storage: Storage = localStorage) {
@@ -73,11 +80,10 @@ export function createStore(storage: Storage = localStorage) {
       const prev = before.get(r.id);
       return prev && r.updatedAt <= prev ? { ...r, updatedAt: new Date(Date.parse(prev) + 1).toISOString() } : r;
     }) as Tables[T];
-    const ids = new Set(rows.map((r) => r.id));
     const queued = new Set(data.outbox.filter((e) => e.table === table).map((e) => e.id));
     commit({
       ...data,
-      [table]: [...rows, ...(data[table] as AnyRow[]).filter((r) => !ids.has(r.id))],
+      [table]: upsertRows(data[table] as AnyRow[], rows),
       outbox: [...data.outbox, ...rows.filter((r) => !queued.has(r.id)).map((r) => ({ table, id: r.id }))],
     });
   }
@@ -294,7 +300,7 @@ export function createStore(storage: Storage = localStorage) {
         const wonIds = new Set(won.map((r) => r.id));
         next = {
           ...next,
-          [table]: [...won, ...(next[table] as AnyRow[]).filter((r) => !wonIds.has(r.id))],
+          [table]: upsertRows(next[table] as AnyRow[], won),
           // A newer server row replaces an older local edit, so that edit no longer needs pushing.
           outbox: next.outbox.filter((e) => e.table !== table || !wonIds.has(e.id)),
         };
