@@ -10,6 +10,9 @@ talking to an in-memory fake server: nothing leaves the phone yet. Coffees are l
 (`coffeeById`, `allCoffees`): hand-added and label-sketched coffees are UserCoffees. v1 data is only read: the
 journal in `pico-user-data` (Import screen, offered once) and `pico-custom-coffees` (adopted as your coffees on start).
 
+**Scan photos** (`src/v2/store/photos.ts`): when a scan ends at a coffee, its photo is kept in IndexedDB on the phone
+(not in `pico-v2`) and becomes that coffee's picture in the Journal and on its page. Local only until accounts.
+
 **Accounts** are fake and hidden on the live site (`ACCOUNTS` in `state.ts`: dev or `?proto` only). The live site says
 "Accounts are coming"; real sign-in (`src/v2/auth.ts`, Supabase) is NEXT.md step b.
 

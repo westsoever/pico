@@ -6,6 +6,7 @@
 (5) camera denied: the file-input fallback still works
 (6) IndexedDB blocked: scan and rating still work
 (7) 200 stored photos: first paint of the Journal, measured
+(8) the menu scan: the same in-app camera; the file input only when the camera is denied
 Needs ffmpeg (turns the photos into fake camera video) and network (catalog bag photos, the OCR engine's CDN).
 Usage: python3 scripts/e2e/check_scan.py [screenshot dir]
 """
@@ -174,6 +175,29 @@ with sync_playwright() as p:
         pg.click('.p-cam__library')
     c.ok(fc.value.element.get_attribute('capture') is None, '(5) the library button opens a picker without capture')
     c.ok(not errors, f'(5) no page errors {errors}')
+    b.close()
+
+    # (8) the menu scan uses the same in-app camera: no file chooser when granted, the file input when denied
+    b, pg, errors = session(p, mug_cam)
+    pg.goto(f'{BASE}#/menu'); pg.wait_for_selector('.p-scan__shutter:enabled')
+    chooser = True
+    try:
+        with pg.expect_file_chooser(timeout=2500):
+            pg.click('.p-scan__shutter')
+    except PWTimeout:
+        chooser = False
+    c.ok(not chooser, '(8) menu: camera granted, the shutter opens no file chooser')
+    c.ok(wait_for(pg, lambda: pg.locator('.p-results, .w-poor').count() > 0, 30), '(8) menu: the captured frame was read')
+    c.ok(not errors, f'(8) no page errors {errors}')
+    b.close()
+    b, pg, errors = session(p, mug_cam, DENY_CAMERA)
+    pg.goto(f'{BASE}#/menu'); pg.wait_for_selector('.p-scan__shutter:enabled')
+    try:
+        with pg.expect_file_chooser(timeout=3000) as fc:
+            pg.click('.p-scan__shutter')
+        c.ok(fc.value.element.get_attribute('capture') == 'environment', '(8) menu: camera denied, the shutter opens the camera file input')
+    except PWTimeout:
+        c.ok(False, '(8) menu: camera denied, the shutter opens a file chooser')
     b.close()
 
     # (6) IndexedDB blocked
