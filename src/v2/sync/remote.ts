@@ -9,4 +9,6 @@ export interface Remote {
   push(userId: string, changes: Tables): Promise<void>;
   /** Rows of this user changed on the server after `since` (null = everything), and the cursor to pull from next time. */
   pull(userId: string, since: string | null): Promise<{ changes: Tables; cursor: string }>;
+  /** Public, also signed out: per catalog coffee, raters and the mean of their own averages (3+ raters only). */
+  fetchCommunityRatings(): Promise<Record<string, { average: number; count: number }>>;
 }

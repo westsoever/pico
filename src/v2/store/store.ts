@@ -23,7 +23,18 @@ export type CupPatch = Partial<Pick<Cup, 'stars' | 'note' | 'flavorTags' | 'brew
 type PushedEntry = OutboxEntry & { row: AnyRow };
 export type SignOutResult = { ok: true } | { ok: false; pending: number };
 
-const visible = <T extends AnyRow>(rows: T[]) => rows.filter((r) => !r.deletedAt);
+/** A different account tried to sign in while this phone holds another account's cups that aren't backed up. */
+export class AccountConflictError extends Error {
+  readonly current: User;
+  readonly pending: number;
+  constructor(current: User, pending: number) {
+    super(`${current.displayName}'s ${pending} latest changes on this phone aren't backed up yet.`);
+    this.current = current;
+    this.pending = pending;
+  }
+}
+
+const visible =<T extends AnyRow>(rows: T[]) => rows.filter((r) => !r.deletedAt);
 const now = () => new Date().toISOString();
 
 export function createStore(storage: Storage = localStorage) {
@@ -73,6 +84,17 @@ export function createStore(storage: Storage = localStorage) {
 
   const ownerId = () => data.user?.id ?? LOCAL_USER_ID;
 
+  /** Back to signed out with no personal data. Keeps phone-level things: welcome seen, v1 imported, community cache. */
+  function clearAccount() {
+    commit({
+      ...EMPTY,
+      seenWelcome: data.seenWelcome,
+      v1Imported: data.v1Imported,
+      communityRatings: data.communityRatings,
+      communityFetchedAt: data.communityFetchedAt,
+    });
+  }
+
   const store = {
     getState: () => view,
     subscribe(listener: () => void) {
@@ -95,13 +117,21 @@ export function createStore(storage: Storage = localStorage) {
      * the same for a new account and for signing in to an existing one.
      */
     setUser(user: User) {
-      if (data.user && data.user.id !== user.id) throw new Error('Another account is signed in on this phone: sign out first.');
+      // Token refreshes repeat the same sign-in: nothing to do unless something changed.
+      if (data.user?.id === user.id && !data.signInNeeded && !TABLES.some((t) => (data[t] as AnyRow[]).some((r) => r.userId === LOCAL_USER_ID))) return;
+      if (data.user && data.user.id !== user.id) {
+        // A different account on a phone that still holds someone's cups. Never merge the two:
+        // if everything is backed up, the old account's copy is just cleared; otherwise refuse.
+        if (data.outbox.length > 0) throw new AccountConflictError(data.user, data.outbox.length);
+        clearAccount();
+      }
       const rekey = <T extends AnyRow>(rows: T[]) => rows.map((r) => (r.userId === LOCAL_USER_ID ? { ...r, userId: user.id, updatedAt: now() } : r));
       const local = TABLES.flatMap((table) => (data[table] as AnyRow[]).filter((r) => r.userId === LOCAL_USER_ID).map((r) => ({ table, id: r.id })));
       const queued = new Set(data.outbox.map((e) => `${e.table}:${e.id}`));
       commit({
         ...data,
         user,
+        signInNeeded: false,
         cups: rekey(data.cups),
         saved: rekey(data.saved),
         userCoffees: rekey(data.userCoffees),
@@ -120,9 +150,26 @@ export function createStore(storage: Storage = localStorage) {
         // Offline or server error: the check below keeps the data.
       }
       if (data.outbox.length > 0) return { ok: false, pending: data.outbox.length };
-      commit({ ...EMPTY, seenWelcome: data.seenWelcome, v1Imported: data.v1Imported });
+      clearAccount();
       return { ok: true };
     },
+
+    /** The session ran out (refresh failed): keep everything, pause sync until the same account signs in again. */
+    markSignInNeeded() {
+      if (data.user) commit({ ...data, signInNeeded: true });
+    },
+
+    /** Explicit, after the person confirms: remove this phone's copy of the signed-in account, backed up or not. */
+    discardAccount() {
+      clearAccount();
+    },
+
+    setCommunityRatings(ratings: PersistedState['communityRatings']) {
+      commit({ ...data, communityRatings: ratings, communityFetchedAt: now() });
+    },
+
+    /** The coffee's community rating from the last fetch; null below 3 raters (the server leaves those out) and for hand-added coffees. */
+    communityRating: (coffeeId: string) => (coffeeId.startsWith('custom-') ? null : view.communityRatings[coffeeId] ?? null),
 
     addCup(coffeeId: string, stars: number, note = '', flavorTags?: FlavorTag[], brew?: BrewJournal): Cup {
       const at = now();

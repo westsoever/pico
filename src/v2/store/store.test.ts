@@ -37,7 +37,7 @@ describe('v2 store', () => {
     expect(store.getState().cups[0]).toMatchObject({ id: cup.id, userId: userA.id });
     expect(store.pending().entries.map((e) => e.id)).toEqual([cup.id]);
     expect(store.addCup('fixture-kenya', 5).userId).toBe(userA.id);
-    expect(() => store.setUser(userB)).toThrow(/sign out first/);
+    expect(() => store.setUser(userB)).toThrow(/aren't backed up/);
   });
 
   it('drops a coffee from Saved when its first cup is logged', () => {

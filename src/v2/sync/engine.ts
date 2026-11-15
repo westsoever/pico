@@ -10,8 +10,9 @@ export function createSync(store: Store, remote: Remote) {
   let again = false;
 
   async function pass() {
-    const user = store.getState().user;
-    if (!user) return;
+    store.setCommunityRatings(await remote.fetchCommunityRatings());
+    const { user, signInNeeded } = store.getState();
+    if (!user || signInNeeded) return; // signed out, or the session ran out: personal rows wait
     const { entries, changes } = store.pending();
     if (entries.length > 0) {
       await remote.push(user.id, changes);
@@ -49,7 +50,8 @@ export function startAutoSync(store: Store, sync: () => Promise<void>, delayMs =
   const run = () => { sync().catch(() => { /* offline: retried on the next trigger */ }); };
   const onVisible = () => { if (document.visibilityState === 'visible') run(); };
   const unsubscribe = store.subscribe(() => {
-    if (store.getState().outbox.length === 0) return;
+    const s = store.getState();
+    if (!s.user || s.signInNeeded || s.outbox.length === 0) return; // nothing this phone could push now
     clearTimeout(timer);
     timer = setTimeout(run, delayMs);
   });

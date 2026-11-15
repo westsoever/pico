@@ -64,6 +64,11 @@ export interface PersistedState extends Tables {
   outbox: OutboxEntry[];
   /** Server cursor of the last pull (opaque). */
   lastPulledAt: string | null;
+  /** The server session ran out while signed in: data stays, sync pauses, screens ask to sign in again. */
+  signInNeeded: boolean;
+  /** Last community ratings from the server, kept so a scan shows them offline. Not personal: survives sign-out. */
+  communityRatings: Record<string, { average: number; count: number }>;
+  communityFetchedAt: string | null;
 }
 
 export const EMPTY: PersistedState = {
@@ -78,6 +83,9 @@ export const EMPTY: PersistedState = {
   v1Imported: false,
   outbox: [],
   lastPulledAt: null,
+  signInNeeded: false,
+  communityRatings: {},
+  communityFetchedAt: null,
 };
 
 export const uid = () => crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { createStore } from '../store/store';
+import { AccountConflictError, createStore } from '../store/store';
 import { memoryStorage, userA, userB } from '../test-utils';
 import { createSync } from './engine';
 import { createFakeRemote } from './fake-remote';
@@ -134,5 +134,61 @@ describe('sync engine', () => {
     await expect(remote.push(userA.id, { cups: [cup], saved: [], userCoffees: [] })).rejects.toThrow(/not your row/);
     await b.sync();
     expect((await remote.pull(userA.id, null)).changes.cups).toEqual([]);
+  });
+});
+
+describe('session loss and a second account', () => {
+  it('keeps the data and pauses sync when the session runs out, until the same account signs in again', async () => {
+    const remote = createFakeRemote();
+    const a = phone(remote);
+    a.store.addCup('fixture-kenya', 5);
+    a.store.markSignInNeeded();
+    await a.sync();
+    expect(remote.all()).toEqual([]);
+    expect(a.store.getState()).toMatchObject({ signInNeeded: true, user: userA });
+    a.store.setUser(userA); // same account: no "sign out first", sync resumes
+    await a.sync();
+    expect(remote.all()).toHaveLength(1);
+    expect(a.store.getState().signInNeeded).toBe(false);
+  });
+
+  it('refuses another account while the first one has cups that are not backed up, and keeps them', async () => {
+    const remote = createFakeRemote();
+    const a = phone(remote);
+    a.store.addCup('fixture-kenya', 5);
+    a.store.markSignInNeeded();
+    expect(() => a.store.setUser(userB)).toThrow(AccountConflictError);
+    expect(a.store.getState()).toMatchObject({ user: userA });
+    expect(a.store.getState().cups).toHaveLength(1);
+  });
+
+  it('lets another account in once the first is fully backed up, without merging', async () => {
+    const remote = createFakeRemote();
+    const a = phone(remote);
+    a.store.addCup('fixture-kenya', 5);
+    await a.sync();
+    a.store.setUser(userB);
+    await a.sync();
+    expect(a.store.getState()).toMatchObject({ user: userB, cups: [] });
+    expect((await remote.pull(userB.id, null)).changes.cups).toEqual([]);
+  });
+});
+
+describe('community ratings', () => {
+  it('fetches them signed out, keeps them offline and after sign-out, never for hand-added coffees', async () => {
+    const remote = createFakeRemote({ 'fixture-kenya': { average: 4.3, count: 12 } });
+    const store = createStore(memoryStorage());
+    const sync = createSync(store, remote);
+    await sync();
+    expect(store.communityRating('fixture-kenya')).toEqual({ average: 4.3, count: 12 });
+    expect(store.communityRating('fixture-brazil')).toBeNull();
+    expect(store.communityRating('custom-1')).toBeNull();
+    remote.setOffline(true);
+    await expect(sync()).rejects.toThrow('offline');
+    expect(store.communityRating('fixture-kenya')).toEqual({ average: 4.3, count: 12 });
+    remote.setOffline(false);
+    store.setUser(userA);
+    await store.signOut(sync);
+    expect(store.communityRating('fixture-kenya')).toEqual({ average: 4.3, count: 12 });
   });
 });

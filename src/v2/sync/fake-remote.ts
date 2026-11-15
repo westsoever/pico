@@ -5,7 +5,7 @@ import type { Remote } from './remote';
  * In-memory server with the same rules as the SQL: rows belong to one user (like row-level security),
  * the newer updatedAt wins, and every accepted write gets a new server cursor.
  */
-export function createFakeRemote() {
+export function createFakeRemote(communitySeed: Record<string, { average: number; count: number }> = {}) {
   const rows = new Map<string, { table: keyof Tables; row: AnyRow; seq: number }>();
   let seq = 0;
   let offline = false;
@@ -35,6 +35,11 @@ export function createFakeRemote() {
         if (row.userId === userId && (since === null || cursor(s) > since)) (changes[table] as AnyRow[]).push(row);
       }
       return { changes, cursor: cursor(seq) };
+    },
+
+    async fetchCommunityRatings() {
+      if (offline) throw new Error('offline');
+      return communitySeed;
     },
   };
   return remote;
