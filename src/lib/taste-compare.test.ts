@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Coffee, TasteProfile } from '../types/coffee';
-import { coffeeSimilarity, guessStars, lovedTwinLine } from './taste-compare';
+import { coffeeHints, coffeeSimilarity, guessStars, lovedTwinLine } from './taste-compare';
 
 const coffee = (id: string, over: Partial<Coffee> = {}): Coffee => ({
   id, name: id, roaster: 'R', origin: 'Kenya', process: 'washed', roastLevel: 'light',
@@ -54,6 +54,22 @@ describe('guessStars', () => {
 
   it('never uses cups of the coffee itself', () => {
     expect(guessStars(kieni, [{ coffeeId: 'Kieni', stars: 5 }, { coffeeId: 'Kieni', stars: 5 }], ALL)).toBeNull();
+  });
+});
+
+describe('coffeeHints', () => {
+  const twin = coffee('Twin');
+  const third = coffee('Third', { origin: 'Peru' });
+  const all = [...ALL, twin, third];
+
+  it('keeps the loved line when the guess is good', () => {
+    const cups = [{ coffeeId: 'Kieni', stars: 5 }, { coffeeId: 'Twin', stars: 4 }, { coffeeId: 'Third', stars: 4 }];
+    expect(coffeeHints(newKenya, cups, all, profile)).toMatchObject({ twin: 'Like the Kieni you loved, with more chocolate.', guess: 4, showReason: true });
+  });
+
+  it('drops the loved line and the reason when the guess is 2 stars or less', () => {
+    const cups = [{ coffeeId: 'Kieni', stars: 4 }, { coffeeId: 'Twin', stars: 1 }, { coffeeId: 'Third', stars: 1 }];
+    expect(coffeeHints(newKenya, cups, all, profile)).toEqual({ twin: null, guess: 2, showReason: false });
   });
 });
 

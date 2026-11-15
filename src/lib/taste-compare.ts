@@ -99,3 +99,15 @@ export function guessStars(coffee: Coffee, cups: RatedCup[], coffees: Coffee[]):
   if (count < GUESS_MIN_RATED || !similar || weight === 0) return null;
   return Math.min(5, Math.max(1, Math.round(total / weight)));
 }
+
+/** Both coffee-page lines together. A guess of 2 stars or less silences the reason line: "like the one you loved" would contradict it. */
+export function coffeeHints(
+  coffee: Coffee,
+  cups: RatedCup[],
+  coffees: Coffee[],
+  profile: TasteProfile,
+): { twin: string | null; guess: number | null; showReason: boolean } {
+  const guess = guessStars(coffee, cups, coffees);
+  const low = guess !== null && guess <= 2;
+  return { twin: low ? null : lovedTwinLine(coffee, cups, coffees, profile), guess, showReason: !low };
+}
