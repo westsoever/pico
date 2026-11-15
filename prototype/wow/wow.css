@@ -1,0 +1,48 @@
+/* Feature screens from prototype/wow/. Uses proto.css tokens only. */
+
+/* Scan miss → coffee sketched from the label */
+.w-answer { display: grid; gap: 12px; text-align: left; }
+.w-answer__card { display: flex; gap: 14px; align-items: center; padding: 10px 14px 10px 10px; border-radius: 22px; background: #fff; color: var(--ink); }
+.w-answer__photo { flex: none; width: 88px; height: 112px; object-fit: cover; border-radius: 16px; }
+.w-answer__text { display: grid; gap: 3px; font-size: 14px; line-height: 19px; }
+.w-answer__text b { font-size: 17px; line-height: 22px; }
+.w-answer__match { justify-self: start; margin-top: 4px; }
+
+.w-field { display: grid; gap: 6px; font-size: 13px; color: rgba(255,255,255,.75); }
+.w-field input { height: 48px; padding: 0 14px; border: 0; border-radius: 14px; background: rgba(255,255,255,.1); color: #fff; font-size: 17px; }
+.w-field input::placeholder { color: rgba(255,255,255,.45); }
+.w-roasts { display: flex; gap: 8px; }
+.w-roasts button { flex: 1; height: 44px; border-radius: 14px; background: rgba(255,255,255,.1); color: #fff; font-size: 15px; font-weight: 600; text-align: center; }
+.w-roasts button[data-on] { background: #fff; color: var(--ink); }
+.w-answer .p-btn { margin-top: 6px; }
+
+/* Taste sharing: Share button, two-choice sheet, card line, TasteMatch screen */
+.p-taste-hero:has(.w-share-taste) { position: relative; }
+.w-share-taste { position: absolute; top: 14px; right: 14px; }
+.w-match__back { margin-top: 24px; }
+.w-match__coffee + .p-reason { margin-top: 12px; }
+.w-sheet { position: fixed; inset: 0; z-index: 20; display: flex; align-items: flex-end; justify-content: center; background: rgba(17,20,24,.4); }
+.w-sheet__panel { width: 100%; max-width: 430px; padding: 18px 16px calc(22px + var(--safe-b)); display: grid; gap: 10px; border-radius: 28px 28px 0 0; background: #fff; }
+.w-sheet__choice { display: grid; gap: 2px; padding: 16px 18px; border-radius: 20px; background: var(--snow); font-size: 14px; line-height: 19px; color: var(--ink-2); }
+.w-sheet__choice b { font-size: 17px; line-height: 22px; color: var(--ink); }
+.w-card__since { font-style: normal; }
+.w-match .p-taste { margin-top: 10px; }
+.w-match__coffee { width: 100%; padding: 12px; display: flex; gap: 14px; align-items: center; border-radius: 24px; background: var(--snow); }
+.w-match__bag { position: relative; flex: none; width: 104px; height: 132px; padding: 8px; display: grid; place-items: center; overflow: hidden; border-radius: 18px; background: linear-gradient(180deg, #fff, #eaeff5); }
+.w-match__text { display: grid; gap: 2px; font-size: 14px; line-height: 19px; color: var(--ink-2); }
+.w-match__text b { font-size: 18px; line-height: 23px; color: var(--ink); }
+.w-match__text .p-match { justify-self: start; margin-top: 6px; }
+
+/* Unsharp photo + café menu */
+.w-poor { padding-top: 10vh; }
+.w-poor h1 { font-size: 28px; line-height: 34px; letter-spacing: -0.02em; }
+.w-poor p, .w-poor__p { margin: 10px 0 20px; color: rgba(255,255,255,.75); font-size: 16px; line-height: 22px; }
+.w-poor .p-btn + .p-btn { margin-top: 10px; }
+.p-result__img:has(.w-menu__crop) { position: relative; overflow: hidden; padding: 0; }
+
+/* Live scan: camera picture inside the scan frame */
+.w-live { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 22px; }
+.p-scan__frame:has(.w-live) > span, .p-scan__frame:has(.w-live) p { z-index: 1; }
+.p-scan__frame:has(.w-live) p { position: relative; text-shadow: 0 1px 6px rgba(0,0,0,.6); }
+/* Prototype only: last OCR read time, next to the Prototype pill */
+.w-readms { position: fixed; z-index: 15; left: 84px; bottom: calc(1px + var(--safe-b)); padding: 2px 7px; border-radius: 999px; background: rgba(17,20,24,.45); color: #fff; font-size: 10px; line-height: 12px; font-variant-numeric: tabular-nums; }

@@ -373,7 +373,8 @@
     ],
     "imageUrl": "https://www.kontracoffee.com/Files/Images/Ecom/38200014_1.png",
     "sourceUrl": "https://www.kontracoffee.com/butik/kaffe/ristegrad/lysristet-kaffe/kenya-gicherori-lysristet-250g",
-    "available": true
+    "available": true,
+    "roastStyle": "omni"
   },
   {
     "id": "kontra-ethiopia-guji",
@@ -399,7 +400,8 @@
     ],
     "imageUrl": "https://www.kontracoffee.com/Files/Images/Ecom/38200029_1.png",
     "sourceUrl": "https://www.kontracoffee.com/butik/kaffe/ristegrad/lysristet-kaffe/etiopien-guji-lysristet",
-    "available": true
+    "available": true,
+    "roastStyle": "omni"
   },
   {
     "id": "kontra-ethiopia-shakiso",
@@ -426,7 +428,8 @@
     ],
     "imageUrl": "https://www.kontracoffee.com/Files/Images/Ecom/38200115_1.png",
     "sourceUrl": "https://www.kontracoffee.com/butik/kaffe/ristegrad/lysristet-kaffe/etiopien-shakiso-lysristet",
-    "available": true
+    "available": true,
+    "roastStyle": "omni"
   },
   {
     "id": "kontra-colombia-santander",
@@ -455,7 +458,8 @@
     ],
     "imageUrl": "https://www.kontracoffee.com/Files/Images/Ecom/38200119_1.png",
     "sourceUrl": "https://www.kontracoffee.com/butik/kaffe/ristegrad/lysristet-kaffe/colombia-santander-lysristet",
-    "available": true
+    "available": true,
+    "roastStyle": "omni"
   },
   {
     "id": "la-cabra-kainamui",
@@ -829,7 +833,8 @@
     ],
     "imageUrl": "https://cdn.shopify.com/s/files/1/0290/1491/7180/files/Kenya_Coffee.png",
     "sourceUrl": "https://impactroasters.dk/products/coffee-beans-kenya-mount-kenya-new",
-    "available": true
+    "available": true,
+    "roastStyle": "omni"
   },
   {
     "id": "impact-roasters-kimathi",
@@ -850,7 +855,8 @@
     ],
     "imageUrl": "https://cdn.shopify.com/s/files/1/0290/1491/7180/files/Kimathi_Kenya_ethiopia_blend.png",
     "sourceUrl": "https://impactroasters.dk/products/coffee-beans-kimathi-blend-kenya-and-ethiopia-new",
-    "available": true
+    "available": true,
+    "roastStyle": "omni"
   },
   {
     "id": "pontes-coffee-hidden-hour",
@@ -1256,7 +1262,8 @@
     ],
     "imageUrl": "https://cdn.shopify.com/s/files/1/0081/5431/6911/files/Kenya_moerkristet_kaffe_-_250g.png",
     "sourceUrl": "https://coffeedealers.dk/products/morkristet-kaffe-fra-kenya",
-    "available": true
+    "available": true,
+    "roastStyle": "filter"
   },
   {
     "id": "copenhagen-coffee-dealers-brasilien-morkristet",
@@ -1468,7 +1475,8 @@
     ],
     "imageUrl": "https://cdn.shopify.com/s/files/1/0508/6117/9048/files/250g_Dois_Irmaos_Front_View.jpg",
     "sourceUrl": "https://www.nordicroasting.com/products/fazenda-dois-irmaos",
-    "available": true
+    "available": true,
+    "roastStyle": "filter"
   },
   {
     "id": "kaldi-kaffe-limu",
@@ -1677,7 +1685,8 @@
     ],
     "imageUrl": "https://cdn.shopify.com/s/files/1/1402/1787/files/ProduktbilledeplusWEBBELAEPOCABRASILIEN.jpg",
     "sourceUrl": "https://lagomcoffee.com/products/bela-epoca-250-g",
-    "available": true
+    "available": true,
+    "roastStyle": "omni"
   },
   {
     "id": "lagom-coffee-humure",
@@ -1708,7 +1717,8 @@
     ],
     "imageUrl": "https://cdn.shopify.com/s/files/1/1402/1787/files/ProduktbilledeplusWEBHUMURERWANDA.png",
     "sourceUrl": "https://lagomcoffee.com/products/humure-rwanda-250-g",
-    "available": true
+    "available": true,
+    "roastStyle": "omni"
   },
   {
     "id": "lagom-coffee-las-petunias",
@@ -1758,7 +1768,8 @@
       "fruity acidity"
     ],
     "sourceUrl": "https://www.kaffesyndikatet.dk/products/peru-finca-churupampa-medium-dark",
-    "available": true
+    "available": true,
+    "roastStyle": "omni"
   },
   {
     "id": "haldrup-kaffesyndikat-seleccion-planadas",
@@ -1894,7 +1905,8 @@
     ],
     "imageUrl": "https://cdn.shopify.com/s/files/1/0963/2215/8917/files/rungeto-jam-packshot.jpg",
     "sourceUrl": "https://piccolocoffee.dk/products/rungeto-jam",
-    "available": true
+    "available": true,
+    "roastStyle": "omni"
   },
   {
     "id": "skaastrupkaffen-espresso-blend",
@@ -1965,6 +1977,7 @@
     ],
     "imageUrl": "https://cdn.shopify.com/s/files/1/0770/1767/8161/files/Skaastrup_Special_ub.png",
     "sourceUrl": "https://skaastrupkaffen.dk/products/skastrup-special-blend",
-    "available": true
+    "available": true,
+    "roastStyle": "filter"
   }
 ]

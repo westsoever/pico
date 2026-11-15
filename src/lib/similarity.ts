@@ -26,7 +26,19 @@ export function scoreSimilarity(coffee: Coffee, profile: TasteProfile): number {
   const processScore = listMatch(coffee.process, profile.topProcesses);
   const roastScore = listMatch(coffee.roastLevel, profile.topRoastLevels);
 
-  return tagScore * 0.5 + originScore * 0.2 + processScore * 0.15 + roastScore * 0.15;
+  // A part the profile knows nothing about (a quiz gives no origin or process) is left out
+  // and the rest rescaled, so a perfect fit is still 100%.
+  const parts = [
+    [tagScore, 0.5, Object.keys(profile.tagWeights).length],
+    [originScore, 0.2, profile.topOrigins.length],
+    [processScore, 0.15, profile.topProcesses.length],
+    [roastScore, 0.15, profile.topRoastLevels.length],
+  ].filter(([, , known]) => known > 0);
+  const total = parts.reduce((sum, [, weight]) => sum + weight, 0);
+  if (total === 0) return 0;
+  // A guess from the quiz caps at 90%; the cap lifts as real ratings take over.
+  const quizDamping = 1 - 0.1 * (profile.quizShare ?? 0);
+  return (parts.reduce((sum, [score, weight]) => sum + score * weight, 0) / total) * quizDamping;
 }
 
 export function getSimilarCoffees(
