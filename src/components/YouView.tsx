@@ -1,5 +1,6 @@
 import { loadUserData } from '../lib/storage';
 import { formatMatchPercent, getSimilarCoffees } from '../lib/similarity';
+import { hasTasteSignal } from '../lib/taste-profile';
 import { FLAVOR_TAG_LABELS, ROAST_LEVEL_LABELS } from '../types/coffee';
 import type { FlavorTag, SimilarCoffee, TasteProfile } from '../types/coffee';
 import { PageHeader } from './Layout';
@@ -86,10 +87,7 @@ export function YouView({ onSelectCoffee, refreshKey, onDiscover, onAddCoffee }:
   const topTags = (Object.entries(tasteProfile.tagWeights) as [FlavorTag, number][])
     .sort((a, b) => b[1] - a[1])
     .slice(0, 5);
-  const hasPositiveSignal =
-    topTags.length > 0 ||
-    tasteProfile.topOrigins.length > 0 ||
-    tasteProfile.topProcesses.length > 0;
+  const hasPositiveSignal = hasTasteSignal(tasteProfile);
   const ratedIds = ratings.map((r) => r.coffeeId);
   const recommendations = hasPositiveSignal ? getSimilarCoffees(tasteProfile, ratedIds, 6) : [];
   const profileMaturity =

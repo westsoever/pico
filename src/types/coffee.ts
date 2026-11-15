@@ -142,6 +142,8 @@ export interface TasteProfile {
   topRoastLevels: RoastLevel[];
   avgRating: number;
   ratingCount: number;
+  /** Share of the profile that comes from the first-run quiz (1 with no ratings, fading to 0). */
+  quizShare?: number;
 }
 
 export interface UserData {
