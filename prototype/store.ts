@@ -85,7 +85,7 @@ export const deleteCup = store.deleteCup;
 export const isSaved = store.isSaved;
 export const toggleSaved = store.toggleSaved;
 
-/** Account screens and prompts are shown (real accounts, or dev / ?proto for the fake flows). Off on the live beta. */
+/** The fake account screens and prompts are shown: dev or ?proto only, never from Supabase config alone. Off on the live beta. */
 export const ACCOUNTS = showAccounts(import.meta.env, window.location.search);
 // No accounts to unlock more scans with, so no scan limit either.
 export const spendScan = () => (ACCOUNTS ? store.spendScan() : true);

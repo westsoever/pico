@@ -21,14 +21,13 @@ import {
 } from '../src/types/coffee';
 import type { TasteSeed } from '../src/lib/taste-profile';
 import {
-  DEMO_STATES, FREE_SCANS, addCup, applyDemoState, currentProfile, importV1, readV1Ratings, setState, signUp,
+  ACCOUNTS, DEMO_STATES, FREE_SCANS, addCup, applyDemoState, currentProfile, importV1, readV1Ratings, setState, signUp,
   spendScan, isSaved, toggleSaved, totalsByCoffee, updateCup, deleteCup, communityRating, useStore, type Cup, type DemoState, type ProtoState,
 } from './store';
 import {
   ArrowUpRight, BackIcon, BookmarkIcon, CameraIcon, ChevronRight, CloseIcon, DiscoverIcon, JournalIcon, PersonIcon, PlusIcon,
   SearchIcon, ShareIcon, SparkIcon, Star, StarOutline, TasteIcon,
 } from './icons';
-import { PicoMark } from '../src/components/ui/Icons';
 // From image-kinds.py: cutouts and bags on plain white are shown contained; photos fill their frame.
 import imageKinds from './image-kinds.json';
 import bagWidths from './bag-widths.json';
@@ -62,6 +61,9 @@ function useRoute() {
   useEffect(() => {
     const on = () => { rememberOrigin(); setRoute(parse()); window.scrollTo(0, 0); };
     window.addEventListener('hashchange', on);
+    // The first render may already have redirected (e.g. / to #/welcome) before this listener existed;
+    // in the production build that hashchange is missed and the page stays blank. Catch up once.
+    setRoute(parse());
     return () => window.removeEventListener('hashchange', on);
   }, []);
   return route;
@@ -123,10 +125,10 @@ function Avatar() {
 }
 
 function SaveButton({ s, coffeeId, className }: { s: ProtoState; coffeeId: string; className: string }) {
-  const on = !!s.user && isSaved(coffeeId);
+  const on = isSaved(coffeeId);
   const tap = (e: { stopPropagation: () => void }) => {
     e.stopPropagation();
-    if (s.user) return toggleSaved(coffeeId);
+    if (s.user || !ACCOUNTS) return toggleSaved(coffeeId); // no accounts yet: saved on the phone, like cups
     pendingSave = coffeeId;
     go(`/signup?reason=save&next=${encodeURIComponent(`/coffee/${coffeeId}`)}`);
   };
@@ -148,11 +150,12 @@ function JournalTitle({ on }: { on: 'journal' | 'saved' }) {
 }
 
 // Titles stand alone: no stat or count eyebrow above them (stats go in a quiet .p-footstat line at the bottom).
-function Head({ title }: { title: ReactNode }) {
+// Same header on every tab, so the avatar sits in the same spot; `aside` goes left of it without moving it.
+function Head({ title, aside }: { title: ReactNode; aside?: ReactNode }) {
   return (
     <header className="p-head">
       <h1 className="p-title">{title}</h1>
-      <Avatar />
+      <span className="p-head__end">{aside}<Avatar /></span>
     </header>
   );
 }
@@ -246,7 +249,8 @@ function Quiz({ q }: { q: URLSearchParams }) {
   const [step, setStep] = useState(0);
   const [roasts, setRoasts] = useState<RoastLevel[]>([]);
   const [flavors, setFlavors] = useState<FlavorTag[]>([]);
-  const finish = (seed: TasteSeed) => { setState({ tasteSeed: seed }); go(q.get('next') || '/discover'); };
+  // replace: the quiz leaves no history entry, so closing the next screen can't land back in it
+  const finish = (seed: TasteSeed) => { setState({ tasteSeed: seed }); window.location.replace(`#${q.get('next') || '/discover'}`); };
   const steps = [
     { title: 'How do you drink your coffee?', options: QUIZ_DRINK.map((o) => ({ label: o.label, pick: () => { setRoasts([...o.roasts]); setStep(1); } })) },
     { title: 'Which sounds best?', options: QUIZ_FLAVORS.map((o) => ({ label: o.label, pick: () => { setFlavors(o.tags); setStep(2); } })) },
@@ -272,7 +276,12 @@ function Quiz({ q }: { q: URLSearchParams }) {
 
 function Welcome() {
   // Scan and Browse pass through the taste quiz first; "I have an account" goes straight to sign-in.
-  const done = (to: string) => { setState({ seenWelcome: true }); go(to.startsWith('/signup') ? to : `/quiz?next=${encodeURIComponent(to)}`); };
+  // The quiz replaces the welcome entry (and the quiz replaces itself), so Back never returns to onboarding.
+  const done = (to: string) => {
+    setState({ seenWelcome: true });
+    if (to.startsWith('/signup')) go(to);
+    else window.location.replace(`#/quiz?next=${encodeURIComponent(to)}`);
+  };
   // Transparent-PNG bags (corner alpha 0) from 3 roasters, so no white box shows behind them.
   const hero = ['coffee-collective-mulugeta-anaerobic', 'kontra-kenya-gicherori', 'skaastrupkaffen-special-blend']
     .map((id) => getCoffeeById(id)).filter((c) => c !== undefined);
@@ -287,7 +296,7 @@ function Welcome() {
       <p className="p-welcome__body">Taste it. Rate it. Let Pico find your next favorite.</p>
       <button className="p-btn p-btn--amber" onClick={() => done('/scan')}><CameraIcon size={22} /> Scan a coffee bag</button>
       <button className="p-btn p-btn--ghost" onClick={() => done('/discover')}>Browse coffees</button>
-      <span className="p-fine">{FREE_SCANS} free scans, no account needed · <button className="p-link" onClick={() => done('/signup?reason=account')}>I have an account</button></span>
+      {ACCOUNTS && <span className="p-fine">{FREE_SCANS} free scans, no account needed · <button className="p-link" onClick={() => done('/signup?reason=account')}>I have an account</button></span>}
     </div>
   );
 }
@@ -302,7 +311,7 @@ function Discover({ s }: { s: ProtoState }) {
   const [stuck, setStuck] = useState(false);
   const barRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    // Stuck = the search bar has reached the top (the brand row above it has scrolled away).
+    // Stuck = the search bar has reached the top (the header row above it has scrolled away).
     const on = () => setStuck((barRef.current?.getBoundingClientRect().top ?? 1) <= 0);
     window.addEventListener('scroll', on, { passive: true });
     return () => window.removeEventListener('scroll', on);
@@ -340,18 +349,12 @@ function Discover({ s }: { s: ProtoState }) {
 
   return (
     <div className="p-screen p-discover">
-      {/* Brand row scrolls away; only the search bar sticks. */}
-      <div className="p-discover__top">
-        <h1 className="p-brand"><PicoMark /><span>pico</span></h1>
-        <span className="p-discover__account">
-          {!s.user && (
-            <button className="p-scans" onClick={() => go('/signup?reason=journal')}>
-              {scansLeft > 0 ? `${scansLeft} free scan${scansLeft === 1 ? '' : 's'}` : 'Free scans used'}
-            </button>
-          )}
-          <Avatar />
-        </span>
-      </div>
+      {/* Header row scrolls away; only the search bar sticks. */}
+      <Head title="Discover" aside={ACCOUNTS && !s.user && (
+        <button className="p-scans" onClick={() => go('/signup?reason=journal')}>
+          {scansLeft > 0 ? `${scansLeft} free scan${scansLeft === 1 ? '' : 's'}` : 'Free scans used'}
+        </button>
+      )} />
       <div className="p-discover__bar" ref={barRef} data-stuck={stuck || undefined}>
         <label className="p-search">
           <SearchIcon />
@@ -457,6 +460,7 @@ function CupDetail({ draft, set }: { draft: CupDraft; set: (d: CupDraft) => void
 // Signed out, after a cup is saved: a quiet line, then a real button once there are 3 cups worth keeping.
 function KeepCupsPrompt({ count, next }: { count: number; next: string }) {
   const to = () => go(`/signup?reason=keep&next=${encodeURIComponent(next)}`);
+  if (!ACCOUNTS) return null; // nothing to keep them in yet
   if (count < 3) {
     return <p className="p-keep">Your cups are only on this phone. <button className="p-link" onClick={to}>Create a free account</button> to keep them.</p>;
   }
@@ -550,7 +554,9 @@ function CoffeeScreen({ s, id }: { s: ProtoState; id: string }) {
             ? <CupDetail draft={draft} set={setDraft} />
             : <button className="p-link p-rate__more" onClick={() => setDetail(true)}>Add detail</button>)}
         </div>
-        {saved && (s.user
+        {saved && (!ACCOUNTS
+          ? <p className="p-keep">Added to your taste profile.</p>
+          : s.user
           ? <p className="p-keep">Added to this coffee’s rating and your taste profile.</p>
           : s.cups.length < 3
             // Cups on the phone can't count in the shared average, so only the taste profile is true here.
@@ -652,6 +658,13 @@ function ResultVerdict({ s, coffee, profile, best }: { s: ProtoState; coffee: Co
   );
 }
 
+// Scan closes back to where it was opened. With no in-app tab visited yet (first visit: welcome → quiz → scan), go to Discover.
+const closeScan = () => {
+  let origin: string | null = null;
+  try { origin = sessionStorage.getItem('pico-proto-origin'); } catch { /* private mode: Discover */ }
+  if (origin) back(); else window.location.replace('#/discover');
+};
+
 function Scan({ s }: { s: ProtoState }) {
   const [phase, setPhase] = useState<ScanPhase>({ kind: 'idle' });
   const [live, setLive] = useState(true); // live camera scan; off after its fallback or a shutter tap
@@ -660,7 +673,7 @@ function Scan({ s }: { s: ProtoState }) {
   const profile = useMemo(() => currentProfile(s), [s]);
   useEffect(preloadLabelReader, []);
 
-  if (!s.user && left <= 0 && phase.kind === 'idle') {
+  if (ACCOUNTS && !s.user && left <= 0 && phase.kind === 'idle') {
     return (
       <div className="p-scan">
         <button className="p-scan__close" onClick={back} aria-label="Close"><CloseIcon /></button>
@@ -701,8 +714,8 @@ function Scan({ s }: { s: ProtoState }) {
 
   return (
     <div className="p-scan">
-      <button className="p-scan__close" onClick={back} aria-label="Close"><CloseIcon /></button>
-      {!s.user && <span className="p-scan__left">{left} of {FREE_SCANS} free scans left</span>}
+      <button className="p-scan__close" onClick={closeScan} aria-label="Close"><CloseIcon /></button>
+      {ACCOUNTS && !s.user && <span className="p-scan__left">{left} of {FREE_SCANS} free scans left</span>}
       {phase.kind === 'poor' && <PoorRead onFile={onFile} />}
       {(phase.kind === 'idle' || phase.kind === 'reading') && (
         <>
@@ -742,10 +755,13 @@ function Scan({ s }: { s: ProtoState }) {
               <ChevronRight />
             </button>
           ))}
-          <button className="p-result p-result--add" onClick={() => go(s.user ? '/add' : '/signup?reason=add&next=/add')}>
-            <span className="p-result__img"><PlusIcon /></span>
-            <span className="p-result__text"><b>Not here? Add it by hand</b><span>Saved to your journal, and you can send it to Pico</span></span>
-          </button>
+          {/* The /add form doesn't save yet, so it waits for accounts. */}
+          {ACCOUNTS && (
+            <button className="p-result p-result--add" onClick={() => go(s.user ? '/add' : '/signup?reason=add&next=/add')}>
+              <span className="p-result__img"><PlusIcon /></span>
+              <span className="p-result__text"><b>Not here? Add it by hand</b><span>Saved to your journal, and you can send it to Pico</span></span>
+            </button>
+          )}
           <button className="p-link p-link--light" onClick={() => setPhase({ kind: 'idle' })}>Scan another bag</button>
         </div>
       )}
@@ -831,7 +847,7 @@ function Journal({ s, view }: { s: ProtoState; view: string }) {
 function Saved({ s }: { s: ProtoState }) {
   const [sort, setSort] = useState<'recent' | 'match'>('recent');
   const profile = useMemo(() => currentProfile(s), [s]);
-  if (!s.user) {
+  if (ACCOUNTS && !s.user) {
     return (
       <div className="p-screen">
         <Head title={<JournalTitle on="saved" />} />
@@ -990,7 +1006,9 @@ function Import({ q }: { q: URLSearchParams }) {
   return (
     <div className="p-sheet-page">
       <h1>Bring your coffees along?</h1>
-      <p>This phone has {v1.length} {v1.length === 1 ? 'coffee' : 'coffees'} you rated before Pico had accounts. Add them to your journal so they’re safe and on every device.</p>
+      {ACCOUNTS
+        ? <p>This phone has {v1.length} {v1.length === 1 ? 'coffee' : 'coffees'} you rated before Pico had accounts. Add them to your journal so they’re safe and on every device.</p>
+        : <p>This phone has {v1.length} {v1.length === 1 ? 'coffee' : 'coffees'} you rated in the first version of Pico. Add {v1.length === 1 ? 'it' : 'them'} to your journal.</p>}
       <div className="p-import">
         {v1.slice(0, 8).map((r) => {
           const c = getCoffeeById(r.coffeeId);
@@ -1147,7 +1165,34 @@ function Privacy() {
     <div className="p-sheet-page p-text">
       <button className="p-glass p-glass--round p-sheet-page__close" onClick={back} aria-label="Close"><CloseIcon /></button>
       <h1>Privacy & data</h1>
-      <p>Placeholder: the real privacy policy is needed before accounts launch (GDPR). It will name who runs Pico, what the account stores (name, email, cups, label photos), where, for how long, and how to export or delete it.</p>
+      {ACCOUNTS ? (
+        <p>Placeholder: the real privacy policy is needed before accounts launch (GDPR). It will name who runs Pico, what the account stores (name, email, cups, label photos), where, for how long, and how to export or delete it.</p>
+      ) : (
+        <>
+          <p>Your journal, ratings, saved coffees and the label photos you scan stay on this phone. Labels are read on the phone. Nothing you add is uploaded.</p>
+          <p>Pico counts page visits anonymously with GoatCounter. No cookies, nothing that identifies you.</p>
+          <p>Coffee photos load from the roasters’ online shops. The label reader is downloaded from jsDelivr, a public code library.</p>
+          <p>Questions: <a className="p-link" href="mailto:info@sunseekerlabs.dk">info@sunseekerlabs.dk</a></p>
+        </>
+      )}
+    </div>
+  );
+}
+
+// The live beta has no accounts yet: Account and any sign-up link land here instead.
+function NoAccounts({ s }: { s: ProtoState }) {
+  const v1 = readV1Ratings();
+  return (
+    <div className="p-sheet-page">
+      <button className="p-glass p-glass--round p-sheet-page__close" onClick={back} aria-label="Close"><CloseIcon /></button>
+      <span className="p-account__mark"><PersonIcon /></span>
+      <h1>Accounts are coming</h1>
+      <p>For now your journal is saved on this phone.</p>
+      <p className="p-fine">On iPhone, Safari deletes a website’s data after 7 days without a visit. Add Pico to your Home Screen to keep your journal: tap Share, then “Add to Home Screen”.</p>
+      {v1.length > 0 && !s.v1Imported && (
+        <button className="p-btn p-btn--ghost" onClick={() => go('/import?next=/journal')}>Add {v1.length} coffees from the first Pico</button>
+      )}
+      <span className="p-fine"><a className="p-link" href="#/privacy">Privacy & data</a></span>
     </div>
   );
 }
@@ -1189,7 +1234,12 @@ export function App() {
   }, []);
   const [screen, a = '', b = ''] = route.path;
   if (!screen) {
-    go(s.seenWelcome ? '/discover' : '/welcome');
+    window.location.replace('#' + (s.seenWelcome ? '/discover' : '/welcome')); // replace: Back from here leaves the app instead of redirecting again
+    return null;
+  }
+  // Without accounts there is no sign-up to offer the v1 import, so a phone with a v1 journal is asked once, after the welcome.
+  if (!ACCOUNTS && s.seenWelcome && !s.v1Imported && !['import', 'quiz', 'privacy'].includes(screen) && readV1Ratings().length) {
+    go(`/import?next=${encodeURIComponent(window.location.hash.slice(1))}`); // raw hash: keeps the query and encoded payloads
     return null;
   }
   const view = (() => {
@@ -1202,10 +1252,10 @@ export function App() {
       case 'journal': return <Journal s={s} view={a} />;
       case 'saved': return <Saved s={s} />;
       case 'taste': return <Taste s={s} />;
-      case 'signup': return <SignUp s={s} q={route.q} />;
+      case 'signup': return ACCOUNTS ? <SignUp s={s} q={route.q} /> : <NoAccounts s={s} />;
       case 'import': return <Import q={route.q} />;
       case 'profile':
-      case 'account': return <Profile s={s} />;
+      case 'account': return ACCOUNTS ? <Profile s={s} /> : <NoAccounts s={s} />;
       case 'wrapped': return <Wrapped s={s} q={route.q} />;
       case 'share': return <Share s={s} kind={a} id={b} />;
       case 'tastecard': return <TasteCard s={s} bag={(c) => <Bag coffee={c} w={500} />} />;

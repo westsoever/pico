@@ -38,6 +38,7 @@ h1, h2, p { margin: 0; }
 
 /* ---------- Shared ---------- */
 .p-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 44px; margin-bottom: 18px; }
+.p-head__end { display: flex; align-items: center; gap: 10px; }
 /* Stats live here, quiet, at the end of a page; never above a title. */
 .p-footstat { margin-top: 32px; text-align: center; font-size: 13px; line-height: 18px; color: var(--ink-3); }
 .p-eyebrow { display: block; font-size: 15px; line-height: 20px; color: var(--ink-2); }
@@ -156,16 +157,12 @@ h1, h2, p { margin: 0; }
   height: 56px; margin-bottom: 14px; padding: 0 8px 0 18px; display: flex; align-items: center; gap: 10px; border-radius: 999px;
   background: #fff; box-shadow: 0 0 0 1px var(--line), 0 8px 24px rgba(30,45,70,.06); color: var(--ink-2);
 }
-/* Brand row 8px under the safe area; 8px + the bar's 6px top padding = 14px to the search. */
-.p-discover { padding-top: calc(8px + var(--safe-t)); }
-.p-discover__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
-.p-brand { display: flex; align-items: center; gap: 6px; color: var(--ink); font-size: 24px; line-height: 28px; font-weight: 800; letter-spacing: -0.04em; }
-.p-brand svg { width: 26px; height: 26px; }
-.p-discover__account { display: flex; align-items: center; gap: 10px; }
+/* Discover's header is the shared .p-head; 8px + the bar's 6px top padding = 14px to the search. */
+.p-discover .p-head { margin-bottom: 8px; }
 .p-scans { height: 28px; padding: 0 11px; border-radius: 999px; background: #fdf1de; color: var(--amber-text); font-size: 13px; font-weight: 600; }
 /* Search + account stick to the top; cards scroll under a snow fade. */
 /* The bar always carries the safe-area padding (so its height never changes and nothing jumps when it sticks),
-   but a matching negative top margin tucks that padding under the brand row while it scrolls in the page.
+   but a matching negative top margin tucks that padding under the header row while it scrolls in the page.
    It only turns opaque, and takes taps in that padding, once stuck at the top. */
 .p-discover__bar {
   position: sticky; top: 0; z-index: 20; margin: calc(-1 * var(--safe-t)) -20px 6px; padding: calc(6px + var(--safe-t)) 20px 6px;

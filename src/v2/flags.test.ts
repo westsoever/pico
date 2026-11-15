@@ -11,11 +11,11 @@ describe('account flag', () => {
     expect(accountsLive(config)).toBe(true);
   });
 
-  it('hides account screens on a production build without config, shows them in dev, with ?proto or when live', () => {
+  it('shows the fake account screens only in dev or with ?proto, never from Supabase config alone', () => {
     expect(showAccounts({ DEV: false }, '')).toBe(false);
     expect(showAccounts({ DEV: false }, '?state=regular')).toBe(false);
+    expect(showAccounts({ DEV: false, ...config }, '')).toBe(false);
     expect(showAccounts({ DEV: true }, '')).toBe(true);
     expect(showAccounts({ DEV: false }, '?proto')).toBe(true);
-    expect(showAccounts({ DEV: false, ...config }, '')).toBe(true);
   });
 });
