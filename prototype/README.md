@@ -1,5 +1,9 @@
 # Pico v2 prototype
 
+**Moved (2026-11-15):** the screens now live in `src/v2/app/` (one file per screen; the five feature screens in
+`src/v2/app/features/`, the store layer in `src/v2/app/state.ts`). `prototype/main.tsx` and the dev server config
+below still start them until the entry switches to `src/v2`.
+
 Click-through prototype of every v2 screen, for testing the flows before building v2.
 Real catalog, real match % (`src/lib/similarity`), real label scan (`src/lib/label-ocr` + `label-match`).
 Fake accounts: nothing leaves the phone. The store is the real v2 store (`src/v2/store`, localStorage `pico-v2`) with its sync engine talking to an in-memory fake server; older `pico-proto-v2` data is carried over once. To go back to the old fake store, copy `store.proto.ts` over `store.ts`.

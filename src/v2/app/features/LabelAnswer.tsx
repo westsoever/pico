@@ -1,13 +1,13 @@
 // Scan miss with enough read from the label: a coffee sketched from the label text,
 // its taste line and match, and the add form prefilled. Feature 1 ("any bag gets an answer").
 import { useState } from 'react';
-import { mergeCustomCoffees } from '../../src/lib/catalog';
-import { draftToCoffee, type LabelDraft } from '../../src/lib/label-parse';
-import { formatMatchPercent, scoreSimilarity } from '../../src/lib/similarity';
-import { tasteLine } from '../../src/lib/taste-line';
-import { hasTasteSignal } from '../../src/lib/taste-profile';
-import { ROAST_LEVEL_LABELS, type RoastLevel, type TasteProfile } from '../../src/types/coffee';
-import { uid } from '../store';
+import { mergeCustomCoffees } from '../../../lib/catalog';
+import { draftToCoffee, type LabelDraft } from '../../../lib/label-parse';
+import { formatMatchPercent, scoreSimilarity } from '../../../lib/similarity';
+import { tasteLine } from '../../../lib/taste-line';
+import { hasTasteSignal } from '../../../lib/taste-profile';
+import { ROAST_LEVEL_LABELS, type RoastLevel, type TasteProfile } from '../../../types/coffee';
+import { uid } from '../state';
 import './wow.css';
 
 const ROASTS: RoastLevel[] = ['light', 'medium', 'dark'];

@@ -1,9 +1,9 @@
 // Coffee page lines from the person's own cups (feature 3): "Like the Kieni you loved, with more chocolate."
 // and "Pico guesses 4 stars for you" → "Called it". Rendered only when the profile has real signal.
 import { useMemo } from 'react';
-import { getAllCoffees } from '../../src/lib/catalog';
-import { coffeeHints, type RatedCup } from '../../src/lib/taste-compare';
-import type { Coffee, TasteProfile } from '../../src/types/coffee';
+import { getAllCoffees } from '../../../lib/catalog';
+import { coffeeHints, type RatedCup } from '../../../lib/taste-compare';
+import type { Coffee, TasteProfile } from '../../../types/coffee';
 import './wow.css';
 
 export function TasteHints({ coffee, cups, profile, reason, rated, savedStars }: {

@@ -3,17 +3,17 @@
 // Prototype-only extras stay here: demo states, the instant fake sign-up, sample community ratings.
 // Roll back: copy store.proto.ts (the previous fake store, unchanged) over this file.
 import { useSyncExternalStore } from 'react';
-import { getAllCoffees } from '../src/lib/catalog';
+import { getAllCoffees } from '../../lib/catalog';
 import {
   EMPTY, LOCAL_USER_ID, MIN_COMMUNITY_RATERS, PROTOTYPE_KEY, STORAGE_KEY, uid,
   type Cup, type PersistedState, type SavedCoffee, type User,
-} from '../src/v2/store/state';
+} from '../store/state';
 import {
   FREE_SCANS, createStore, currentProfile, profileOf, totalsByCoffee, type CoffeeTotals, type StoreState,
-} from '../src/v2/store/store';
-import { createSync, startAutoSync } from '../src/v2/sync/engine';
-import { createFakeRemote } from '../src/v2/sync/fake-remote';
-import { showAccounts } from '../src/v2/flags';
+} from '../store/store';
+import { createSync, startAutoSync } from '../sync/engine';
+import { createFakeRemote } from '../sync/fake-remote';
+import { showAccounts } from '../flags';
 
 export { FREE_SCANS, LOCAL_USER_ID, currentProfile, profileOf, totalsByCoffee, uid };
 export type { CoffeeTotals, Cup, SavedCoffee, User };
