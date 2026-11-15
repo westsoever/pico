@@ -33,7 +33,7 @@ let err = null; try { await as(B, `insert into public.cups (id, user_id, coffee_
 ok(/row-level security/.test(err ?? ''), 'B cannot insert a cup as A: ' + err);
 err = null; try { await cup('a1', B, 'kenya', 1, '2026-11-16T10:00:00Z'); } catch (e) { err = e.message; }
 ok(err !== null && (await as(A, `select stars from public.cups where id='a1'`)).rows[0].stars === 5, 'B cannot overwrite A\'s cup through an upsert on the same id');
-err = null; try { await as(B, `delete from public.cups`); } catch (e) { err = e.message; }
+err = null; try { await as(A, `delete from public.cups`); } catch (e) { err = e.message; } // even the owner can't hard-delete
 ok((await as(A, `select count(*)::int n from public.cups`)).rows[0].n === 1, 'no hard delete (soft deletes only)');
 await cup('a1', A, 'kenya', 2, '2026-11-15T09:00:00Z');
 ok((await as(A, `select stars from public.cups where id='a1'`)).rows[0].stars === 5, 'older write is skipped (last write wins)');

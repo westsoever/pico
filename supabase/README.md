@@ -11,8 +11,7 @@ tests) until `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` are set.
 `auth` schema and the `anon` / `authenticated` roles, then checks two accounts against each other:
 
 ```sh
-mkdir -p /tmp/pico-pg && cd /tmp/pico-pg && npm init -y >/dev/null && npm i @electric-sql/pglite@0.2.17
-cp <repo>/supabase/check-rls.mjs . && node check-rls.mjs <repo>/supabase/migrations/0001_init.sql
+npm install && npm run check:rls
 ```
 
 All 13 lines should say PASS: B can't read, update, overwrite or insert-as A; no hard deletes; older writes are
@@ -38,3 +37,12 @@ hand-added coffees, and exposes no user ids. It is a stand-in: Supabase's real `
      `await supabase.from('cups').update({ note: 'x' }).eq('id', '<A cup id>').select()` returns `[]`;
      inserting a cup with `user_id: '<A id>'` fails with a row-level security error.
    - Signed out: `await supabase.from('cups').select()` fails; `await supabase.rpc('community_ratings')` works.
+
+## Before public launch (owner decisions, no code yet)
+
+- **Delete my account.** Deleting an `auth.users` row already cascades to the person's profile, cups, saved and
+  hand-added coffees, but there is no way for a person to trigger it yet (needs a small server function and a
+  button in Account). Required for GDPR before launch.
+- **Throwaway accounts can skew community averages.** Anyone can make a few accounts and rate one coffee. Options
+  later: count only verified accounts, require some history before a rating counts, or show the rater count
+  prominently (already shown) and watch for outliers.
