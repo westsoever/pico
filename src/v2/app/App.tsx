@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import { TasteCard, TasteMatch } from './features/TasteShare';
 import { MenuPick } from './features/MenuPick';
-import { ACCOUNTS, DEMO_STATES, applyDemoState, readV1Ratings, useStore, type DemoState } from './state';
+import { DEMO_STATES, applyDemoState, type DemoState } from './demo';
+import { ACCOUNTS, readV1Ratings, useStore } from './state';
 import { Import, NoAccounts, Privacy, Profile, SignUp } from './account';
 import { AddByHand } from './add';
 import { CoffeeScreen } from './coffee';
