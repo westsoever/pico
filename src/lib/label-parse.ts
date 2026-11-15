@@ -109,8 +109,11 @@ function readNotes(lines: string[]): { notes: string[]; used: number[] } {
 /**
  * Builds a coffee sketch from label text Pico read but couldn't match to the catalog.
  * Returns null when fewer than MIN_DRAFT_FIELDS taste fields were read; never guesses a field.
+ * `partial` (the person chose to add it): always a draft with whatever was read, possibly nothing.
  */
-export function parseLabel(text: string, coffees: Pick<Coffee, 'roaster'>[] = []): LabelDraft | null {
+export function parseLabel(text: string, coffees: Pick<Coffee, 'roaster'>[], opts: { partial: true }): LabelDraft;
+export function parseLabel(text: string, coffees?: Pick<Coffee, 'roaster'>[], opts?: { partial?: boolean }): LabelDraft | null;
+export function parseLabel(text: string, coffees: Pick<Coffee, 'roaster'>[] = [], opts: { partial?: boolean } = {}): LabelDraft | null {
   const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
   const { notes: tastingNotes, used } = readNotes(lines);
   // Facts come from every line but the notes, so "honning" in the notes is never read as a honey process.
@@ -131,7 +134,7 @@ export function parseLabel(text: string, coffees: Pick<Coffee, 'roaster'>[] = []
   };
   draft.fieldCount = [draft.origin, draft.process, draft.variety, roastLevel, tastingNotes.length ? 'notes' : undefined]
     .filter(Boolean).length;
-  return draft.fieldCount >= MIN_DRAFT_FIELDS ? draft : null;
+  return opts.partial || draft.fieldCount >= MIN_DRAFT_FIELDS ? draft : null;
 }
 
 /** The draft as a full Coffee for scoring and saving; unread origin/process become "Unknown" like hand-added coffees. */

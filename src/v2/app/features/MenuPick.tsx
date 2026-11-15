@@ -15,8 +15,11 @@ import './wow.css';
 const go = (to: string) => { window.location.hash = to; };
 const cap = (text: string) => text[0].toUpperCase() + text.slice(1);
 
-/** A blurry or empty read: no junk results, three ways forward. Owns its camera and library inputs. */
-export function PoorRead({ onFile }: { onFile: (file?: File) => void }) {
+/**
+ * A blurry or empty read: no junk results, always a way forward. Owns its library input; the camera input only
+ * when no `onRetake` is given (the bag scan retakes with its own live camera). `onAdd`: log it by hand.
+ */
+export function PoorRead({ onFile, onRetake, onAdd }: { onFile: (file?: File) => void; onRetake?: () => void; onAdd?: () => void }) {
   const camera = useRef<HTMLInputElement>(null);
   const library = useRef<HTMLInputElement>(null);
   const pick = (e: ChangeEvent<HTMLInputElement>) => { onFile(e.target.files?.[0]); e.target.value = ''; };
@@ -26,7 +29,8 @@ export function PoorRead({ onFile }: { onFile: (file?: File) => void }) {
       <input ref={library} type="file" accept="image/*" hidden onChange={pick} />
       <h1>Move closer and hold still</h1>
       <p>The photo was too blurry to read.</p>
-      <button className="p-btn p-btn--amber" onClick={() => camera.current?.click()}>Retake photo</button>
+      <button className="p-btn p-btn--amber" onClick={() => (onRetake ? onRetake() : camera.current?.click())}>Retake photo</button>
+      {onAdd && <button className="p-btn p-btn--ghost-dark" onClick={onAdd}>Not found, add it now</button>}
       <button className="p-btn p-btn--ghost-dark" onClick={() => library.current?.click()}>Choose from library</button>
       <button className="p-link p-link--light" onClick={() => go('/discover')}>Search instead</button>
     </div>
