@@ -13,6 +13,7 @@ import {
 } from '../src/v2/store/store';
 import { createSync, startAutoSync } from '../src/v2/sync/engine';
 import { createFakeRemote } from '../src/v2/sync/fake-remote';
+import { showAccounts } from '../src/v2/flags';
 
 export { FREE_SCANS, LOCAL_USER_ID, currentProfile, profileOf, totalsByCoffee, uid };
 export type { CoffeeTotals, Cup, SavedCoffee, User };
@@ -83,7 +84,11 @@ export const updateCup = store.updateCup;
 export const deleteCup = store.deleteCup;
 export const isSaved = store.isSaved;
 export const toggleSaved = store.toggleSaved;
-export const spendScan = store.spendScan;
+
+/** The fake account screens and prompts are shown: dev or ?proto only, never from Supabase config alone. Off on the live beta. */
+export const ACCOUNTS = showAccounts(import.meta.env, window.location.search);
+// No accounts to unlock more scans with, so no scan limit either.
+export const spendScan = () => (ACCOUNTS ? store.spendScan() : true);
 export const readV1Ratings = store.readV1Ratings;
 export const importV1 = store.importV1;
 

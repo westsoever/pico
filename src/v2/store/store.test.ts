@@ -59,6 +59,16 @@ describe('v2 store', () => {
     expect(store.isSaved('fixture-kenya')).toBe(true); // saving again revives the tombstone
   });
 
+  it('saves a coffee signed out on the phone and moves it into the account on sign-in', () => {
+    const store = createStore(memoryStorage());
+    store.toggleSaved('fixture-kenya');
+    expect(store.isSaved('fixture-kenya')).toBe(true);
+    expect(store.pending().entries).toEqual([]); // nothing to push while signed out
+    store.setUser(userA);
+    expect(store.getState().saved[0]).toMatchObject({ coffeeId: 'fixture-kenya', userId: userA.id });
+    expect(store.pending().entries.map((e) => e.id)).toEqual(['fixture-kenya']);
+  });
+
   it('allows 5 free scans signed out and unlimited signed in', () => {
     const store = createStore(memoryStorage());
     for (let i = 0; i < FREE_SCANS; i++) expect(store.spendScan()).toBe(true);

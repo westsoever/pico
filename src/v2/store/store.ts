@@ -215,15 +215,14 @@ export function createStore(storage: Storage = localStorage) {
 
     isSaved: (coffeeId: string) => view.saved.some((s) => s.coffeeId === coffeeId),
 
-    /** Saving to the wishlist needs an account (the screens send signed-out users to sign up first). */
+    /** Signed out, a saved coffee stays on the phone like a cup and moves into the account on sign-in. */
     toggleSaved(coffeeId: string) {
-      if (!data.user) return;
       const at = now();
       const row = data.saved.find((s) => s.id === coffeeId);
       const on = row && !row.deletedAt;
       write('saved', [on
         ? { ...row, deletedAt: at, updatedAt: at }
-        : { id: coffeeId, userId: data.user.id, coffeeId, savedAt: at, updatedAt: at }]);
+        : { id: coffeeId, userId: ownerId(), coffeeId, savedAt: at, updatedAt: at }]);
     },
 
     addUserCoffee(coffee: Omit<Coffee, 'id'>): UserCoffee {
