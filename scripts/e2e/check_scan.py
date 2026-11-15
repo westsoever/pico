@@ -110,6 +110,10 @@ with sync_playwright() as p:
     c.ok(got_reading, '(3) the pill shows "Reading…" while a frame is read')
     c.ok(wait_for(pg, lambda: pg.get_by_text('Can’t find it? Add it now').count() > 0, 30), '(3) after a read without a hit: "Can’t find it? Add it now"')
     c.ok(pg.locator('.p-cam video').count() == 1 and pg.evaluate("!!document.querySelector('.p-cam video').srcObject?.active"), '(3) camera still running')
+    # After the 15 s auto-read budget the screen says so, keeps the way forward, and the camera stays on.
+    c.ok(wait_for(pg, lambda: 'Tap the button' in pg.inner_text('.p-cam__pill'), 20), '(3) after the auto-read budget the pill says to tap the button')
+    c.ok(pg.get_by_text('Can’t find it? Add it now').count() == 1, '(3) and "Add it now" is still there')
+    c.ok(pg.evaluate("!!document.querySelector('.p-cam video').srcObject?.active"), '(3) camera still running after the loop stopped')
     # (2) shutter: no file chooser
     chooser = True
     try:
@@ -120,8 +124,20 @@ with sync_playwright() as p:
     c.ok(not chooser, '(2) camera granted: the shutter opens no file chooser')
     c.ok(wait_for(pg, lambda: pg.locator('.p-scan__sheet').count() > 0, 30), '(2) the shutter frame was read in-app (a result sheet rose)')
     c.ok(pg.locator('.p-cam__still').count() == 1 and pg.locator('.p-cam__still').get_attribute('src').startswith('data:image/jpeg'), '(2) over the frame it captured')
-    if pg.get_by_text('Not found, add it now').count():
-        pg.get_by_text('Not found, add it now').first.click()
+    # The real mug has too little text: the owner's "Move closer" sheet, now with a way to log it.
+    c.ok('Move closer and hold still' in pg.inner_text('.p-scan__sheet'), '(3) the mug gives the "Move closer" sheet')
+    c.ok(pg.get_by_role('button', name='Not found, add it now').count() == 1, '(3) which offers "Not found, add it now"')
+    shot(pg, '2b-poor-read')
+    chooser = True
+    try:
+        with pg.expect_file_chooser(timeout=2500):
+            pg.get_by_role('button', name='Retake photo').click()
+    except PWTimeout:
+        chooser = False
+    c.ok(not chooser and pg.locator('.p-scan__sheet').count() == 0, '(3) "Retake photo" goes back to the live camera, no file chooser')
+    pg.wait_for_timeout(500); pg.click('.p-scan__shutter')
+    c.ok(wait_for(pg, lambda: pg.get_by_role('button', name='Not found, add it now').count() == 1, 30), '(3) shutter again: the sheet again')
+    pg.get_by_role('button', name='Not found, add it now').click()
     c.ok(pg.locator('.w-answer__photo').count() == 1, '(3) the add form shows the mug photo')
     c.ok('stays on this phone' in pg.inner_text('.p-scan__sheet'), '(3) the add form says the photo stays on the phone')
     pg.fill('input[placeholder="Coffee name"]', 'Office mug'); pg.fill('input[placeholder="Roaster"]', 'Rosberg')
@@ -167,7 +183,9 @@ with sync_playwright() as p:
             pg.click('.p-scan__shutter')
         fc.value.set_files(str(MUG))
         c.ok(fc.value.element.get_attribute('capture') == 'environment', '(5) the shutter opens the camera file input')
-        c.ok(wait_for(pg, lambda: pg.locator('.w-answer__photo').count() > 0, 30), '(5) the photo is read and "add it now" shows it')
+        c.ok(wait_for(pg, lambda: pg.get_by_role('button', name='Not found, add it now').count() == 1, 30), '(5) the photo is read: "Move closer" sheet with "Not found, add it now"')
+        pg.get_by_role('button', name='Not found, add it now').click()
+        c.ok(pg.locator('.w-answer__photo').count() == 1, '(5) the add form shows that photo')
     except PWTimeout:
         c.ok(False, '(5) camera denied: the shutter opens a file chooser')
     pg.goto(f'{BASE}#/discover'); pg.goto(f'{BASE}#/scan'); pg.wait_for_selector('.p-cam__library')
@@ -188,6 +206,16 @@ with sync_playwright() as p:
         chooser = False
     c.ok(not chooser, '(8) menu: camera granted, the shutter opens no file chooser')
     c.ok(wait_for(pg, lambda: pg.locator('.p-results, .w-poor').count() > 0, 30), '(8) menu: the captured frame was read')
+    if pg.locator('.w-poor').count():
+        chooser = True
+        try:
+            with pg.expect_file_chooser(timeout=2500):
+                pg.get_by_role('button', name='Retake photo').click()
+        except PWTimeout:
+            chooser = False
+        c.ok(not chooser and pg.locator('.p-cam video').count() == 1, '(8) menu: "Retake photo" goes back to the in-app camera, no file chooser')
+    else:
+        c.ok(False, '(8) menu: expected the mug to give the "Move closer" sheet')
     c.ok(not errors, f'(8) no page errors {errors}')
     b.close()
     b, pg, errors = session(p, mug_cam, DENY_CAMERA)

@@ -45,6 +45,7 @@ export function Scan({ s }: { s: ProtoState }) {
   const [camera, setCamera] = useState<CameraState>('pending');
   const [liveReading, setLiveReading] = useState(false);
   const [missed, setMissed] = useState<Shot | null>(null); // the last live read that found nothing
+  const [gaveUp, setGaveUp] = useState(false); // the auto-read loop stopped: only the shutter reads now
   const cam = useRef<LiveScanHandle>(null);
   const shutterInput = useRef<HTMLInputElement>(null);
   const library = useRef<HTMLInputElement>(null);
@@ -114,7 +115,7 @@ export function Scan({ s }: { s: ProtoState }) {
     const hit = pool[Math.floor(Math.random() * pool.length)];
     setTimeout(() => setPhase({ kind: 'results', coffees: [hit, ...getSimilarToCoffee(hit, [], 2).map((x) => x.coffee)] }), 1200);
   };
-  const again = () => { setMissed(null); setPhase({ kind: 'idle' }); };
+  const again = () => { setMissed(null); setGaveUp(false); setPhase({ kind: 'idle' }); };
 
   const live = phase.kind === 'idle' || phase.kind === 'reading' || phase.kind === 'poor';
   const still = phase.kind === 'reading' ? phase.photo : phase.kind === 'poor' || phase.kind === 'results' || phase.kind === 'add' ? phase.shot?.photo : undefined;
@@ -122,7 +123,7 @@ export function Scan({ s }: { s: ProtoState }) {
   const pill = phase.kind === 'reading' ? 'Reading the label…'
     : camera === 'pending' ? 'Opening the camera…'
     : camera === 'off' ? 'Take a photo of the front of the bag'
-    : liveReading ? 'Reading…' : 'Point at the front of the bag';
+    : liveReading ? 'Reading…' : gaveUp ? 'Tap the button to read the label' : 'Point at the front of the bag';
   const sheet = phase.kind === 'poor' || phase.kind === 'results' || phase.kind === 'add';
 
   return (
@@ -133,7 +134,7 @@ export function Scan({ s }: { s: ProtoState }) {
         {/* The camera stays on through reading and a blurry read; it stops on a result, on leaving or in a hidden tab. */}
         {live && (
           <LiveScan ref={cam} autoRead={phase.kind === 'idle'} onCamera={setCamera} onReading={setLiveReading}
-            onMiss={setMissed}
+            onMiss={setMissed} onLoopEnd={() => setGaveUp(true)}
             onResult={(r) => {
               if (!start()) return;
               if (r.kind === 'open') open(r.coffee, r.shot);
@@ -149,8 +150,8 @@ export function Scan({ s }: { s: ProtoState }) {
 
       {!sheet && (
         <div className="p-cam__controls">
-          {missed && phase.kind === 'idle' && (
-            <button className="p-btn p-btn--ghost-dark" onClick={() => addNow(missed, true)}>Can’t find it? Add it now</button>
+          {(missed || gaveUp) && phase.kind === 'idle' && (
+            <button className="p-btn p-btn--ghost-dark" onClick={() => addNow(missed ?? undefined, true)}>Can’t find it? Add it now</button>
           )}
           <div className="p-cam__row">
             <button className="p-cam__library" disabled={phase.kind === 'reading'} onClick={() => library.current?.click()} aria-label="Choose from library"><LibraryIcon /></button>
@@ -164,7 +165,7 @@ export function Scan({ s }: { s: ProtoState }) {
 
       {phase.kind === 'poor' && (
         <div className="p-scan__sheet">
-          <PoorRead onFile={onFile} onRetake={again} onAdd={() => addNow(phase.shot, true)} />
+          <PoorRead onFile={onFile} onRetake={() => setPhase({ kind: 'idle' })} onAdd={() => addNow(phase.shot, true)} />
         </div>
       )}
       {phase.kind === 'add' && (

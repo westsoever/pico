@@ -104,7 +104,7 @@ export function MenuPick({ s, bag }: { s: ProtoState; bag: (coffee: Coffee) => R
         </>
       )}
 
-      {phase.kind === 'poor' && <PoorRead onFile={onFile} />}
+      {phase.kind === 'poor' && <PoorRead onFile={onFile} onRetake={() => setPhase({ kind: 'idle' })} />}
 
       {phase.kind === 'results' && (
         <div className="p-results">

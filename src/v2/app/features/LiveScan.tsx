@@ -35,12 +35,14 @@ export const LiveScan = forwardRef<LiveScanHandle, {
   /** A live read found nothing (or nothing readable); the last shot it read. */
   onMiss?: (shot: Shot) => void;
   onReading?: (reading: boolean) => void;
-}>(function LiveScan({ autoRead, onResult, onCamera, onMiss, onReading }, ref) {
+  /** The auto-read loop gave up without a hit (15 s, a slow read, the reader failed); the shutter still works. */
+  onLoopEnd?: () => void;
+}>(function LiveScan({ autoRead, onResult, onCamera, onMiss, onReading, onLoopEnd }, ref) {
   const video = useRef<HTMLVideoElement>(null);
   const [lastMs, setLastMs] = useState<number | null>(null);
   // Latest props without restarting the camera when the parent re-renders.
-  const props = useRef({ autoRead, onResult, onCamera, onMiss, onReading });
-  props.current = { autoRead, onResult, onCamera, onMiss, onReading };
+  const props = useRef({ autoRead, onResult, onCamera, onMiss, onReading, onLoopEnd });
+  props.current = { autoRead, onResult, onCamera, onMiss, onReading, onLoopEnd };
 
   useImperativeHandle(ref, () => ({
     grab: () => {
@@ -65,6 +67,8 @@ export const LiveScan = forwardRef<LiveScanHandle, {
     let previous: Uint8ClampedArray | null = null;
     let lastReadMs: number | null = null;
     let startedAt = 0;
+    let generation = 0; // only the latest camera start may keep its stream
+    const giveUp = () => { if (looping) { looping = false; if (!unmounted) props.current.onLoopEnd?.(); } };
     const tiny = document.createElement('canvas');
     const full = document.createElement('canvas');
     const setCamera = (state: CameraState) => { if (!unmounted) props.current.onCamera(state); };
@@ -103,7 +107,7 @@ export const LiveScan = forwardRef<LiveScanHandle, {
         }
         props.current.onMiss?.(shot);
       } catch {
-        looping = false; // the reader failed to load: the shutter still works and says so
+        giveUp(); // the reader failed to load: the shutter still works
       } finally {
         if (!unmounted) props.current.onReading?.(false);
         steady = readFinished(steady, performance.now()); // the steadiness state is the one-read-at-a-time guard
@@ -113,7 +117,7 @@ export const LiveScan = forwardRef<LiveScanHandle, {
     const tick = () => {
       const el = video.current;
       if (!looping || !props.current.autoRead || !el || el.readyState < 2 || !el.videoWidth) return;
-      if (shouldFallBack(startedAt, performance.now(), lastReadMs)) { looping = false; return; }
+      if (shouldFallBack(startedAt, performance.now(), lastReadMs)) { giveUp(); return; }
       tiny.width = TINY_WIDTH;
       tiny.height = Math.max(1, Math.round((TINY_WIDTH * el.videoHeight) / el.videoWidth));
       const ctx = tiny.getContext('2d', { willReadFrequently: true });
@@ -130,30 +134,34 @@ export const LiveScan = forwardRef<LiveScanHandle, {
     const start = () => {
       if (!navigator.mediaDevices?.getUserMedia) { setCamera('off'); return; }
       setCamera('pending');
+      const current = ++generation;
       let settled = false;
       startTimer = window.setTimeout(() => { if (!settled) { settled = true; setCamera('off'); } }, START_TIMEOUT_MS);
       navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width: { ideal: 1920 } }, audio: false })
         .then((s) => {
-          if (unmounted || document.hidden) { s.getTracks().forEach((track) => track.stop()); return; }
+          if (unmounted || document.hidden || current !== generation) { s.getTracks().forEach((track) => track.stop()); return; }
           stream = s;
           s.getVideoTracks()[0]?.addEventListener('ended', () => { if (stream === s) { stopCamera(); setCamera('off'); } });
-          if (video.current) {
-            video.current.srcObject = s;
-            void video.current.play().catch(() => undefined);
-          }
           window.clearTimeout(startTimer);
           settled = true;
-          setCamera('on'); // also after the timeout: a late yes still turns the camera on
+          // 'on' once there is a frame to grab, so the shutter is never live while it would grab nothing.
+          // Also after the timeout: a late yes still turns the camera on.
+          const el = video.current;
+          if (el) {
+            el.srcObject = s;
+            el.addEventListener('loadeddata', () => { if (stream === s) setCamera('on'); }, { once: true });
+            void el.play().catch(() => undefined);
+          } else setCamera('on');
           startedAt = performance.now();
           steady = STEADY_START;
           timer = window.setInterval(tick, TICK_MS);
         })
-        .catch(() => { window.clearTimeout(startTimer); settled = true; setCamera('off'); }); // denied or no camera: the file input
+        .catch(() => { if (current !== generation) return; window.clearTimeout(startTimer); settled = true; setCamera('off'); }); // denied or no camera: the file input
     };
 
     // A hidden tab stops the camera; coming back starts it again (no second prompt once allowed).
     const onVisibility = () => {
-      if (document.hidden) stopCamera();
+      if (document.hidden) { generation += 1; stopCamera(); }
       else if (!stream) start();
     };
     document.addEventListener('visibilitychange', onVisibility);
