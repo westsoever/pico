@@ -62,6 +62,15 @@ describe('parseLabel', () => {
   it('prefers the longer variety phrase', () => {
     expect(parseLabel('Colombia\nPink Bourbon', [])?.variety).toBe('Pink Bourbon');
   });
+
+  it('partial: one field or nothing still gives a draft, and never invents a field', () => {
+    expect(parseLabel('Kenya', [])).toBeNull();
+    expect(parseLabel('Kenya', [], { partial: true })).toMatchObject({ origin: 'Kenya', fieldCount: 1, roaster: undefined, process: undefined });
+    expect(parseLabel('rosberg', [], { partial: true })).toEqual({
+      roaster: undefined, origin: undefined, process: undefined, variety: undefined, roastLevel: undefined, roastStyle: undefined,
+      tastingNotes: [], flavorTags: [], fieldCount: 0,
+    });
+  });
 });
 
 describe('draftToCoffee', () => {
