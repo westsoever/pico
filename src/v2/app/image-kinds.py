@@ -1,8 +1,8 @@
-"""Write prototype/image-kinds.json: per catalog coffee, "cutout" (transparent PNG), "plain" (bag on plain
+"""Write src/v2/app/image-kinds.json: per catalog coffee, "cutout" (transparent PNG), "plain" (bag on plain
 white; both shown contained, the white multiplied away) or "photo" (coloured or lifestyle background, shown
 edge to edge). Bag treats a missing entry as "photo". Also writes bag-widths.json for the share card.
 
-Run: python3 prototype/image-kinds.py   (needs Pillow; rerun after the catalog changes)
+Run: python3 src/v2/app/image-kinds.py   (needs Pillow; rerun after the catalog changes)
 """
 import io
 import json
@@ -12,7 +12,7 @@ import urllib.request
 
 from PIL import Image, ImageChops, ImageStat
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
+ROOT = pathlib.Path(__file__).resolve().parents[3]
 catalog = json.loads((ROOT / 'src/data/coffees-dk.json').read_text())
 coffees = catalog if isinstance(catalog, list) else catalog['coffees']
 
@@ -55,10 +55,10 @@ for c in coffees:
     except Exception as e:  # unreachable image: leave it out, Bag defaults to photo
         print('skip', c['id'], e)
 
-out = ROOT / 'prototype/image-kinds.json'
+out = ROOT / 'src/v2/app/image-kinds.json'
 out.write_text(json.dumps(dict(sorted(kinds.items())), indent=2) + '\n')
 # Cutout and plain only: how wide the bag is inside its image, so the share card can enlarge narrow bags
 # without wide boxes hitting the edge.
-(ROOT / 'prototype/bag-widths.json').write_text(json.dumps(dict(sorted(widths.items())), indent=2) + '\n')
+(ROOT / 'src/v2/app/bag-widths.json').write_text(json.dumps(dict(sorted(widths.items())), indent=2) + '\n')
 counts = {k: sum(v == k for v in kinds.values()) for k in ('cutout', 'plain', 'photo')}
 print(f"{out}: {counts}; bag-widths.json: {len(widths)}")
