@@ -3,6 +3,8 @@
 // remote together with the real sign-up (auth.ts); until then the sign-up here is the instant fake one.
 // Demo states for design review live in demo.ts.
 import { useSyncExternalStore } from 'react';
+import { getAllCoffees } from '../../lib/catalog';
+import type { Coffee } from '../../types/coffee';
 import {
   LOCAL_USER_ID, MIN_COMMUNITY_RATERS, PROTOTYPE_KEY, STORAGE_KEY, uid,
   type Cup, type PersistedState, type SavedCoffee, type User,
@@ -37,6 +39,16 @@ if (firstBoot) {
     // unreadable prototype data: start as the migration left it
   }
 }
+
+// Label sketches the live beta saved in v1's pico-custom-coffees become your own coffees (same ids), also after the
+// one-time v1 import has run. Idempotent, so it runs on every start.
+store.adoptV1CustomCoffees();
+
+// Catalog coffees (without v1's custom ones) plus the coffees you added: what the screens look coffees up in.
+const CATALOG = getAllCoffees().filter((c) => !c.isCustom);
+const CATALOG_BY_ID = new Map(CATALOG.map((c) => [c.id, c]));
+export const allCoffees = (): Coffee[] => [...CATALOG, ...store.getState().userCoffees];
+export const coffeeById = (id: string): Coffee | undefined => CATALOG_BY_ID.get(id) ?? store.getState().userCoffees.find((c) => c.id === id);
 
 // The fake server's community data is the demo seed; demo states replace it in place.
 export const communitySeed: PersistedState['communityRatings'] = { ...store.getState().communityRatings };

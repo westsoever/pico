@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { getCoffeeById } from '../../lib/catalog';
-import { ACCOUNTS, FREE_SCANS, importV1, readV1Ratings, setState, signUp, toggleSaved, type ProtoState } from './state';
+import { ACCOUNTS, FREE_SCANS, importV1, readV1Ratings, setState, signUp, toggleSaved, type ProtoState, coffeeById } from './state';
 import { BackIcon, ChevronRight, CloseIcon, PersonIcon, PlusIcon, ShareIcon, SparkIcon } from './icons';
 import { Bag, Nav } from './parts';
 import { back, close, go } from './routing';
@@ -68,7 +67,7 @@ export function Import({ q }: { q: URLSearchParams }) {
         : <p>This phone has {v1.length} {v1.length === 1 ? 'coffee' : 'coffees'} you rated in the first version of Pico. Add {v1.length === 1 ? 'it' : 'them'} to your journal.</p>}
       <div className="p-import">
         {v1.slice(0, 8).map((r) => {
-          const c = getCoffeeById(r.coffeeId);
+          const c = coffeeById(r.coffeeId);
           return c ? <span key={r.coffeeId} className="p-import__item"><Bag coffee={c} w={120} /></span> : null;
         })}
       </div>
@@ -94,7 +93,7 @@ export function Profile({ s }: { s: ProtoState }) {
     );
   }
   const coffees = new Set(s.cups.map((c) => c.coffeeId));
-  const roasters = new Set(s.cups.map((c) => getCoffeeById(c.coffeeId)?.roaster));
+  const roasters = new Set(s.cups.map((c) => coffeeById(c.coffeeId)?.roaster));
   const v1 = readV1Ratings();
   return (
     <div className="p-screen">

@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { getCoffeeById } from '../../lib/catalog';
 import { type FlavorTag, type RoastLevel } from '../../types/coffee';
 import { type TasteSeed } from '../../lib/taste-profile';
-import { ACCOUNTS, FREE_SCANS, setState } from './state';
+import { ACCOUNTS, FREE_SCANS, setState, coffeeById } from './state';
 import { CameraIcon } from './icons';
 import { Bag } from './parts';
 import { go } from './routing';
@@ -67,7 +66,7 @@ export function Welcome() {
   };
   // Transparent-PNG bags (corner alpha 0) from 3 roasters, so no white box shows behind them.
   const hero = ['coffee-collective-mulugeta-anaerobic', 'kontra-kenya-gicherori', 'skaastrupkaffen-special-blend']
-    .map((id) => getCoffeeById(id)).filter((c) => c !== undefined);
+    .map((id) => coffeeById(id)).filter((c) => c !== undefined);
   // This bag fills more of its photo (89% vs 76% of the height), so shrink it to the same visible height.
   const heroScale: Record<string, number> = { 'skaastrupkaffen-special-blend': 0.85 };
   return (

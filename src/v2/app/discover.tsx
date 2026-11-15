@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { getAllCoffees, searchCoffees } from '../../lib/catalog';
+import { searchCoffees } from '../../lib/catalog';
 import { scoreSimilarity } from '../../lib/similarity';
 import { FLAVOR_TAG_LABELS, type Coffee, type FlavorTag } from '../../types/coffee';
-import { ACCOUNTS, FREE_SCANS, currentProfile, communityRating, type ProtoState } from './state';
+import { ACCOUNTS, FREE_SCANS, currentProfile, communityRating, type ProtoState, allCoffees } from './state';
 import { ArrowUpRight, CloseIcon, SearchIcon, Star } from './icons';
 import { Avatar, Bag, Empty, Head, Nav, SaveButton, Tile } from './parts';
 import { go } from './routing';
@@ -24,7 +24,7 @@ export function Discover({ s }: { s: ProtoState }) {
     return () => window.removeEventListener('scroll', on);
   }, []);
   const profile = useMemo(() => currentProfile(s), [s]);
-  const all = getAllCoffees().filter((c) => c.available !== false);
+  const all = allCoffees().filter((c) => c.available !== false);
   const typeChips = COFFEE_TYPES.filter((t) => all.some((c) => isType(c, t)));
   const list = useMemo(() => {
     if (query.trim()) return searchCoffees(query, 30);

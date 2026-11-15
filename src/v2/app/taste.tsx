@@ -1,9 +1,8 @@
 import { useMemo } from 'react';
-import { getAllCoffees } from '../../lib/catalog';
 import { scoreSimilarity } from '../../lib/similarity';
 import { TasteShareButton } from './features/TasteShare';
 import { FLAVOR_TAG_LABELS, ROAST_LEVEL_LABELS, type FlavorTag } from '../../types/coffee';
-import { currentProfile, type ProtoState } from './state';
+import { allCoffees, currentProfile, type ProtoState } from './state';
 import { KeepCupsPrompt } from './coffee';
 import { Empty, Head, Nav, Tile } from './parts';
 import { go } from './routing';
@@ -30,7 +29,7 @@ export function Taste({ s }: { s: ProtoState }) {
   const word = tags.slice(0, 2).map(([t]) => FLAVOR_TAG_LABELS[t]).join(' & ') || 'Still exploring';
   const tried = new Set(s.cups.map((c) => c.coffeeId));
   const picks = profile
-    ? getAllCoffees().filter((c) => !tried.has(c.id) && c.available !== false).sort((a, b) => scoreSimilarity(b, profile) - scoreSimilarity(a, profile)).slice(0, 6)
+    ? allCoffees().filter((c) => !tried.has(c.id) && c.available !== false).sort((a, b) => scoreSimilarity(b, profile) - scoreSimilarity(a, profile)).slice(0, 6)
     : [];
   return (
     <div className="p-screen">

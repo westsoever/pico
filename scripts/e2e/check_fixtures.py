@@ -69,10 +69,11 @@ with sync_playwright() as p:
         rows_intact(want['userCoffees'], got['userCoffees'], f'{name}: hand-added coffees')
         diff = {k: (want[k], got.get(k)) for k in SETTINGS if want[k] != got.get(k)}
         c.ok(not diff, f'{name}: settings unchanged ({", ".join(SETTINGS)})' + (f' {diff}' if diff else ''))
+        # Sketches the live beta saved in v1's key become your own coffees (same id and name); v1's copy stays.
+        mine = {u['id']: u['name'] for u in got['userCoffees'] if not u.get('deletedAt')}
         v1_left = {s['id'] for s in json.loads(pg.evaluate("localStorage.getItem('pico-custom-coffees')") or '[]')}
-        moved = {u['id'] for u in got['userCoffees']}
-        lost = [s['id'] for s in sketches if s['id'] not in v1_left | moved]
-        c.ok(not lost, f'{name}: every scan-miss sketch is still stored (v1 key or userCoffees)' + (f' lost {lost}' if lost else ''))
+        lost = [s['id'] for s in sketches if mine.get(s['id']) != s['name'] or s['id'] not in v1_left]
+        c.ok(not lost, f'{name}: every scan-miss sketch is one of your coffees, v1 copy kept' + (f' not adopted {lost}' if lost else ''))
         c.ok(not errors, f'{name}: no page errors {errors}')
         ctx.close()
     b.close()

@@ -1,10 +1,9 @@
 import { useMemo, useState } from 'react';
-import { getCoffeeById } from '../../lib/catalog';
 import { getSimilarToCoffee } from '../../lib/similarity';
 import { TasteHints } from './features/TasteHints';
 import { matchReason, tasteLine } from '../../lib/taste-line';
 import { BREW_METHOD_OPTIONS, FLAVOR_TAG_LABELS, ROAST_LEVEL_LABELS, type BrewJournal, type BrewMethod, type FlavorTag } from '../../types/coffee';
-import { ACCOUNTS, addCup, currentProfile, updateCup, deleteCup, communityRating, type Cup, type ProtoState } from './state';
+import { ACCOUNTS, addCup, currentProfile, updateCup, deleteCup, communityRating, type Cup, type ProtoState, coffeeById } from './state';
 import { ArrowUpRight, BackIcon, ShareIcon, Star, StarOutline } from './icons';
 import { Bag, Empty, SaveButton, Stars, Tile } from './parts';
 import { close, go } from './routing';
@@ -53,7 +52,7 @@ export function KeepCupsPrompt({ count, next }: { count: number; next: string })
 }
 
 export function CoffeeScreen({ s, id }: { s: ProtoState; id: string }) {
-  const coffee = getCoffeeById(id);
+  const coffee = coffeeById(id);
   const [draft, setDraft] = useState<CupDraft>(EMPTY_DRAFT);
   const [detail, setDetail] = useState(false);
   const [saved, setSaved] = useState<Cup | null>(null);
@@ -112,9 +111,12 @@ export function CoffeeScreen({ s, id }: { s: ProtoState; id: string }) {
             : m !== null && <span className="p-match">{m}% match</span>}
         </div>
         <h1 className="p-name">{coffee.name}</h1>
-        <p className="p-community">
-          {community ? <><Star /> {community.average.toFixed(1)} · {community.count} ratings</> : 'New on Pico'}
-        </p>
+        {/* A coffee you added is yours alone: no community line. */}
+        {!coffee.isCustom && (
+          <p className="p-community">
+            {community ? <><Star /> {community.average.toFixed(1)} · {community.count} ratings</> : 'New on Pico'}
+          </p>
+        )}
         <p className="p-taste">{tasteLine(coffee, 'long')}</p>
         {profile
           ? <TasteHints coffee={coffee} cups={s.cups} profile={profile} reason={m !== null ? reason : null} rated={mine.length > (saved ? 1 : 0)} savedStars={saved?.stars} />

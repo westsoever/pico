@@ -1,7 +1,6 @@
 import { useState, type CSSProperties, type ReactNode } from 'react';
-import { getAllCoffees, getCoffeeById } from '../../lib/catalog';
 import { FLAVOR_TAG_LABELS, type FlavorTag } from '../../types/coffee';
-import { totalsByCoffee, type ProtoState } from './state';
+import { allCoffees, coffeeById, totalsByCoffee, type ProtoState } from './state';
 import { CloseIcon, ShareIcon } from './icons';
 import bagWidths from './bag-widths.json';
 import { Bag, Stars } from './parts';
@@ -27,7 +26,7 @@ export function Wrapped({ s, q }: { s: ProtoState; q: URLSearchParams }) {
   const tagCount = new Map<FlavorTag, number>();
   cups.forEach((c) => c.flavorTags.forEach((t) => tagCount.set(t, (tagCount.get(t) ?? 0) + 1)));
   const topTag = [...tagCount.entries()].sort((a, b) => b[1] - a[1])[0]?.[0];
-  const roasters = [...new Set(cups.map((c) => getCoffeeById(c.coffeeId)?.roaster).filter(Boolean))];
+  const roasters = [...new Set(cups.map((c) => coffeeById(c.coffeeId)?.roaster).filter(Boolean))];
   const origins = [...new Set(totals.map((t) => t.coffee.origin))];
   const avg = cups.reduce((t, c) => t + c.stars, 0) / cups.length;
   const slides: ReactNode[] = [
@@ -49,7 +48,7 @@ export function Wrapped({ s, q }: { s: ProtoState; q: URLSearchParams }) {
 
 export function Share({ s, kind, id }: { s: ProtoState; kind: string; id: string }) {
   const cup = kind === 'cup' ? s.cups.find((c) => c.id === id) : undefined;
-  const coffee = getCoffeeById(cup?.coffeeId ?? (kind === 'coffee' ? id : s.cups[0]?.coffeeId ?? getAllCoffees()[0].id));
+  const coffee = coffeeById(cup?.coffeeId ?? (kind === 'coffee' ? id : s.cups[0]?.coffeeId ?? allCoffees()[0].id));
   if (!coffee) return null;
   const title = kind === 'month' ? `My ${new Date(`${id}-01T12:00:00`).toLocaleDateString('en-GB', { month: 'long' })} in coffee`
     : kind === 'profile' ? `${s.user?.displayName ?? 'My'} taste on Pico` : coffee.name;

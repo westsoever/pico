@@ -20,6 +20,12 @@ def build_and_serve() -> str:
     (site / 'pico' / 'index.dev.html').rename(site / 'pico' / 'index.html')
     class Quiet(http.server.SimpleHTTPRequestHandler):
         def log_message(self, *args): pass
+
+        def handle(self):
+            try:
+                super().handle()
+            except (BrokenPipeError, ConnectionResetError):
+                pass  # the browser dropped a request it no longer needed
     handler = functools.partial(Quiet, directory=str(site))
     server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), handler)
     threading.Thread(target=server.serve_forever, daemon=True).start()

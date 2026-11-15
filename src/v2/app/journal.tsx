@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
-import { getCoffeeById } from '../../lib/catalog';
 import { scoreSimilarity } from '../../lib/similarity';
-import { ACCOUNTS, currentProfile, totalsByCoffee, type Cup, type ProtoState } from './state';
+import { ACCOUNTS, currentProfile, totalsByCoffee, type Cup, type ProtoState, coffeeById } from './state';
 import { CameraIcon, ChevronRight, SparkIcon, Star } from './icons';
 import { KeepCupsPrompt } from './coffee';
 import { Bag, Empty, Head, JournalTitle, Nav, Stars, Tile } from './parts';
@@ -57,7 +56,7 @@ export function Journal({ s, view }: { s: ProtoState; view: string }) {
           <section key={m} className="p-month">
             <h2 className="p-section">{m}</h2>
             {cups.map((c) => {
-              const coffee = getCoffeeById(c.coffeeId);
+              const coffee = coffeeById(c.coffeeId);
               if (!coffee) return null;
               return (
                 <button key={c.id} className="p-cuprow" onClick={() => go(`/coffee/${coffee.id}`)}>
@@ -95,7 +94,7 @@ export function Saved({ s }: { s: ProtoState }) {
   }
   const items = [...s.saved]
     .sort((a, b) => b.savedAt.localeCompare(a.savedAt))
-    .map((x) => getCoffeeById(x.coffeeId))
+    .map((x) => coffeeById(x.coffeeId))
     .filter((c) => c !== undefined);
   if (sort === 'match' && profile) items.sort((a, b) => scoreSimilarity(b, profile) - scoreSimilarity(a, profile));
   return (

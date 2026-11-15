@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { getAllCoffees } from '../../lib/catalog';
 import { getSimilarToCoffee } from '../../lib/similarity';
 import { matchCoffeesFromText } from '../../lib/label-match';
 import { parseLabel, type LabelDraft } from '../../lib/label-parse';
@@ -10,7 +9,7 @@ import { PoorRead } from './features/MenuPick';
 import { LiveScan } from './features/LiveScan';
 import { resizePhoto } from '../../components/CameraCapture';
 import { type Coffee, type TasteProfile } from '../../types/coffee';
-import { ACCOUNTS, FREE_SCANS, currentProfile, spendScan, communityRating, type ProtoState } from './state';
+import { ACCOUNTS, FREE_SCANS, currentProfile, spendScan, communityRating, type ProtoState, allCoffees } from './state';
 import { ChevronRight, CloseIcon, PlusIcon, Star } from './icons';
 import { Bag } from './parts';
 import { back, closeScan, go } from './routing';
@@ -27,8 +26,8 @@ function ResultVerdict({ s, coffee, profile, best }: { s: ProtoState; coffee: Co
   const yours = mine.length ? `You ★ ${(mine.reduce((t, x) => t + x.stars, 0) / mine.length).toFixed(1)}` : m !== null ? `${m}% match` : null;
   return (
     <span className="p-result__verdict">
-      {community ? <><Star size={best ? 16 : 12} />{community.average.toFixed(1)} · {community.count}{' '}ratings</> : 'New on Pico'}
-      {yours && ` · ${yours}`}
+      {community ? <><Star size={best ? 16 : 12} />{community.average.toFixed(1)} · {community.count}{' '}ratings</> : !coffee.isCustom && 'New on Pico'}
+      {yours && (community || !coffee.isCustom ? ` · ${yours}` : yours)}
     </span>
   );
 }
@@ -64,10 +63,10 @@ export function Scan({ s }: { s: ProtoState }) {
       const photo = await resizePhoto(file);
       const read = await readLabel(photo);
       const text = read.text;
-      const coffees = matchCoffeesFromText(text, getAllCoffees()).map((m) => m.coffee);
+      const coffees = matchCoffeesFromText(text, allCoffees()).map((m) => m.coffee);
       // Bag artwork drags Tesseract's confidence down even on good reads, so a match always wins over "blurry".
       if (!coffees.length && isPoorRead(read)) { setPhase({ kind: 'poor' }); return; }
-      setPhase({ kind: 'results', photo, coffees, draft: coffees.length ? null : parseLabel(text, getAllCoffees()) });
+      setPhase({ kind: 'results', photo, coffees, draft: coffees.length ? null : parseLabel(text, allCoffees()) });
     } catch {
       setPhase({ kind: 'results', coffees: [] });
     }
@@ -75,7 +74,7 @@ export function Scan({ s }: { s: ProtoState }) {
   const sample = () => {
     if (!start()) return;
     setPhase({ kind: 'reading' });
-    const pool = getAllCoffees().filter((c) => c.imageUrl);
+    const pool = allCoffees().filter((c) => c.imageUrl);
     const hit = pool[Math.floor(Math.random() * pool.length)];
     setTimeout(() => setPhase({ kind: 'results', coffees: [hit, ...getSimilarToCoffee(hit, [], 2).map((x) => x.coffee)] }), 1200);
   };
