@@ -24,7 +24,12 @@ export function preloadLabelReader(): void {
 
 /** Returns the text read from a label photo (an image data URL). */
 export async function readLabelText(imageDataUrl: string): Promise<string> {
+  return (await readLabel(imageDataUrl)).text;
+}
+
+/** Text plus Tesseract's mean word confidence (0–100), to tell a blurry read from a real one. */
+export async function readLabel(imageDataUrl: string): Promise<{ text: string; confidence: number }> {
   const worker = await getWorker();
   const { data } = await worker.recognize(imageDataUrl);
-  return data.text;
+  return { text: data.text, confidence: data.confidence };
 }
