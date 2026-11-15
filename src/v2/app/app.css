@@ -342,6 +342,10 @@ h1, h2, p { margin: 0; }
 .p-cam__library:disabled { opacity: .4; }
 .p-cam__controls .p-link--light { margin-top: 12px; }
 .p-scan__sheet { position: absolute; left: 0; right: 0; bottom: 0; max-height: 76dvh; overflow-y: auto; padding: 24px 20px calc(24px + var(--safe-b)); border-radius: 28px 28px 0 0; background: rgba(17,20,24,.98); text-align: left; animation: p-rise .25s ease-out; }
+/* Sticks into the sheet's bottom padding (negative bottom) with the sheet's own colour, so no tile shows below it. */
+.p-scan__pin { position: sticky; z-index: 1; bottom: calc(-24px - var(--safe-b)); margin: 0 -20px calc(-24px - var(--safe-b)); padding: 12px 20px calc(16px + var(--safe-b)); background: #111418; }
+.p-scan__pin .p-result { margin-bottom: 0; background: #2a2d32; }
+.p-scan__pin .p-link--light { margin-top: 12px; }
 .p-scan__sheet .w-poor { padding-top: 0; text-align: center; }
 .p-cands { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 12px; margin-bottom: 16px; }
 .p-cands[data-odd] > .p-cand:first-child { grid-column: 1 / -1; }

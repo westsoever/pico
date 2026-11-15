@@ -166,6 +166,11 @@ with sync_playwright() as p:
         c.ok(box['width'] >= 150 and box['height'] >= 180, f'(4) photo-led tiles ({box["width"]:.0f}x{box["height"]:.0f} px pictures)')
         c.ok(pg.locator('.p-cand .p-result__tag').count() == 1 and pg.locator('.p-cand').first.locator('.p-result__tag').count() == 1, '(4) "Most likely" only on the first')
         c.ok(pg.get_by_text('Not found, add it now').count() == 1, '(4) "Not found, add it now" in the list')
+        pg.wait_for_timeout(400)  # after the sheet's rise
+        row = pg.locator('.p-result--add').bounding_box()
+        n = pg.locator('.p-scan__sheet .p-cand').count()
+        c.ok(row['y'] >= 0 and row['y'] + row['height'] <= VIEWPORT['height'] and pg.evaluate("document.querySelector('.p-scan__sheet').scrollTop") == 0,
+             f'(4) with {n} candidates the row is in view at 390x844 without scrolling (y {row["y"]:.0f}-{row["y"] + row["height"]:.0f})')
         pg.wait_for_timeout(1500); shot(pg, '3-list')  # after the sheet's rise and the bag pictures
         name = pg.locator('.p-scan__sheet .p-cand b').first.inner_text()
         pg.locator('.p-scan__sheet .p-cand').first.click(); pg.wait_for_timeout(1000)

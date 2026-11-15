@@ -200,11 +200,14 @@ export function Scan({ s }: { s: ProtoState }) {
               ))}
             </div>
           )}
-          <button className="p-result p-result--add" onClick={() => addNow(phase.shot, !phase.coffees.length)}>
-            <span className="p-result__img"><PlusIcon /></span>
-            <span className="p-result__text"><b>Not found, add it now</b><span>Saved to your journal</span></span>
-          </button>
-          <button className="p-link p-link--light" onClick={again}>Scan another bag</button>
+          {/* Pinned to the bottom of the sheet: "add it now" is always in view, however long the list. */}
+          <div className="p-scan__pin">
+            <button className="p-result p-result--add" onClick={() => addNow(phase.shot, !phase.coffees.length)}>
+              <span className="p-result__img"><PlusIcon /></span>
+              <span className="p-result__text"><b>Not found, add it now</b><span>Saved to your journal</span></span>
+            </button>
+            <button className="p-link p-link--light" onClick={again}>Scan another bag</button>
+          </div>
         </div>
       )}
     </div>
