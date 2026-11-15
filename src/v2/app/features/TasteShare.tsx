@@ -1,12 +1,12 @@
 // Feature 4: share your taste. A sheet on /taste with two choices, the "Share my taste" card (#/tastecard)
 // and the TasteMatch screen a link opens (#/tastematch/<payload>). No backend: the taste rides in the link.
 import { useMemo, useState, type ReactNode } from 'react';
-import { getAllCoffees } from '../../src/lib/catalog';
-import { formatMatchPercent, scoreSimilarity } from '../../src/lib/similarity';
-import { coffeeForBoth, decodeTaste, encodeTaste, sharedLine, splitLine } from '../../src/lib/taste-link';
-import { FLAVOR_TAG_LABELS, type Coffee, type FlavorTag, type TasteProfile } from '../../src/types/coffee';
+import { getAllCoffees } from '../../../lib/catalog';
+import { formatMatchPercent, scoreSimilarity } from '../../../lib/similarity';
+import { coffeeForBoth, decodeTaste, encodeTaste, sharedLine, splitLine } from '../../../lib/taste-link';
+import { FLAVOR_TAG_LABELS, type Coffee, type FlavorTag, type TasteProfile } from '../../../types/coffee';
 import { CloseIcon, ShareIcon } from '../icons';
-import { currentProfile, type ProtoState } from '../store';
+import { currentProfile, type ProtoState } from '../state';
 import './wow.css';
 
 type BagFn = (coffee: Coffee) => ReactNode;

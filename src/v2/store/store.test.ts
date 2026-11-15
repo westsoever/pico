@@ -137,4 +137,25 @@ describe('v2 store', () => {
     expect(s.userCoffees[0]).toMatchObject({ id: 'custom-1', userId: userA.id, sentToPico: false });
     expect(s.v1Imported).toBe(true);
   });
+
+  it('adopts v1 custom coffees saved later (label sketches) once, keeping their ids, even after the v1 import', () => {
+    const sketch = { id: 'custom-sketch', name: 'Finca', roaster: 'Small', origin: 'Colombia', process: 'Washed', roastLevel: 'light', flavorTags: ['fruity'], description: 'Added from a label scan.', isCustom: true };
+    localStorage.setItem('pico-custom-coffees', JSON.stringify([]));
+    const store = createStore(memoryStorage());
+    store.importV1([]); // v1 import done (or "Not now") before any sketch existed
+    localStorage.setItem('pico-custom-coffees', JSON.stringify([sketch]));
+    expect(store.adoptV1CustomCoffees()).toBe(1);
+    expect(store.adoptV1CustomCoffees()).toBe(0);
+    expect(store.getState().userCoffees).toEqual([expect.objectContaining({ id: 'custom-sketch', name: 'Finca', userId: 'local', isCustom: true })]);
+    store.setUser(userA);
+    expect(store.getState().userCoffees[0].userId).toBe(userA.id); // moves into the account like cups
+    expect(JSON.parse(localStorage.getItem('pico-custom-coffees')!)).toEqual([sketch]); // v1's copy untouched
+  });
+
+  it('keeps the id a label sketch was shown with', () => {
+    const store = createStore(memoryStorage());
+    const row = store.addUserCoffee({ id: 'custom-shown', name: 'Finca', roaster: 'Small', origin: 'Colombia', process: 'Washed', roastLevel: 'light', flavorTags: [], description: '' });
+    expect(row.id).toBe('custom-shown');
+    expect(store.addUserCoffee({ name: 'X', roaster: 'Y', origin: '', process: '', roastLevel: 'dark', flavorTags: [], description: '' }).id).toMatch(/^custom-/);
+  });
 });

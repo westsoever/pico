@@ -1,13 +1,12 @@
 // Scan miss with enough read from the label: a coffee sketched from the label text,
 // its taste line and match, and the add form prefilled. Feature 1 ("any bag gets an answer").
 import { useState } from 'react';
-import { mergeCustomCoffees } from '../../src/lib/catalog';
-import { draftToCoffee, type LabelDraft } from '../../src/lib/label-parse';
-import { formatMatchPercent, scoreSimilarity } from '../../src/lib/similarity';
-import { tasteLine } from '../../src/lib/taste-line';
-import { hasTasteSignal } from '../../src/lib/taste-profile';
-import { ROAST_LEVEL_LABELS, type RoastLevel, type TasteProfile } from '../../src/types/coffee';
-import { uid } from '../store';
+import { draftToCoffee, type LabelDraft } from '../../../lib/label-parse';
+import { formatMatchPercent, scoreSimilarity } from '../../../lib/similarity';
+import { tasteLine } from '../../../lib/taste-line';
+import { hasTasteSignal } from '../../../lib/taste-profile';
+import { ROAST_LEVEL_LABELS, type RoastLevel, type TasteProfile } from '../../../types/coffee';
+import { store, uid } from '../state';
 import './wow.css';
 
 const ROASTS: RoastLevel[] = ['light', 'medium', 'dark'];
@@ -29,8 +28,8 @@ export function LabelAnswer({ draft, photo, profile, onRetry, retryLabel = 'Scan
 
   const save = () => {
     if (!coffee) return;
-    // shortcut: saves to v1's custom-coffee storage; v2 saves a UserCoffee through src/v2/store
-    mergeCustomCoffees([{ ...coffee, name: name.trim(), roaster: roaster.trim() }]);
+    // Yours, like a cup: on the phone, and into the account on sign-in. Same id the match above was scored with.
+    store.addUserCoffee({ ...coffee, name: name.trim(), roaster: roaster.trim() });
     window.location.hash = `/coffee/${id}`;
   };
 

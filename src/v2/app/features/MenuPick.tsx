@@ -1,14 +1,14 @@
 // Feature 5: photo of a café menu or shelf → every coffee on it, the one for you first (#/menu).
 // Also the unsharp-photo path (PoorRead), shared with the bag scan.
 import { useEffect, useMemo, useRef, useState, type ChangeEvent, type ReactNode } from 'react';
-import { resizePhoto } from '../../src/components/CameraCapture';
-import { getAllCoffees } from '../../src/lib/catalog';
-import { preloadLabelReader, readLabel } from '../../src/lib/label-ocr';
-import { isPoorRead, pickFromMenu, type MenuItem } from '../../src/lib/menu-pick';
-import { formatMatchPercent } from '../../src/lib/similarity';
-import type { Coffee } from '../../src/types/coffee';
+import { resizePhoto } from '../../../components/CameraCapture';
+import { getAllCoffees } from '../../../lib/catalog';
+import { preloadLabelReader, readLabel } from '../../../lib/label-ocr';
+import { isPoorRead, pickFromMenu, type MenuItem } from '../../../lib/menu-pick';
+import { formatMatchPercent } from '../../../lib/similarity';
+import type { Coffee } from '../../../types/coffee';
 import { CloseIcon } from '../icons';
-import { currentProfile, spendScan, type ProtoState } from '../store';
+import { currentProfile, spendScan, type ProtoState } from '../state';
 import { LabelAnswer } from './LabelAnswer';
 import './wow.css';
 

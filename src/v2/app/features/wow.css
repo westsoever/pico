@@ -1,4 +1,4 @@
-/* Feature screens from prototype/wow/. Uses proto.css tokens only. */
+/* Feature screens (FableAgent). Uses app.css tokens only. */
 
 /* Scan miss → coffee sketched from the label */
 .w-answer { display: grid; gap: 12px; text-align: left; }

@@ -2,13 +2,13 @@
 // one read at a time, and hands over to the shutter after 15 s, one slow read, a hidden tab or no camera.
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { getAllCoffees } from '../../src/lib/catalog';
-import { matchCoffeesFromText } from '../../src/lib/label-match';
-import { readLabel } from '../../src/lib/label-ocr';
-import { parseLabel, type LabelDraft } from '../../src/lib/label-parse';
-import { STEADY_START, frameDifference, liveDecision, nextSteadiness, readFinished, shouldFallBack } from '../../src/lib/live-scan';
-import { isPoorRead } from '../../src/lib/menu-pick';
-import type { Coffee } from '../../src/types/coffee';
+import { getAllCoffees } from '../../../lib/catalog';
+import { matchCoffeesFromText } from '../../../lib/label-match';
+import { readLabel } from '../../../lib/label-ocr';
+import { parseLabel, type LabelDraft } from '../../../lib/label-parse';
+import { STEADY_START, frameDifference, liveDecision, nextSteadiness, readFinished, shouldFallBack } from '../../../lib/live-scan';
+import { isPoorRead } from '../../../lib/menu-pick';
+import type { Coffee } from '../../../types/coffee';
 import './wow.css';
 
 export type LiveResult =

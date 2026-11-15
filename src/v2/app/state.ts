@@ -1,19 +1,20 @@
-// Prototype store = the real v2 store (src/v2/store) behind the prototype's old function API, so the screens
-// run on the real local-first store and sync engine. The server is the in-memory fake: no Supabase, no network.
-// Prototype-only extras stay here: demo states, the instant fake sign-up, sample community ratings.
-// Roll back: copy store.proto.ts (the previous fake store, unchanged) over this file.
+// The screens' state: one instance of the real v2 store (src/v2/store) behind a small function API, with its sync
+// engine talking to the in-memory fake server: no Supabase, no network yet. NEXT.md step b swaps in the Supabase
+// remote together with the real sign-up (auth.ts); until then the sign-up here is the instant fake one.
+// Demo states for design review live in demo.ts.
 import { useSyncExternalStore } from 'react';
-import { getAllCoffees } from '../src/lib/catalog';
+import { getAllCoffees } from '../../lib/catalog';
+import type { Coffee } from '../../types/coffee';
 import {
-  EMPTY, LOCAL_USER_ID, MIN_COMMUNITY_RATERS, PROTOTYPE_KEY, STORAGE_KEY, uid,
+  LOCAL_USER_ID, MIN_COMMUNITY_RATERS, PROTOTYPE_KEY, STORAGE_KEY, uid,
   type Cup, type PersistedState, type SavedCoffee, type User,
-} from '../src/v2/store/state';
+} from '../store/state';
 import {
   FREE_SCANS, createStore, currentProfile, profileOf, totalsByCoffee, type CoffeeTotals, type StoreState,
-} from '../src/v2/store/store';
-import { createSync, startAutoSync } from '../src/v2/sync/engine';
-import { createFakeRemote } from '../src/v2/sync/fake-remote';
-import { showAccounts } from '../src/v2/flags';
+} from '../store/store';
+import { createSync, startAutoSync } from '../sync/engine';
+import { createFakeRemote } from '../sync/fake-remote';
+import { showAccounts } from '../flags';
 
 export { FREE_SCANS, LOCAL_USER_ID, currentProfile, profileOf, totalsByCoffee, uid };
 export type { CoffeeTotals, Cup, SavedCoffee, User };
@@ -25,7 +26,7 @@ export type ProtoState = StoreState & {
 };
 
 const firstBoot = localStorage.getItem(STORAGE_KEY) === null;
-const store = createStore(localStorage);
+export const store = createStore(localStorage);
 
 // A test phone with prototype data: the real migration brings cups and settings over as signed-out rows.
 // In the prototype its fake account and sample community data are part of the demo, so keep those too.
@@ -39,8 +40,18 @@ if (firstBoot) {
   }
 }
 
+// Label sketches the live beta saved in v1's pico-custom-coffees become your own coffees (same ids), also after the
+// one-time v1 import has run. Idempotent, so it runs on every start.
+store.adoptV1CustomCoffees();
+
+// Catalog coffees (without v1's custom ones) plus the coffees you added: what the screens look coffees up in.
+const CATALOG = getAllCoffees().filter((c) => !c.isCustom);
+const CATALOG_BY_ID = new Map(CATALOG.map((c) => [c.id, c]));
+export const allCoffees = (): Coffee[] => [...CATALOG, ...store.getState().userCoffees];
+export const coffeeById = (id: string): Coffee | undefined => CATALOG_BY_ID.get(id) ?? store.getState().userCoffees.find((c) => c.id === id);
+
 // The fake server's community data is the demo seed; demo states replace it in place.
-const communitySeed: PersistedState['communityRatings'] = { ...store.getState().communityRatings };
+export const communitySeed: PersistedState['communityRatings'] = { ...store.getState().communityRatings };
 const sync = createSync(store, createFakeRemote(communitySeed));
 startAutoSync(store, sync);
 
@@ -106,84 +117,4 @@ export function communityRating(coffeeId: string): { average: number; count: num
   const count = others.count + (own === null ? 0 : 1);
   if (count < MIN_COMMUNITY_RATERS) return null;
   return { average: (others.average * others.count + (own ?? 0)) / count, count };
-}
-
-// ---------- Demo states (switch with ?state=… or the Proto panel) ----------
-
-/** SAMPLE DATA for demos: ~50% of coffees, 3–40 raters, averages 3.4–4.8, the same on every load (hash of the id). */
-function sampleCommunity(): PersistedState['communityRatings'] {
-  const seed: PersistedState['communityRatings'] = {};
-  for (const c of getAllCoffees()) {
-    let h = 7;
-    for (const ch of c.id) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
-    if (h % 10 >= 6) continue;
-    seed[c.id] = { count: MIN_COMMUNITY_RATERS + (h % 38), average: 3.4 + ((h >>> 4) % 15) / 10 };
-  }
-  return seed;
-}
-
-function seedCups(userId: string, months: number, perMonth: number): Cup[] {
-  const coffees = getAllCoffees().filter((c) => c.imageUrl);
-  const cups: Cup[] = [];
-  let n = 0;
-  const now = new Date();
-  for (let m = months - 1; m >= 0; m--) {
-    for (let i = 0; i < perMonth; i++) {
-      const coffee = coffees[(n * 7 + m * 3) % 18]; // repeats some coffees, so totals show
-      const day = new Date(now.getFullYear(), now.getMonth() - m, 1 + ((i * 4) % 27), 8 + (i % 3) * 4);
-      if (day > now) continue;
-      cups.push({
-        id: uid(),
-        userId,
-        coffeeId: coffee.id,
-        stars: [5, 4, 4, 3, 5, 2, 4][n % 7],
-        // Notes line up with the stars above: the 2★ cup gets the complaint.
-        note: ['', 'Lovely as a V60', '', '', 'Morning favourite', 'Too sour for me', 'Great with milk'][n % 7],
-        flavorTags: coffee.flavorTags,
-        ratedAt: day.toISOString(),
-        updatedAt: day.toISOString(),
-      });
-      n++;
-    }
-  }
-  return cups.sort((a, b) => b.ratedAt.localeCompare(a.ratedAt));
-}
-
-export const DEMO_STATES = {
-  'first-run': 'First visit, signed out',
-  'scans-1': 'Signed out, 1 free scan left',
-  'scans-0': 'Signed out, no free scans left',
-  'new-user': 'Just signed up, empty journal',
-  'regular': 'Signed in, 3 months of cups',
-} as const;
-export type DemoState = keyof typeof DEMO_STATES;
-
-export function applyDemoState(name: DemoState) {
-  const user: User = { id: 'demo-user', displayName: 'Lea', createdAt: '2026-08-01T09:00:00Z' };
-  const reset = (next: Partial<PersistedState>) => {
-    const seed = next.communityRatings ?? {};
-    for (const k of Object.keys(communitySeed)) delete communitySeed[k];
-    Object.assign(communitySeed, seed);
-    store.replaceState({ ...EMPTY, ...next, communityRatings: seed });
-  };
-  switch (name) {
-    case 'first-run':
-      return reset({});
-    case 'scans-1':
-      return reset({ seenWelcome: true, scansUsed: FREE_SCANS - 1 });
-    case 'scans-0':
-      return reset({ seenWelcome: true, scansUsed: FREE_SCANS });
-    case 'new-user':
-      return reset({ seenWelcome: true, user, v1Imported: true, communityRatings: sampleCommunity() });
-    case 'regular': {
-      const cups = seedCups(user.id, 3, 9);
-      const tried = new Set(cups.map((c) => c.coffeeId));
-      const saved: SavedCoffee[] = getAllCoffees().filter((c) => c.imageUrl && !tried.has(c.id)).slice(0, 5)
-        .map((c, i) => {
-          const at = new Date(Date.now() - (i + 1) * 3 * 86400000).toISOString();
-          return { id: c.id, userId: user.id, coffeeId: c.id, savedAt: at, updatedAt: at };
-        });
-      return reset({ seenWelcome: true, user, v1Imported: true, cups, saved, communityRatings: sampleCommunity() });
-    }
-  }
 }

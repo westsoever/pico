@@ -225,10 +225,24 @@ export function createStore(storage: Storage = localStorage) {
         : { id: coffeeId, userId: ownerId(), coffeeId, savedAt: at, updatedAt: at }]);
     },
 
-    addUserCoffee(coffee: Omit<Coffee, 'id'>): UserCoffee {
-      const row: UserCoffee = { ...coffee, id: `custom-${uid()}`, userId: ownerId(), sentToPico: false, isCustom: true, updatedAt: now() };
+    /** A coffee you added (by hand or sketched from a label). Pass an id to keep one already shown, e.g. a sketch's. */
+    addUserCoffee(coffee: Omit<Coffee, 'id'> & { id?: string }): UserCoffee {
+      const row: UserCoffee = { ...coffee, id: coffee.id ?? `custom-${uid()}`, userId: ownerId(), sentToPico: false, isCustom: true, updatedAt: now() };
       write('userCoffees', [row]);
       return row;
+    },
+
+    /**
+     * v1's custom coffees (pico-custom-coffees, also where the live beta saved label sketches) that aren't yours yet
+     * become UserCoffees with the same id. Idempotent; one you deleted stays deleted. v1's key is left as it is.
+     */
+    adoptV1CustomCoffees(): number {
+      const known = new Set(data.userCoffees.map((c) => c.id));
+      const at = now();
+      const rows = loadCustomCoffees().filter((c) => !known.has(c.id))
+        .map((c) => ({ ...c, userId: ownerId(), sentToPico: false, updatedAt: at }));
+      if (rows.length) write('userCoffees', rows);
+      return rows.length;
     },
 
     spendScan(): boolean {
@@ -256,9 +270,7 @@ export function createStore(storage: Storage = localStorage) {
         id: uid(), userId: ownerId(), coffeeId: r.coffeeId, stars: r.stars, note: r.note ?? '',
         flavorTags: r.flavorTags ?? [], ...(r.brew ? { brew: r.brew } : {}), ratedAt: r.ratedAt, updatedAt: at,
       })));
-      const known = new Set(data.userCoffees.map((c) => c.id));
-      write('userCoffees', loadCustomCoffees().filter((c) => !known.has(c.id))
-        .map((c) => ({ ...c, userId: ownerId(), sentToPico: false, updatedAt: at })));
+      store.adoptV1CustomCoffees();
       commit({ ...data, v1Imported: true });
     },
 
