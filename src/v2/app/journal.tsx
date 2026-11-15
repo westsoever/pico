@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { scoreSimilarity } from '../../lib/similarity';
 import { ACCOUNTS, currentProfile, totalsByCoffee, type Cup, type ProtoState, coffeeById } from './state';
-import { latestPhotoUrl, photoCoffeeIds, usePhotos } from '../store/photos';
+import { latestPhotoUrl, photoCoffeeIds, photosLoaded, usePhotos } from '../store/photos';
 import { CameraIcon, ChevronRight, SparkIcon, Star } from './icons';
 import { KeepCupsPrompt } from './coffee';
 import { Bag, Empty, Head, JournalTitle, Nav, Stars, Tile } from './parts';
@@ -18,10 +18,11 @@ export function Journal({ s, view }: { s: ProtoState; view: string }) {
     return (
       <div className="p-screen">
         <Head title={<JournalTitle on="journal" />} />
-        <Empty title="No cups yet" body="Scan the bag you’re drinking from, give it stars, and it lands here.">
+        {/* Not "No cups yet" before the photos are read: scanned coffees may be on their way. */}
+        {photosLoaded() && <Empty title="No cups yet" body="Scan the bag you’re drinking from, give it stars, and it lands here.">
           <button className="p-btn p-btn--amber" onClick={() => go('/scan')}><CameraIcon size={20} /> Scan a bag</button>
           <button className="p-btn p-btn--ghost" onClick={() => go('/discover')}>Browse coffees</button>
-        </Empty>
+        </Empty>}
         <Nav active="journal" />
       </div>
     );
