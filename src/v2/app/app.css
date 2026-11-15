@@ -328,6 +328,7 @@ h1, h2, p { margin: 0; }
 
 /* The bag scan: the camera picture fills the screen down to the controls; results rise over the photo they came from. */
 .p-scan--cam { height: 100dvh; min-height: 0; padding: 0; display: flex; flex-direction: column; overflow: hidden; background: #111418; }
+.p-scan--cam .p-scan__close { background: rgba(17,20,24,.55); } /* stays visible over a bright picture */
 .p-cam { position: relative; flex: 1; min-height: 0; overflow: hidden; border-radius: 0 0 28px 28px; background: #000; }
 .p-cam[data-off] { background: radial-gradient(80% 50% at 50% 35%, #3a3f47, #111418); }
 .p-cam .w-live, .p-cam__still { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 0; }
