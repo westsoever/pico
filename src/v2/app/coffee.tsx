@@ -8,6 +8,7 @@ import { ArrowUpRight, BackIcon, ShareIcon, Star, StarOutline } from './icons';
 import { Bag, Empty, SaveButton, Stars, Tile } from './parts';
 import { close, go } from './routing';
 import { RATING_WORDS, day, match } from './util';
+import { photoUrl, photosOf, usePhotos } from '../store/photos';
 
 // A cup's optional detail, behind "Add detail": flavors tasted, brew method, a note. Stars stay the one-tap default.
 interface CupDraft { stars: number; note: string; flavorTags: FlavorTag[]; brew?: BrewJournal }
@@ -59,6 +60,7 @@ export function CoffeeScreen({ s, id }: { s: ProtoState; id: string }) {
   const [editing, setEditing] = useState<(CupDraft & { id: string }) | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const profile = useMemo(() => currentProfile(s), [s]);
+  usePhotos();
   if (!coffee) return <Empty title="Coffee not found" body="It may have been removed from the catalog." />;
 
   const mine = s.cups.filter((c) => c.coffeeId === id);
@@ -68,6 +70,7 @@ export function CoffeeScreen({ s, id }: { s: ProtoState; id: string }) {
   const community = communityRating(id);
   const similar = getSimilarToCoffee(coffee, [], 6);
   const stars = draft.stars;
+  const photos = photosOf(id); // your own photos of it, newest first: the latest is this coffee's picture for you
 
   const tap = (n: number) => {
     setSaved(null);
@@ -94,7 +97,7 @@ export function CoffeeScreen({ s, id }: { s: ProtoState; id: string }) {
     <div className="p-screen p-coffee">
       <div className="p-hero">
         <span className="p-hero__floor" />
-        <span className="p-hero__bag"><Bag coffee={coffee} w={700} /></span>
+        <span className="p-hero__bag"><Bag coffee={coffee} w={700} photo={photos[0] && photoUrl(photos[0].id)} /></span>
         <button className="p-glass p-glass--round p-hero__back" onClick={close} aria-label="Back"><BackIcon /></button>
         <span className="p-hero__actions">
           <button className="p-glass p-glass--round" onClick={() => go(`/share/coffee/${id}`)} aria-label="Share"><ShareIcon /></button>
@@ -190,6 +193,13 @@ export function CoffeeScreen({ s, id }: { s: ProtoState; id: string }) {
               </div>
             ))}
           </section>
+        )}
+
+        {photos.length > 1 && (
+          <>
+            <h2 className="p-section">Your photos</h2>
+            <div className="p-photos">{photos.map((p) => <img key={p.id} src={photoUrl(p.id)} alt="" />)}</div>
+          </>
         )}
 
         {coffee.tastingNotes?.length ? (
