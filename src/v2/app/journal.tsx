@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { scoreSimilarity } from '../../lib/similarity';
 import { ACCOUNTS, currentProfile, totalsByCoffee, type Cup, type ProtoState, coffeeById } from './state';
+import { latestPhotoUrl, photoCoffeeIds, usePhotos } from '../store/photos';
 import { CameraIcon, ChevronRight, SparkIcon, Star } from './icons';
 import { KeepCupsPrompt } from './coffee';
 import { Bag, Empty, Head, JournalTitle, Nav, Stars, Tile } from './parts';
@@ -10,7 +11,10 @@ import { SHOW_WRAPPED, day, month, tileBadge } from './util';
 export function Journal({ s, view }: { s: ProtoState; view: string }) {
   // Rate before account: signed-out cups live in s.cups too, so the journal renders either way.
   const totals = useMemo(() => totalsByCoffee(s.cups), [s.cups]);
-  if (!s.cups.length) {
+  usePhotos();
+  // Coffees you scanned (their photo is in your collection) but haven't rated yet: after the rated ones, no badge.
+  const unrated = photoCoffeeIds().filter((id) => !s.cups.some((c) => c.coffeeId === id)).map(coffeeById).filter((c) => c !== undefined);
+  if (!s.cups.length && !unrated.length) {
     return (
       <div className="p-screen">
         <Head title={<JournalTitle on="journal" />} />
@@ -22,7 +26,7 @@ export function Journal({ s, view }: { s: ProtoState; view: string }) {
       </div>
     );
   }
-  const avg = s.cups.reduce((t, c) => t + c.stars, 0) / s.cups.length;
+  const avg = s.cups.length ? s.cups.reduce((t, c) => t + c.stars, 0) / s.cups.length : 0;
   const byMonth = new Map<string, Cup[]>();
   for (const c of s.cups) byMonth.set(month(c.ratedAt), [...(byMonth.get(month(c.ratedAt)) ?? []), c]);
   const lastMonth = new Date(); lastMonth.setDate(0);
@@ -46,9 +50,10 @@ export function Journal({ s, view }: { s: ProtoState; view: string }) {
         <>
           <div className="p-grid">
             {totals.map((t) => (
-              <Tile key={t.coffee.id} coffee={t.coffee} onClick={() => go(`/coffee/${t.coffee.id}`)}
+              <Tile key={t.coffee.id} coffee={t.coffee} photo={latestPhotoUrl(t.coffee.id)} onClick={() => go(`/coffee/${t.coffee.id}`)}
                 badge={<>You <Star size={12} /> {t.average.toFixed(1)}{t.cups.length > 1 && <span className="p-badge-count">×{t.cups.length}</span>}</>} />
             ))}
+            {unrated.map((c) => <Tile key={c.id} coffee={c} photo={latestPhotoUrl(c.id)} onClick={() => go(`/coffee/${c.id}`)} />)}
           </div>
         </>
       ) : (
@@ -60,7 +65,7 @@ export function Journal({ s, view }: { s: ProtoState; view: string }) {
               if (!coffee) return null;
               return (
                 <button key={c.id} className="p-cuprow" onClick={() => go(`/coffee/${coffee.id}`)}>
-                  <span className="p-cuprow__thumb"><Bag coffee={coffee} w={120} /></span>
+                  <span className="p-cuprow__thumb"><Bag coffee={coffee} w={120} photo={latestPhotoUrl(coffee.id)} /></span>
                   <span className="p-cuprow__text">
                     <b>{coffee.name}</b>
                     <span>{coffee.roaster}{c.note ? ` · “${c.note}”` : ''}</span>
@@ -72,7 +77,7 @@ export function Journal({ s, view }: { s: ProtoState; view: string }) {
           </section>
         ))
       )}
-      <p className="p-footstat">{s.cups.length} {s.cups.length === 1 ? 'cup' : 'cups'} · {totals.length} {totals.length === 1 ? 'coffee' : 'coffees'} · {avg.toFixed(1)} average</p>
+      {s.cups.length > 0 && <p className="p-footstat">{s.cups.length} {s.cups.length === 1 ? 'cup' : 'cups'} · {totals.length} {totals.length === 1 ? 'coffee' : 'coffees'} · {avg.toFixed(1)} average</p>}
       <Nav active="journal" />
     </div>
   );
