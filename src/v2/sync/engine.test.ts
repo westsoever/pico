@@ -1,4 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
+import minRatersSql from '../../../supabase/migrations/0002_community_min_raters.sql?raw';
+import { MIN_COMMUNITY_RATERS } from '../store/state';
 import { AccountConflictError, createStore } from '../store/store';
 import { memoryStorage, userA, userB } from '../test-utils';
 import { createSync } from './engine';
@@ -175,6 +177,18 @@ describe('session loss and a second account', () => {
 });
 
 describe('community ratings', () => {
+  it('shows a rating only from MIN_COMMUNITY_RATERS raters, the same number the SQL uses', async () => {
+    const remote = createFakeRemote({
+      'fixture-kenya': { average: 4, count: MIN_COMMUNITY_RATERS },
+      'fixture-ethiopia': { average: 5, count: MIN_COMMUNITY_RATERS - 1 },
+    });
+    const store = createStore(memoryStorage());
+    await createSync(store, remote)();
+    expect(store.communityRating('fixture-kenya')).toEqual({ average: 4, count: MIN_COMMUNITY_RATERS });
+    expect(store.communityRating('fixture-ethiopia')).toBeNull();
+    expect(minRatersSql).toContain(`as $$ select ${MIN_COMMUNITY_RATERS} $$;`);
+  });
+
   it('fetches them signed out, keeps them offline and after sign-out, never for hand-added coffees', async () => {
     const remote = createFakeRemote({ 'fixture-kenya': { average: 4.3, count: 12 } });
     const store = createStore(memoryStorage());

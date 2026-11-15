@@ -1,4 +1,4 @@
-import { TABLES, type AnyRow, type Tables } from '../store/state';
+import { MIN_COMMUNITY_RATERS, TABLES, type AnyRow, type Tables } from '../store/state';
 import type { Remote } from './remote';
 
 /**
@@ -39,7 +39,8 @@ export function createFakeRemote(communitySeed: Record<string, { average: number
 
     async fetchCommunityRatings() {
       if (offline) throw new Error('offline');
-      return { ...communitySeed }; // a copy, like a real response: the caller may keep it
+      // A copy, like a real response (the caller may keep it), with the server's rater threshold.
+      return Object.fromEntries(Object.entries(communitySeed).filter(([, r]) => r.count >= MIN_COMMUNITY_RATERS));
     },
   };
   return remote;

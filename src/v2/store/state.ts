@@ -6,6 +6,11 @@ export const STORAGE_KEY = 'pico-v2';
 export const PROTOTYPE_KEY = 'pico-proto-v2';
 /** userId of rows saved signed out. They move into the account on sign-in or sign-up. */
 export const LOCAL_USER_ID = 'local';
+/**
+ * A coffee shows a community rating only from this many raters. Same number in SQL: public.community_min_raters().
+ * Raise to 5 once Pico has 100 users (owner, 2026-11-15).
+ */
+export const MIN_COMMUNITY_RATERS = 3;
 
 export interface User {
   id: string;

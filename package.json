@@ -10,7 +10,7 @@
     "test": "NODE_OPTIONS=--no-experimental-webstorage vitest run",
     "preview": "vite preview",
     "catalog": "node scripts/build-catalog.ts",
-    "check:rls": "node supabase/check-rls.mjs supabase/migrations/0001_init.sql"
+    "check:rls": "node supabase/check-rls.mjs supabase/migrations"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.0",

@@ -15,7 +15,7 @@ npm install && npm run check:rls
 ```
 
 All 13 lines should say PASS: B can't read, update, overwrite or insert-as A; no hard deletes; older writes are
-skipped; signed-out visitors can't read cups; community rating needs 3 raters, skips deleted cups and
+skipped; signed-out visitors can't read cups; community rating needs `community_min_raters()` raters, skips deleted cups and
 hand-added coffees, and exposes no user ids. It is a stand-in: Supabase's real `auth.uid()` reads the JWT.
 
 ## The day a project exists (owner)
@@ -37,6 +37,13 @@ hand-added coffees, and exposes no user ids. It is a stand-in: Supabase's real `
      `await supabase.from('cups').update({ note: 'x' }).eq('id', '<A cup id>').select()` returns `[]`;
      inserting a cup with `user_id: '<A id>'` fails with a row-level security error.
    - Signed out: `await supabase.from('cups').select()` fails; `await supabase.rpc('community_ratings')` works.
+
+## Community rating threshold
+
+A coffee shows a community rating from 3 raters (`public.community_min_raters()` in `0002_community_min_raters.sql`,
+`MIN_COMMUNITY_RATERS` in `src/v2/store/state.ts`; a test keeps the two equal). Owner decision 2026-11-15: raise it to
+5 once Pico has 100 users. Change both numbers; on a live project the SQL change is a **new** migration
+(`create or replace function public.community_min_raters() … select 5 …`), never an edit to an applied one.
 
 ## Before public launch (owner decisions, no code yet)
 

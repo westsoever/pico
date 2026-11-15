@@ -1,8 +1,11 @@
 // Runs supabase/migrations/0001_init.sql in PGlite with a stub of Supabase's auth schema and roles,
 // then checks RLS with two accounts, last-write-wins, and the public community rating.
 import { PGlite } from '@electric-sql/pglite';
-import { readFileSync } from 'node:fs';
-const sql = readFileSync(process.argv[2], 'utf8');
+import { readFileSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
+// Every migration in the folder, in order (0001_…, 0002_…).
+const dir = process.argv[2];
+const sql = readdirSync(dir).filter((f) => f.endsWith('.sql')).sort().map((f) => readFileSync(join(dir, f), 'utf8')).join('\n');
 const db = new PGlite();
 const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process.exitCode = 1; };
 await db.exec(`
@@ -46,12 +49,19 @@ err = null; try { await as(null, `select * from public.cups`); } catch (e) { err
 ok(/permission denied/.test(err ?? ''), 'signed-out visitor cannot read cups: ' + err);
 await cup('b1', B, 'kenya', 3, '2026-11-15T10:00:00Z');
 await cup('b2', B, 'kenya', 5, '2026-11-15T10:01:00Z');
-ok((await as(null, `select * from public.community_ratings()`)).rows.length === 0, 'no community rating below 3 raters');
+// The threshold comes from the database, so this check follows a later change to community_min_raters().
+const min = Number((await db.query(`select public.community_min_raters() as m`)).rows[0].m);
+for (let i = 0; i < min - 3; i++) { // extra raters (each 4★) so that, with A and B, one rater is still missing
+  const id = `00000000-0000-0000-0000-1000000000${String(i).padStart(2, '0')}`;
+  await db.query(`insert into auth.users (id, email) values ($1, $2)`, [id, `extra${i}@example.com`]);
+  await cup(`x${i}`, id, 'kenya', 4, '2026-11-15T10:00:00Z');
+}
+ok((await as(null, `select * from public.community_ratings()`)).rows.length === 0, `no community rating below ${min} raters`);
 await cup('c1', ids[2], 'kenya', 4, '2026-11-15T10:00:00Z');
 await cup('c2', ids[2], 'custom-x', 5, '2026-11-15T10:00:00Z');
 await cup('d1', ids[3], 'kenya', 1, '2026-11-15T10:00:00Z');
 await as(ids[3], `update public.cups set deleted_at = now(), client_updated_at = '2026-11-15T13:00:00Z' where id = 'd1'`);
 const rows = (await as(null, `select * from public.community_ratings()`)).rows;
-ok(rows.length === 1 && rows[0].coffee_id === 'kenya' && rows[0].raters === 3 && Number(rows[0].average) === 4.00,
-  'community: 3 raters (A 4, B avg 4, C 4), deleted cup and custom coffee left out: ' + JSON.stringify(rows));
+ok(rows.length === 1 && rows[0].coffee_id === 'kenya' && rows[0].raters === min && Number(rows[0].average) === 4.00,
+  `community: ${min} raters (A 4, B avg 4, C 4, extras 4), deleted cup and custom coffee left out: ` + JSON.stringify(rows));
 ok(Object.keys(rows[0]).join() === 'coffee_id,average,raters', 'community rating exposes no user ids');

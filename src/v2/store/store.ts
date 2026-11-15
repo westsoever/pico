@@ -6,7 +6,7 @@ import { loadCustomCoffees } from '../../lib/catalog';
 import { blendTasteSeed, computeTasteProfile, hasTasteSignal } from '../../lib/taste-profile';
 import type { BrewJournal, Coffee, FlavorTag, Rating, TasteProfile } from '../../types/coffee';
 import {
-  EMPTY, LOCAL_USER_ID, STORAGE_KEY, TABLES, load, save, uid,
+  EMPTY, LOCAL_USER_ID, MIN_COMMUNITY_RATERS, STORAGE_KEY, TABLES, load, save, uid,
   type AnyRow, type Cup, type OutboxEntry, type PersistedState, type Table, type Tables, type User, type UserCoffee,
 } from './state';
 
@@ -174,8 +174,11 @@ export function createStore(storage: Storage = localStorage) {
       commit({ ...data, communityRatings: ratings, communityFetchedAt: now() });
     },
 
-    /** The coffee's community rating from the last fetch; null below 3 raters (the server leaves those out) and for hand-added coffees. */
-    communityRating: (coffeeId: string) => (coffeeId.startsWith('custom-') ? null : view.communityRatings[coffeeId] ?? null),
+    /** The coffee's community rating from the last fetch; null below MIN_COMMUNITY_RATERS and for hand-added coffees. */
+    communityRating(coffeeId: string) {
+      const rating = coffeeId.startsWith('custom-') ? undefined : view.communityRatings[coffeeId];
+      return rating && rating.count >= MIN_COMMUNITY_RATERS ? rating : null;
+    },
 
     addCup(coffeeId: string, stars: number, note = '', flavorTags?: FlavorTag[], brew?: BrewJournal): Cup {
       const at = now();
