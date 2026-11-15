@@ -341,9 +341,17 @@ h1, h2, p { margin: 0; }
 .p-cam__library { justify-self: start; width: 48px; height: 48px; display: grid; place-items: center; border-radius: 14px; background: rgba(255,255,255,.12); color: #fff; }
 .p-cam__library:disabled { opacity: .4; }
 .p-cam__controls .p-link--light { margin-top: 12px; }
-.p-scan__sheet { position: absolute; left: 0; right: 0; bottom: 0; max-height: 76dvh; overflow-y: auto; padding: 24px 20px calc(24px + var(--safe-b)); border-radius: 28px 28px 0 0; background: rgba(17,20,24,.94); text-align: left; animation: p-rise .25s ease-out; }
+.p-scan__sheet { position: absolute; left: 0; right: 0; bottom: 0; max-height: 76dvh; overflow-y: auto; padding: 24px 20px calc(24px + var(--safe-b)); border-radius: 28px 28px 0 0; background: rgba(17,20,24,.98); text-align: left; animation: p-rise .25s ease-out; }
 .p-scan__sheet .w-poor { padding-top: 0; text-align: center; }
-.p-scan__sheet .p-result__img { width: 88px; height: 110px; }
+.p-cands { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 12px; margin-bottom: 16px; }
+.p-cands[data-odd] > .p-cand:first-child { grid-column: 1 / -1; }
+.p-cand { display: grid; gap: 2px; min-width: 0; text-align: left; color: #fff; }
+.p-cand__img { position: relative; height: 190px; margin-bottom: 8px; padding: 14px; display: grid; place-items: center; border-radius: 22px; overflow: hidden; background: linear-gradient(180deg, #fff, #e9eef4); }
+.p-cands[data-odd] > .p-cand:first-child .p-cand__img { height: 240px; }
+.p-cand__img:has(.p-img-photo) { padding: 0; }
+.p-cand b { font-size: 16px; line-height: 21px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.p-cand__roaster { font-size: 13px; line-height: 18px; opacity: .75; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.p-cand .p-result__verdict { font-size: 13px; line-height: 18px; opacity: .9; }
 .p-photos { display: flex; gap: 8px; overflow-x: auto; margin: 0 -22px; padding: 0 22px; scrollbar-width: none; }
 .p-photos img { flex: none; width: 96px; height: 120px; object-fit: cover; border-radius: 14px; }
 .p-scan__note { margin-top: 14px; text-align: center; font-size: 13px; color: rgba(255,255,255,.6); }

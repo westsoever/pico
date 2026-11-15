@@ -12,7 +12,7 @@ import { resizePhoto } from '../../components/CameraCapture';
 import { type Coffee, type TasteProfile } from '../../types/coffee';
 import { addScanPhoto } from '../store/photos';
 import { ACCOUNTS, FREE_SCANS, currentProfile, spendScan, communityRating, type ProtoState, allCoffees } from './state';
-import { ChevronRight, CloseIcon, LibraryIcon, PlusIcon, Star } from './icons';
+import { CloseIcon, LibraryIcon, PlusIcon, Star } from './icons';
 import { Bag } from './parts';
 import { back, closeScan, go } from './routing';
 import { match } from './util';
@@ -186,18 +186,20 @@ export function Scan({ s }: { s: ProtoState }) {
       {phase.kind === 'results' && !phase.draft && (
         <div className="p-scan__sheet p-results">
           <h1>{phase.coffees.length ? 'Is it one of these?' : 'We couldn’t find this bag'}</h1>
-          {phase.coffees.map((c, i) => (
-            <button key={c.id} className="p-result" data-best={i === 0 || undefined} onClick={() => open(c, phase.shot)}>
-              <span className="p-result__img"><Bag coffee={c} w={240} /></span>
-              <span className="p-result__text">
-                {i === 0 && <span className="p-result__tag">Most likely</span>}
-                <b>{c.name}</b>
-                <span>{c.roaster} · {c.origin}</span>
-                <ResultVerdict s={s} coffee={c} profile={profile} best={i === 0} />
-              </span>
-              <ChevronRight />
-            </button>
-          ))}
+          {/* Photo-led tiles so the bag is recognised by sight; with an odd count the first spans both columns. */}
+          {phase.coffees.length > 0 && (
+            <div className="p-cands" data-odd={phase.coffees.length % 2 === 1 || undefined}>
+              {phase.coffees.map((c, i) => (
+                <button key={c.id} className="p-cand" onClick={() => open(c, phase.shot)}>
+                  <span className="p-cand__img"><Bag coffee={c} w={i === 0 ? 600 : 320} /></span>
+                  {i === 0 && <span className="p-result__tag">Most likely</span>}
+                  <b>{c.name}</b>
+                  <span className="p-cand__roaster">{c.roaster} · {c.origin}</span>
+                  <ResultVerdict s={s} coffee={c} profile={profile} best={false} />
+                </button>
+              ))}
+            </div>
+          )}
           <button className="p-result p-result--add" onClick={() => addNow(phase.shot, !phase.coffees.length)}>
             <span className="p-result__img"><PlusIcon /></span>
             <span className="p-result__text"><b>Not found, add it now</b><span>Saved to your journal</span></span>

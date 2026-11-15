@@ -17,6 +17,7 @@ let rows: Row[] = [];
 const urls = new Map<string, string>();
 const listeners = new Set<() => void>();
 let version = 0;
+let ready = false; // the stored photos have been read (or could not be)
 const changed = () => { version += 1; listeners.forEach((fn) => fn()); };
 
 let dbPromise: Promise<IDBDatabase | null> | undefined;
@@ -58,8 +59,11 @@ const loaded: Promise<void> = new Promise<void>((resolve) => setTimeout(resolve,
     if (!all?.length) return;
     const known = new Set(rows.map((r) => r.id));
     rows = [...rows, ...all.filter((r) => !known.has(r.id))].sort((a, b) => b.takenAt.localeCompare(a.takenAt));
-    changed();
-  });
+  })
+  .finally(() => { ready = true; changed(); });
+
+/** False until the stored photos are read: a screen holds its empty state until then. */
+export const photosLoaded = (): boolean => ready;
 
 /** A JPEG of at most PHOTO_MAX px on the long side. */
 async function shrink(photo: Blob | string): Promise<Blob> {

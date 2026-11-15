@@ -7,6 +7,7 @@
 (6) IndexedDB blocked: scan and rating still work
 (7) 200 stored photos: first paint of the Journal, measured
 (8) the menu scan: the same in-app camera; the file input only when the camera is denied
+(9) a coffee you added yourself is found by the live read too
 Needs ffmpeg (turns the photos into fake camera video) and network (catalog bag photos, the OCR engine's CDN).
 Usage: python3 scripts/e2e/check_scan.py [screenshot dir]
 """
@@ -158,15 +159,16 @@ with sync_playwright() as p:
     b, pg, errors = session(p, amb_cam)
     pg.goto(f'{BASE}#/scan'); pg.wait_for_selector('.p-scan__shutter:enabled'); pg.wait_for_timeout(600)
     pg.click('.p-scan__shutter')
-    listed = wait_for(pg, lambda: pg.locator('.p-scan__sheet .p-result:not(.p-result--add)').count() >= 2, 30)
+    listed = wait_for(pg, lambda: pg.locator('.p-scan__sheet .p-cand').count() >= 2, 30)
     c.ok(listed, '(4) ambiguous bag: a list of candidates')
     if listed:
-        box = pg.locator('.p-scan__sheet .p-result__img').first.bounding_box()
-        c.ok(box['width'] >= 88 and box['height'] >= 100, f'(4) bigger pictures ({box["width"]:.0f}x{box["height"]:.0f})')
+        box = pg.locator('.p-scan__sheet .p-cand__img').nth(1).bounding_box()
+        c.ok(box['width'] >= 150 and box['height'] >= 180, f'(4) photo-led tiles ({box["width"]:.0f}x{box["height"]:.0f} px pictures)')
+        c.ok(pg.locator('.p-cand .p-result__tag').count() == 1 and pg.locator('.p-cand').first.locator('.p-result__tag').count() == 1, '(4) "Most likely" only on the first')
         c.ok(pg.get_by_text('Not found, add it now').count() == 1, '(4) "Not found, add it now" in the list')
         pg.wait_for_timeout(1500); shot(pg, '3-list')  # after the sheet's rise and the bag pictures
-        name = pg.locator('.p-scan__sheet .p-result b').first.inner_text()
-        pg.locator('.p-scan__sheet .p-result').first.click(); pg.wait_for_timeout(1000)
+        name = pg.locator('.p-scan__sheet .p-cand b').first.inner_text()
+        pg.locator('.p-scan__sheet .p-cand').first.click(); pg.wait_for_timeout(1000)
         c.ok(own_photo(pg, '.p-hero__bag'), f'(4) picking "{name}" opens it with the photo')
         pg.reload(); pg.wait_for_timeout(800)
         c.ok(journal_has(pg, name), '(4) and it is in the Journal after reload')
@@ -228,6 +230,20 @@ with sync_playwright() as p:
         c.ok(False, '(8) menu: camera denied, the shutter opens a file chooser')
     b.close()
 
+    # (9) a coffee you added yourself is found by the live read, not only by the shutter
+    OWN = "localStorage.getItem('pico-v2') || localStorage.setItem('pico-v2', JSON.stringify({ version: 1, userCoffees: [{ id: 'custom-e2e-kieni', name: 'Kieni', roaster: 'Coffee Collective', origin: 'Kenya', process: 'Washed', roastLevel: 'light', flavorTags: ['fruity'], description: 'Added by hand.', isCustom: true, userId: 'local', updatedAt: '2026-11-15T00:00:00Z', sentToPico: false }] }));"
+    b, pg, errors = session(p, known_cam, OWN)
+    pg.goto(f'{BASE}#/scan')
+    # Alone, the catalog Kieni opens by itself in (1). With your own "Kieni" in the list the live read sees two equal hits,
+    # so it must not open the catalog one (it did while LiveScan matched the catalog only).
+    wait_for(pg, lambda: pg.evaluate('location.hash') != '#/scan', 20)
+    c.ok(pg.evaluate('location.hash') != f'#/coffee/{KNOWN[0]}', f'(9) the live read sees your own "Kieni": it no longer opens the catalog one by itself ({pg.evaluate("location.hash")})')
+    if pg.evaluate('location.hash') == '#/scan':
+        pg.click('.p-scan__shutter')
+        c.ok(wait_for(pg, lambda: pg.locator('.p-cand .p-bag-fallback').count() > 0, 30), '(9) the shutter lists both, yours among them')
+    c.ok(not errors, f'(9) no page errors {errors}')
+    b.close()
+
     # (6) IndexedDB blocked
     b, pg, errors = session(p, known_cam, BLOCK_IDB)
     pg.goto(f'{BASE}#/scan')
@@ -239,7 +255,8 @@ with sync_playwright() as p:
     b.close()
 
     # (7) + screenshot of a Journal with own photos: 200 photos stored, first paint measured
-    b, pg, errors = session(p)
+    SEE_EMPTY = "new MutationObserver(() => { if (document.body && document.body.innerText.includes('No cups yet')) window.__sawEmpty = true; }).observe(document, { childList: true, subtree: true, characterData: true });"
+    b, pg, errors = session(p, init=SEE_EMPTY)
     pg.goto(f'{BASE}#/journal'); pg.wait_for_timeout(500)
     pg.evaluate("""async () => {
       const canvas = Object.assign(document.createElement('canvas'), { width: 800, height: 1000 });
@@ -255,6 +272,7 @@ with sync_playwright() as p:
     fcp = pg.evaluate("performance.getEntriesByName('first-contentful-paint')[0]?.startTime")
     c.ok(fcp is not None and fcp < 1500, f'(7) 200 photos: Journal first contentful paint {fcp:.0f} ms')
     c.ok(pg.locator('.p-tile').count() == 4 and own_photo(pg, '.p-tile__img'), '(7) 4 unrated scanned coffees in the Journal, own photos')
+    c.ok(not pg.evaluate('!!window.__sawEmpty'), '(7) the Journal never flashed "No cups yet" while the photos loaded')
     shot(pg, '7-journal-200-photos')
     c.ok(not errors, f'(7) no page errors {errors}')
     b.close()

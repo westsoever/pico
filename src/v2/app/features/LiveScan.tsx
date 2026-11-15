@@ -3,13 +3,13 @@
 // 15 s or one slow read; after that only the shutter reads. No camera or no permission: `camera` turns 'off'.
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { getAllCoffees } from '../../../lib/catalog';
 import { matchCoffeesFromText } from '../../../lib/label-match';
 import { readLabel } from '../../../lib/label-ocr';
 import { parseLabel, type LabelDraft } from '../../../lib/label-parse';
 import { STEADY_START, frameDifference, liveDecision, nextSteadiness, readFinished, shouldFallBack } from '../../../lib/live-scan';
 import { isPoorRead } from '../../../lib/menu-pick';
 import type { Coffee } from '../../../types/coffee';
+import { allCoffees } from '../state';
 import './wow.css';
 
 /** What a read was made from: kept so "Add it now" can prefill from it and the photo can be saved. */
@@ -95,7 +95,7 @@ export const LiveScan = forwardRef<LiveScanHandle, {
         // Left, or the shutter took over while this read ran: its answer is stale.
         if (unmounted || !props.current.autoRead) return;
         const shot = { photo, text: result.text };
-        const coffees = getAllCoffees();
+        const coffees = allCoffees(); // catalog + your own coffees, the same list as the shutter
         const matches = matchCoffeesFromText(result.text, coffees);
         const decision = liveDecision(matches);
         // A clear hit opens even at low confidence (bag artwork lowers it); anything weaker waits for a clean read.
